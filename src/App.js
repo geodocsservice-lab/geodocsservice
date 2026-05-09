@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { 
   Zap, Home, LayoutGrid, Info, Bell, FileText,
-  Instagram, Facebook, Send, ShieldCheck, CheckCircle2 
+  Instagram, Facebook, Send, ShieldCheck, CheckCircle2, MessageSquare 
 } from 'lucide-react';
 
 export default function GeoDocsApp() {
@@ -9,7 +9,6 @@ export default function GeoDocsApp() {
   const [activeTab, setActiveTab] = useState('home');
   
   const pricingRef = useRef(null);
-  const homeRef = useRef(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -23,7 +22,7 @@ export default function GeoDocsApp() {
       slogan: "ნუ მოწყდები შენს საქმეს",
       alert: "ინფორმაცია იშლება ავტომატურად 2 წუთში!",
       cvBtn: "AI CV 2 წუთში",
-      invoiceBtn: "ინვოისი (მალე)", // "მალე" დამატებულია ფრჩხილებში
+      invoiceBtn: "ინვოისი (მალე)",
       whyTitle: "რატომ ჩვენ?",
       whyItems: ["სწრაფი გენერირება (2 წთ)", "მრავალენოვანი მხარდაჭერა", "მაქსიმალური სიზუსტე AI-თ", "სრული ანონიმურობა"],
       pricesTitle: "ტარიფები",
@@ -35,8 +34,8 @@ export default function GeoDocsApp() {
       ],
       aboutTitle: "ჩვენს შესახებ",
       aboutContent: "Geo Docs Service არის პირველი ქართული სრულად ავტომატიზებული პლატფორმა.",
-      privacyTitle: "კონფიდენციალურობის პოლიტიკა", // სათაური გასწორებულია, გაყოფილი აღარაა
-      privacyContent: "ჩვენთვის პრიორიტეტულია თქვენი ანონიმურობა.",
+      privacyTitle: "კონფიდენციალურობის პოლიტიკა",
+      privacyContent: "ჩვენთვის პრიორიტეტულია თქვენი ანონიმურობა. სისტემაში შეყვანილი ინფორმაცია გამოიყენება მხოლოდ დოკუმენტის შესაქმნელად და გენერირებიდან ზუსტად 2 წუთში სრულად იშლება ბაზიდან.",
       rights: "© 2026 GEO DOCS SERVICE. ყველა უფლება დაცულია."
     },
     EN: {
@@ -56,7 +55,7 @@ export default function GeoDocsApp() {
       aboutTitle: "About Us",
       aboutContent: "Geo Docs Service is a fully automated platform.",
       privacyTitle: "Privacy Policy",
-      privacyContent: "Your anonymity is our priority.",
+      privacyContent: "Your data is used only for processing and is permanently deleted within 2 minutes.",
       rights: "© 2026 GEO DOCS SERVICE. All rights reserved."
     },
     RU: {
@@ -74,9 +73,9 @@ export default function GeoDocsApp() {
         { title: "Безлимитное резюме", price: "75₾" }
       ],
       aboutTitle: "О нас",
-      aboutContent: "Geo Docs Service — это первая грузинская платформа.",
+      aboutContent: "Geo Docs Service — это первая грузинская полностью автоматизированная платформа.",
       privacyTitle: "Конфиденциальность",
-      privacyContent: "Ваша анонимность — наш приоритет.",
+      privacyContent: "Ваша анонимность — наш приоритет. Информация удаляется через 2 минуты.",
       rights: "© 2026 GEO DOCS SERVICE. Все права защищены."
     }
   };
@@ -89,9 +88,8 @@ export default function GeoDocsApp() {
   };
 
   return (
-    <div style={{ backgroundColor: '#6D757D', minHeight: '100vh', color: 'white', fontFamily: 'Arial, sans-serif', paddingBottom: '120px' }}>
+    <div style={{ backgroundColor: '#6D757D', minHeight: '100vh', color: 'white', fontFamily: 'Arial, sans-serif', paddingBottom: '120px', overflowX: 'hidden' }}>
       
-      {/* Header */}
       <header style={{ backgroundColor: '#1A1A1A', padding: '15px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'sticky', top: 0, zIndex: 100 }}>
         <div onClick={handleLogoClick} style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
           <img src={logoUrl} alt="Logo" style={{ width: '35px', height: '35px', borderRadius: '50%' }} />
@@ -104,11 +102,9 @@ export default function GeoDocsApp() {
         </div>
       </header>
 
-      {/* Main Content */}
       <main style={{ padding: '20px' }}>
-        
         {activeTab === 'home' || activeTab === 'prices' ? (
-          <div ref={homeRef}>
+          <div>
             <div style={{ textAlign: 'center', marginBottom: '30px' }}>
               <div style={{ backgroundColor: 'rgba(255,255,255,0.15)', padding: '8px 15px', borderRadius: '20px', fontSize: '11px', display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
                 <ShieldCheck size={14} color="#FFB800" /> {t.alert}
@@ -116,17 +112,14 @@ export default function GeoDocsApp() {
               <h1 style={{ fontSize: '34px', fontWeight: '900', fontStyle: 'italic', marginTop: '25px', lineHeight: 1.1 }}>{t.slogan}</h1>
             </div>
 
-            {/* AI CV 2 წუთში */}
             <button onClick={() => window.open(googleFormUrl)} style={{ backgroundColor: '#FFB800', width: '100%', padding: '20px', borderRadius: '20px', border: 'none', fontWeight: '900', fontSize: '20px', cursor: 'pointer', marginBottom: '15px' }}>
               <Zap fill="black" size={20} style={{marginRight: '8px'}} /> {t.cvBtn}
             </button>
 
-            {/* ინვოისი (მალე) */}
             <button style={{ backgroundColor: '#2A2A2A', width: '100%', padding: '20px', borderRadius: '20px', border: '2px dashed #FFB800', color: 'white', fontWeight: 'bold', fontSize: '16px', cursor: 'pointer', marginBottom: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', opacity: 0.8 }}>
               <FileText size={20} color="#FFB800" /> {t.invoiceBtn}
             </button>
 
-            {/* Pricing Section */}
             <div ref={pricingRef} style={{ paddingTop: '20px', marginBottom: '40px' }}>
               <h2 style={{ fontSize: '24px', fontStyle: 'italic', marginBottom: '20px', color: '#FFB800', fontWeight: '900' }}>{t.pricesTitle}</h2>
               {t.prices.map((p, i) => (
@@ -137,7 +130,6 @@ export default function GeoDocsApp() {
               ))}
             </div>
 
-            {/* Why Us Section */}
             <div style={{ backgroundColor: '#2A2A2A', padding: '25px', borderRadius: '30px', marginBottom: '30px' }}>
               <h3 style={{ color: '#FFB800', fontStyle: 'italic', marginBottom: '20px', fontSize: '18px', fontWeight: '900' }}>{t.whyTitle}</h3>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
@@ -161,14 +153,12 @@ export default function GeoDocsApp() {
           <div style={{ padding: '20px 0', textAlign: 'center' }}>
              <div style={{ backgroundColor: '#2A2A2A', padding: '30px', borderRadius: '30px' }}>
               <ShieldCheck size={40} color="#FFB800" style={{marginBottom: '20px'}} />
-              {/* სათაური გასწორებულია */}
               <h2 style={{ fontStyle: 'italic', fontSize: '28px', marginBottom: '20px', fontWeight: '900' }}>{t.privacyTitle}</h2>
               <p style={{ lineHeight: '1.8', fontSize: '16px', color: '#eee' }}>{t.privacyContent}</p>
             </div>
           </div>
         )}
 
-        {/* Footer Branding */}
         <footer style={{ textAlign: 'center', marginTop: '40px', padding: '20px' }}>
           <img src={logoUrl} alt="Footer Logo" style={{ width: '50px', marginBottom: '10px', cursor: 'pointer' }} onClick={handleLogoClick} />
           <h3 style={{ fontStyle: 'italic', fontWeight: '900', fontSize: '18px', cursor: 'pointer' }} onClick={handleLogoClick}>GEO DOCS SERVICE</h3>
@@ -182,33 +172,12 @@ export default function GeoDocsApp() {
         </footer>
       </main>
 
-      {/* Navigation Bar (Centered) */}
       <div style={{ position: 'fixed', bottom: '20px', left: 0, right: 0, display: 'flex', justifyContent: 'center', zIndex: 1000 }}>
-        <div style={{ width: '90%', maxWidth: '400px', backgroundColor: '#1A1A1A', borderRadius: '40px', padding: '12px', display: 'flex', justifyContent: 'space-around', alignItems: 'center', borderBottom: '4px solid #007AFF', boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }}>
-          <Home 
-            size={26} 
-            onClick={handleLogoClick} 
-            style={{ cursor: 'pointer', color: activeTab === 'home' ? '#007AFF' : 'white' }} 
-          />
-          <LayoutGrid 
-            size={26} 
-            onClick={() => {
-              setActiveTab('prices');
-              setTimeout(() => pricingRef.current?.scrollIntoView({ behavior: 'smooth' }), 100);
-            }} 
-            style={{ cursor: 'pointer', color: activeTab === 'prices' ? '#007AFF' : 'white' }} 
-          />
-          <Info 
-            size={26} 
-            onClick={() => setActiveTab('about')} 
-            style={{ cursor: 'pointer', color: activeTab === 'about' ? '#007AFF' : 'white' }} 
-          />
+        <div style={{ width: '90%', maxWidth: '350px', backgroundColor: '#1A1A1A', borderRadius: '40px', padding: '12px', display: 'flex', justifyContent: 'space-around', alignItems: 'center', borderBottom: '4px solid #007AFF', boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }}>
+          <Home size={26} onClick={handleLogoClick} style={{ cursor: 'pointer', color: activeTab === 'home' ? '#007AFF' : 'white' }} />
+          <LayoutGrid size={26} onClick={() => { setActiveTab('home'); setTimeout(() => pricingRef.current?.scrollIntoView({ behavior: 'smooth' }), 100); }} style={{ cursor: 'pointer', color: activeTab === 'prices' ? '#007AFF' : 'white' }} />
+          <Info size={26} onClick={() => setActiveTab('about')} style={{ cursor: 'pointer', color: activeTab === 'about' ? '#007AFF' : 'white' }} />
           <Bell size={26} color="#444" style={{ opacity: 0.5 }} />
-          <MessageSquare 
-            size={26} 
-            onClick={() => setActiveTab('privacy')} 
-            style={{ cursor: 'pointer', color: activeTab === 'privacy' ? '#007AFF' : 'white' }} 
-          />
         </div>
       </div>
     </div>
