@@ -1,6 +1,12 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './App';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<App />);
+function App() {
+  return (
+    <div style={{ textAlign: 'center', marginTop: '50px' }}>
+      <h1>Geo Docs Service</h1>
+      <p>ავტომატიზაციის პლატფორმა მზადების პროცესშია.</p>
+    </div>
+  );
+}
+
+export default App;
