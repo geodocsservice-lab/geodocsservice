@@ -9,9 +9,8 @@ export default function GeoDocsApp() {
   const [activeTab, setActiveTab] = useState('home');
   
   const pricingRef = useRef(null);
-  const whyUsRef = useRef(null);
 
-  // ენის შეცვლისას ან ტაბის შეცვლისას ავიდეს თავში
+  // გვერდის შეცვლისას ყოველთვის ავიდეს თავში
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [activeTab]);
@@ -73,7 +72,7 @@ export default function GeoDocsApp() {
       ],
       aboutTitle: "О нас",
       aboutContent: "Geo Docs Service — это первая грузинская полностью автоматизированная платформа для создания документов.",
-      privacyTitle: "Политика конфиденциальности",
+      privacyTitle: "Конфиденциальность",
       privacyContent: "Ваша анонимность — наш приоритет. Информация удаляется через 2 минуты после генерации.",
       rights: "© 2026 GEO DOCS SERVICE. Все права защищены."
     }
@@ -81,12 +80,21 @@ export default function GeoDocsApp() {
 
   const t = translations[lang] || translations['GE'];
 
+  // ფუნქცია მთავარ გვერდზე დასაბრუნებლად
+  const handleLogoClick = () => {
+    setActiveTab('home');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <div style={{ backgroundColor: '#6D757D', minHeight: '100vh', color: 'white', fontFamily: 'Arial, sans-serif', paddingBottom: '120px' }}>
       
-      {/* Header */}
+      {/* Header - დაემატა onClick handleLogoClick */}
       <header style={{ backgroundColor: '#1A1A1A', padding: '15px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'sticky', top: 0, zIndex: 100 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <div 
+          onClick={handleLogoClick}
+          style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}
+        >
           <img src={logoUrl} alt="Logo" style={{ width: '35px', height: '35px', borderRadius: '50%' }} />
           <div style={{ fontWeight: '900', fontStyle: 'italic', fontSize: '13px' }}>GEO DOCS SERVICE</div>
         </div>
@@ -124,8 +132,8 @@ export default function GeoDocsApp() {
               ))}
             </div>
 
-            {/* Why Us Section (Moved to bottom) */}
-            <div ref={whyUsRef} style={{ backgroundColor: '#2A2A2A', padding: '25px', borderRadius: '30px', marginBottom: '30px' }}>
+            {/* Why Us Section */}
+            <div style={{ backgroundColor: '#2A2A2A', padding: '25px', borderRadius: '30px', marginBottom: '30px' }}>
               <h3 style={{ color: '#FFB800', fontStyle: 'italic', marginBottom: '20px', fontSize: '18px', fontWeight: '900' }}>{t.whyTitle}</h3>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
                 {t.whyItems.map((item, i) => (
@@ -156,8 +164,18 @@ export default function GeoDocsApp() {
 
         {/* Footer Branding */}
         <footer style={{ textAlign: 'center', marginTop: '40px', padding: '20px' }}>
-          <img src={logoUrl} alt="Footer Logo" style={{ width: '50px', marginBottom: '10px' }} />
-          <h3 style={{ fontStyle: 'italic', fontWeight: '900', fontSize: '18px' }}>GEO DOCS SERVICE</h3>
+          <img 
+            src={logoUrl} 
+            alt="Footer Logo" 
+            style={{ width: '50px', marginBottom: '10px', cursor: 'pointer' }} 
+            onClick={handleLogoClick}
+          />
+          <h3 
+            style={{ fontStyle: 'italic', fontWeight: '900', fontSize: '18px', cursor: 'pointer' }} 
+            onClick={handleLogoClick}
+          >
+            GEO DOCS SERVICE
+          </h3>
           <div style={{ display: 'flex', justifyContent: 'center', gap: '25px', margin: '20px 0' }}>
             <Instagram size={24} style={{cursor:'pointer'}} /> <Facebook size={24} style={{cursor:'pointer'}} /> <Send size={24} style={{cursor:'pointer'}} />
           </div>
@@ -173,13 +191,13 @@ export default function GeoDocsApp() {
         <div style={{ width: '90%', maxWidth: '400px', backgroundColor: '#1A1A1A', borderRadius: '40px', padding: '12px', display: 'flex', justifyContent: 'space-around', alignItems: 'center', borderBottom: '4px solid #007AFF', boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }}>
           <Home 
             size={26} 
-            onClick={() => setActiveTab('home')} 
+            onClick={handleLogoClick} 
             style={{ cursor: 'pointer', color: activeTab === 'home' ? '#007AFF' : 'white' }} 
           />
           <LayoutGrid 
             size={26} 
             onClick={() => {
-              setActiveTab('prices');
+              setActiveTab('home');
               setTimeout(() => pricingRef.current?.scrollIntoView({ behavior: 'smooth' }), 100);
             }} 
             style={{ cursor: 'pointer', color: activeTab === 'prices' ? '#007AFF' : 'white' }} 
