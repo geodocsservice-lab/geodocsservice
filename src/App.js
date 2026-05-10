@@ -14,10 +14,8 @@ export default function GeoDocsApp() {
     window.scrollTo(0, 0);
   }, [activeTab]);
 
+  // მთავარი მონაცემები
   const googleFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLSeVAyKyk8Wbe1H4y_UutBsRwrDpbsUNpWI7Z3ZeTV4rrP4SQg/viewform?usp=header";
-  
-  // აქ ჩაწერეთ თქვენი ლოგოს პირდაპირი ლინკი. 
-  // თუ ფაილი ატვირთული გაქვთ საიტზე, გამოიყენეთ ფაილის სახელი, მაგ: "/logo.png"
   const logoUrl = "https://geodocsservice.ge/logo.png"; 
 
   const translations = {
@@ -36,7 +34,7 @@ export default function GeoDocsApp() {
         { title: "სივის გენერირება ულიმიტოდ", price: "75₾" }
       ],
       aboutTitle: "ჩვენს შესახებ",
-      aboutContent: "Geo Docs Service არის პირველი ქართული სრულად ავტომატიზებული პლატფორმა.",
+      aboutContent: "Geo Docs Service არის პირველი ქართული სრულად ავტომატიზებული პლატფორმა. ჩვენი მიზანია დოკუმენტების მომზადების პროცესის მაქსიმალური გამარტივება ხელოვნური ინტელექტის გამოყენებით.",
       privacyTitle: "კონფიდენციალურობის პოლიტიკა",
       privacyContent: "ჩვენთვის პრიორიტეტულია თქვენი ანონიმურობა. სისტემაში შეყვანილი ინფორმაცია გამოიყენება მხოლოდ დოკუმენტის შესაქმნელად და გენერირებიდან ზუსტად 2 წუთში სრულად იშლება ბაზიდან.",
       rights: "© 2026 GEO DOCS SERVICE. ყველა უფლება დაცულია."
@@ -56,7 +54,7 @@ export default function GeoDocsApp() {
         { title: "Unlimited CV Generation", price: "75₾" }
       ],
       aboutTitle: "About Us",
-      aboutContent: "Geo Docs Service is a fully automated platform.",
+      aboutContent: "Geo Docs Service is a fully automated platform for document generation.",
       privacyTitle: "Privacy Policy",
       privacyContent: "Your data is used only for processing and is permanently deleted within 2 minutes.",
       rights: "© 2026 GEO DOCS SERVICE. All rights reserved."
@@ -90,19 +88,43 @@ export default function GeoDocsApp() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  // ლოგოს კომპონენტი შეცდომის დამუშავებით
+  const LogoImage = ({ size }) => {
+    const [error, setError] = useState(false);
+    return (
+      <div style={{ 
+        width: size, 
+        height: size, 
+        borderRadius: '50%', 
+        backgroundColor: '#007AFF', 
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'center', 
+        overflow: 'hidden',
+        flexShrink: 0
+      }}>
+        {!error ? (
+          <img 
+            src={logoUrl} 
+            alt="GD" 
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+            onError={() => setError(true)}
+          />
+        ) : (
+          <span style={{ fontSize: size/3, fontWeight: 'bold', color: 'white' }}>GD</span>
+        )}
+      </div>
+    );
+  };
+
   return (
     <div style={{ backgroundColor: '#6D757D', minHeight: '100vh', color: 'white', fontFamily: 'Arial, sans-serif', paddingBottom: '120px', overflowX: 'hidden' }}>
       
       {/* Header */}
       <header style={{ backgroundColor: '#1A1A1A', padding: '15px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'sticky', top: 0, zIndex: 100 }}>
         <div onClick={handleLogoClick} style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
-          <img 
-            src={logoUrl} 
-            alt="Logo" 
-            style={{ width: '35px', height: '35px', borderRadius: '50%', objectFit: 'cover' }} 
-            onError={(e) => { e.target.src = "https://via.placeholder.com/35"; }} // თუ სურათი არ ჩაიტვირთა
-          />
-          <div style={{ fontWeight: '900', fontStyle: 'italic', fontSize: '13px' }}>GEO DOCS SERVICE</div>
+          <LogoImage size={35} />
+          <div style={{ fontWeight: '900', fontStyle: 'italic', fontSize: '13px', whiteSpace: 'nowrap' }}>GEO DOCS SERVICE</div>
         </div>
         <div style={{ backgroundColor: '#000', padding: '3px', borderRadius: '8px', display: 'flex', gap: '4px' }}>
           {['GE', 'EN', 'RU'].map(l => (
@@ -121,24 +143,28 @@ export default function GeoDocsApp() {
               <h1 style={{ fontSize: '34px', fontWeight: '900', fontStyle: 'italic', marginTop: '25px', lineHeight: 1.1 }}>{t.slogan}</h1>
             </div>
 
-            <button onClick={() => window.open(googleFormUrl)} style={{ backgroundColor: '#FFB800', width: '100%', padding: '20px', borderRadius: '20px', border: 'none', fontWeight: '900', fontSize: '20px', cursor: 'pointer', marginBottom: '15px' }}>
-              <Zap fill="black" size={20} style={{marginRight: '8px'}} /> {t.cvBtn}
+            {/* AI CV Button */}
+            <button onClick={() => window.open(googleFormUrl, '_blank')} style={{ backgroundColor: '#FFB800', width: '100%', padding: '20px', borderRadius: '20px', border: 'none', fontWeight: '900', fontSize: '20px', cursor: 'pointer', marginBottom: '15px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
+              <Zap fill="black" size={20} /> {t.cvBtn}
             </button>
 
-            <button style={{ backgroundColor: '#2A2A2A', width: '100%', padding: '20px', borderRadius: '20px', border: '2px dashed #FFB800', color: 'white', fontWeight: 'bold', fontSize: '16px', cursor: 'pointer', marginBottom: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', opacity: 0.8 }}>
+            {/* Invoice Button */}
+            <button onClick={() => window.open(googleFormUrl, '_blank')} style={{ backgroundColor: '#2A2A2A', width: '100%', padding: '20px', borderRadius: '20px', border: '2px dashed #FFB800', color: 'white', fontWeight: 'bold', fontSize: '16px', cursor: 'pointer', marginBottom: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', opacity: 0.9 }}>
               <FileText size={20} color="#FFB800" /> {t.invoiceBtn}
             </button>
 
+            {/* Pricing Section */}
             <div ref={pricingRef} style={{ paddingTop: '20px', marginBottom: '40px' }}>
               <h2 style={{ fontSize: '24px', fontStyle: 'italic', marginBottom: '20px', color: '#FFB800', fontWeight: '900' }}>{t.pricesTitle}</h2>
               {t.prices.map((p, i) => (
-                <button key={i} onClick={() => window.open(googleFormUrl)} style={{ backgroundColor: '#2A2A2A', width: '100%', padding: '20px', borderRadius: '25px', border: 'none', color: 'white', textAlign: 'left', marginBottom: '12px', cursor: 'pointer' }}>
+                <button key={i} onClick={() => window.open(googleFormUrl, '_blank')} style={{ backgroundColor: '#2A2A2A', width: '100%', padding: '20px', borderRadius: '25px', border: 'none', color: 'white', textAlign: 'left', marginBottom: '12px', cursor: 'pointer' }}>
                   <div style={{ fontSize: '14px', opacity: 0.8 }}>{p.title}</div>
                   <div style={{ color: '#FFB800', fontSize: '28px', fontWeight: '900', fontStyle: 'italic' }}>{p.price}</div>
                 </button>
               ))}
             </div>
 
+            {/* Why Us Section */}
             <div style={{ backgroundColor: '#2A2A2A', padding: '25px', borderRadius: '30px', marginBottom: '30px' }}>
               <h3 style={{ color: '#FFB800', fontStyle: 'italic', marginBottom: '20px', fontSize: '18px', fontWeight: '900' }}>{t.whyTitle}</h3>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
@@ -170,12 +196,11 @@ export default function GeoDocsApp() {
 
         {/* Footer */}
         <footer style={{ textAlign: 'center', marginTop: '40px', padding: '20px' }}>
-          <img 
-            src={logoUrl} 
-            alt="Footer Logo" 
-            style={{ width: '50px', marginBottom: '10px', cursor: 'pointer', borderRadius: '50%' }} 
-            onClick={handleLogoClick} 
-          />
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '10px' }}>
+            <div onClick={handleLogoClick} style={{ cursor: 'pointer' }}>
+               <LogoImage size={50} />
+            </div>
+          </div>
           <h3 style={{ fontStyle: 'italic', fontWeight: '900', fontSize: '18px', cursor: 'pointer' }} onClick={handleLogoClick}>GEO DOCS SERVICE</h3>
           <div style={{ display: 'flex', justifyContent: 'center', gap: '25px', margin: '20px 0' }}>
             <Instagram size={24} style={{cursor:'pointer'}} /> <Facebook size={24} style={{cursor:'pointer'}} /> <Send size={24} style={{cursor:'pointer'}} />
@@ -187,7 +212,7 @@ export default function GeoDocsApp() {
         </footer>
       </main>
 
-      {/* Navbar */}
+      {/* Navigation Bar */}
       <div style={{ position: 'fixed', bottom: '20px', left: 0, right: 0, display: 'flex', justifyContent: 'center', zIndex: 1000 }}>
         <div style={{ width: '90%', maxWidth: '350px', backgroundColor: '#1A1A1A', borderRadius: '40px', padding: '12px', display: 'flex', justifyContent: 'space-around', alignItems: 'center', borderBottom: '4px solid #007AFF', boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }}>
           <Home size={26} onClick={handleLogoClick} style={{ cursor: 'pointer', color: activeTab === 'home' ? '#007AFF' : 'white' }} />
@@ -199,4 +224,3 @@ export default function GeoDocsApp() {
     </div>
   );
 }
-
