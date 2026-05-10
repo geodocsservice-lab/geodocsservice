@@ -1,4 +1,4 @@
- import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { 
   Zap, Home, LayoutGrid, Info, Bell, FileText,
   Instagram, Facebook, Send, ShieldCheck, CheckCircle2 
@@ -14,8 +14,10 @@ export default function GeoDocsApp() {
     window.scrollTo(0, 0);
   }, [activeTab]);
 
-  // შენი ფორმის პირდაპირი ლინკი
   const googleFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLSeVAyKyk8Wbe1H4y_UutBsRwrDpbsUNpWI7Z3ZeTV4rrP4SQg/viewform?usp=header";
+  
+  // აქ ჩაწერეთ თქვენი ლოგოს პირდაპირი ლინკი. 
+  // თუ ფაილი ატვირთული გაქვთ საიტზე, გამოიყენეთ ფაილის სახელი, მაგ: "/logo.png"
   const logoUrl = "https://geodocsservice.ge/logo.png"; 
 
   const translations = {
@@ -34,7 +36,7 @@ export default function GeoDocsApp() {
         { title: "სივის გენერირება ულიმიტოდ", price: "75₾" }
       ],
       aboutTitle: "ჩვენს შესახებ",
-      aboutContent: "Geo Docs Service არის პირველი ქართული სრულად ავტომატიზებული პლატფორმა. ჩვენი მიზანია დოკუმენტების მომზადების პროცესის მაქსიმალური გამარტივება ხელოვნური ინტელექტის გამოყენებით.",
+      aboutContent: "Geo Docs Service არის პირველი ქართული სრულად ავტომატიზებული პლატფორმა.",
       privacyTitle: "კონფიდენციალურობის პოლიტიკა",
       privacyContent: "ჩვენთვის პრიორიტეტულია თქვენი ანონიმურობა. სისტემაში შეყვანილი ინფორმაცია გამოიყენება მხოლოდ დოკუმენტის შესაქმნელად და გენერირებიდან ზუსტად 2 წუთში სრულად იშლება ბაზიდან.",
       rights: "© 2026 GEO DOCS SERVICE. ყველა უფლება დაცულია."
@@ -54,7 +56,7 @@ export default function GeoDocsApp() {
         { title: "Unlimited CV Generation", price: "75₾" }
       ],
       aboutTitle: "About Us",
-      aboutContent: "Geo Docs Service is a fully automated platform for document generation.",
+      aboutContent: "Geo Docs Service is a fully automated platform.",
       privacyTitle: "Privacy Policy",
       privacyContent: "Your data is used only for processing and is permanently deleted within 2 minutes.",
       rights: "© 2026 GEO DOCS SERVICE. All rights reserved."
@@ -88,10 +90,6 @@ export default function GeoDocsApp() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const openForm = () => {
-    window.open(googleFormUrl, '_blank');
-  };
-
   return (
     <div style={{ backgroundColor: '#6D757D', minHeight: '100vh', color: 'white', fontFamily: 'Arial, sans-serif', paddingBottom: '120px', overflowX: 'hidden' }}>
       
@@ -102,7 +100,7 @@ export default function GeoDocsApp() {
             src={logoUrl} 
             alt="Logo" 
             style={{ width: '35px', height: '35px', borderRadius: '50%', objectFit: 'cover' }} 
-            onError={(e) => { e.target.src = "https://via.placeholder.com/35?text=GD"; }} 
+            onError={(e) => { e.target.src = "https://via.placeholder.com/35"; }} // თუ სურათი არ ჩაიტვირთა
           />
           <div style={{ fontWeight: '900', fontStyle: 'italic', fontSize: '13px' }}>GEO DOCS SERVICE</div>
         </div>
@@ -123,28 +121,24 @@ export default function GeoDocsApp() {
               <h1 style={{ fontSize: '34px', fontWeight: '900', fontStyle: 'italic', marginTop: '25px', lineHeight: 1.1 }}>{t.slogan}</h1>
             </div>
 
-            {/* AI CV Button */}
-            <button onClick={openForm} style={{ backgroundColor: '#FFB800', width: '100%', padding: '20px', borderRadius: '20px', border: 'none', fontWeight: '900', fontSize: '20px', cursor: 'pointer', marginBottom: '15px' }}>
+            <button onClick={() => window.open(googleFormUrl)} style={{ backgroundColor: '#FFB800', width: '100%', padding: '20px', borderRadius: '20px', border: 'none', fontWeight: '900', fontSize: '20px', cursor: 'pointer', marginBottom: '15px' }}>
               <Zap fill="black" size={20} style={{marginRight: '8px'}} /> {t.cvBtn}
             </button>
 
-            {/* Invoice Button */}
-            <button onClick={openForm} style={{ backgroundColor: '#2A2A2A', width: '100%', padding: '20px', borderRadius: '20px', border: '2px dashed #FFB800', color: 'white', fontWeight: 'bold', fontSize: '16px', cursor: 'pointer', marginBottom: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', opacity: 0.9 }}>
+            <button style={{ backgroundColor: '#2A2A2A', width: '100%', padding: '20px', borderRadius: '20px', border: '2px dashed #FFB800', color: 'white', fontWeight: 'bold', fontSize: '16px', cursor: 'pointer', marginBottom: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', opacity: 0.8 }}>
               <FileText size={20} color="#FFB800" /> {t.invoiceBtn}
             </button>
 
-            {/* Prices */}
             <div ref={pricingRef} style={{ paddingTop: '20px', marginBottom: '40px' }}>
               <h2 style={{ fontSize: '24px', fontStyle: 'italic', marginBottom: '20px', color: '#FFB800', fontWeight: '900' }}>{t.pricesTitle}</h2>
               {t.prices.map((p, i) => (
-                <button key={i} onClick={openForm} style={{ backgroundColor: '#2A2A2A', width: '100%', padding: '20px', borderRadius: '25px', border: 'none', color: 'white', textAlign: 'left', marginBottom: '12px', cursor: 'pointer' }}>
+                <button key={i} onClick={() => window.open(googleFormUrl)} style={{ backgroundColor: '#2A2A2A', width: '100%', padding: '20px', borderRadius: '25px', border: 'none', color: 'white', textAlign: 'left', marginBottom: '12px', cursor: 'pointer' }}>
                   <div style={{ fontSize: '14px', opacity: 0.8 }}>{p.title}</div>
                   <div style={{ color: '#FFB800', fontSize: '28px', fontWeight: '900', fontStyle: 'italic' }}>{p.price}</div>
                 </button>
               ))}
             </div>
 
-            {/* Why Us */}
             <div style={{ backgroundColor: '#2A2A2A', padding: '25px', borderRadius: '30px', marginBottom: '30px' }}>
               <h3 style={{ color: '#FFB800', fontStyle: 'italic', marginBottom: '20px', fontSize: '18px', fontWeight: '900' }}>{t.whyTitle}</h3>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
@@ -176,12 +170,16 @@ export default function GeoDocsApp() {
 
         {/* Footer */}
         <footer style={{ textAlign: 'center', marginTop: '40px', padding: '20px' }}>
-          <img src={logoUrl} alt="Footer Logo" style={{ width: '50px', marginBottom: '10px', borderRadius: '50%', cursor: 'pointer' }} onClick={handleLogoClick} />
+          <img 
+            src={logoUrl} 
+            alt="Footer Logo" 
+            style={{ width: '50px', marginBottom: '10px', cursor: 'pointer', borderRadius: '50%' }} 
+            onClick={handleLogoClick} 
+          />
           <h3 style={{ fontStyle: 'italic', fontWeight: '900', fontSize: '18px', cursor: 'pointer' }} onClick={handleLogoClick}>GEO DOCS SERVICE</h3>
           <div style={{ display: 'flex', justifyContent: 'center', gap: '25px', margin: '20px 0' }}>
             <Instagram size={24} style={{cursor:'pointer'}} /> <Facebook size={24} style={{cursor:'pointer'}} /> <Send size={24} style={{cursor:'pointer'}} />
           </div>
-          {/* Privacy Link on footer */}
           <button onClick={() => setActiveTab('privacy')} style={{ background: 'none', border: 'none', color: 'white', textDecoration: 'underline', cursor: 'pointer', fontSize: '14px' }}>
             {t.privacyTitle}
           </button>
