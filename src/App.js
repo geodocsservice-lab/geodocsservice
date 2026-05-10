@@ -16,8 +16,9 @@ export default function GeoDocsApp() {
 
   const googleFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLSeVAyKyk8Wbe1H4y_UutBsRwrDpbsUNpWI7Z3ZeTV4rrP4SQg/viewform?usp=header";
   
-  // აქ ჩაემატა თქვენი ატვირთული ფაილის ზუსტი სახელი
-  const logoUrl = "/Screenshot_20260326_020239_Facebook.jpg"; 
+  // აქ ჩაწერეთ თქვენი ლოგოს პირდაპირი ლინკი. 
+  // თუ ფაილი ატვირთული გაქვთ საიტზე, გამოიყენეთ ფაილის სახელი, მაგ: "/logo.png"
+  const logoUrl = "https://geodocsservice.ge/logo.png"; 
 
   const translations = {
     GE: {
@@ -98,98 +99,11 @@ export default function GeoDocsApp() {
           <img 
             src={logoUrl} 
             alt="Logo" 
-            style={{ width: '40px', height: '40px', borderRadius: '50%', objectFit: 'cover', border: '2px solid #FFC107' }} 
-            onError={(e) => { e.target.style.display = 'none'; }} 
+            style={{ width: '35px', height: '35px', borderRadius: '50%', objectFit: 'cover' }} 
+            onError={(e) => { e.target.src = "https://via.placeholder.com/35"; }} // თუ სურათი არ ჩაიტვირთა
           />
           <div style={{ fontWeight: '900', fontStyle: 'italic', fontSize: '13px' }}>GEO DOCS SERVICE</div>
         </div>
         <div style={{ backgroundColor: '#000', padding: '3px', borderRadius: '8px', display: 'flex', gap: '4px' }}>
           {['GE', 'EN', 'RU'].map(l => (
-            <button 
-              key={l} 
-              onClick={() => setLang(l)} 
-              style={{ 
-                background: lang === l ? '#2563EB' : 'transparent',
-                color: 'white',
-                border: 'none',
-                padding: '5px 10px',
-                borderRadius: '5px',
-                fontSize: '11px',
-                cursor: 'pointer'
-              }}
-            >
-              {l}
-            </button>
-          ))}
-        </div>
-      </header>
-
-      {/* Main Content */}
-      <main style={{ padding: '20px', maxWidth: '500px', margin: '0 auto' }}>
-        {activeTab === 'home' && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-            <div style={{ textAlign: 'center', padding: '40px 0' }}>
-              <h1 style={{ fontSize: '42px', fontWeight: '900', marginBottom: '10px', lineHeight: '1.1' }}>{t.slogan}</h1>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', color: '#ADB5BD', fontSize: '14px', backgroundColor: 'rgba(0,0,0,0.2)', padding: '10px', borderRadius: '12px' }}>
-                <ShieldCheck size={16} />
-                <span>{t.alert}</span>
-              </div>
-            </div>
-
-            <a href={googleFormUrl} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
-              <button style={{ width: '100%', padding: '22px', borderRadius: '18px', border: 'none', backgroundColor: '#FFC107', color: 'black', fontSize: '20px', fontWeight: '800', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', cursor: 'pointer', boxShadow: '0 4px 15px rgba(255,193,7,0.3)' }}>
-                <Zap fill="black" /> {t.cvBtn}
-              </button>
-            </a>
-
-            <button disabled style={{ width: '100%', padding: '22px', borderRadius: '18px', border: 'none', backgroundColor: '#212529', color: '#6C757D', fontSize: '18px', fontWeight: '700', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', cursor: 'not-allowed' }}>
-              <FileText /> {t.invoiceBtn}
-            </button>
-
-            <section style={{ backgroundColor: '#1A1A1A', padding: '25px', borderRadius: '24px', marginTop: '10px' }}>
-              <h2 style={{ fontSize: '22px', marginBottom: '15px' }}>{t.pricesTitle}</h2>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                {t.prices.map((p, i) => (
-                  <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '15px', backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: '14px' }}>
-                    <span style={{ fontSize: '15px', color: '#E9ECEF' }}>{p.title}</span>
-                    <span style={{ fontWeight: '800', color: '#FFC107', fontSize: '18px' }}>{p.price}</span>
-                  </div>
-                ))}
-              </div>
-            </section>
-          </div>
-        )}
-
-        {activeTab === 'info' && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '25px' }}>
-            <section style={{ backgroundColor: '#1A1A1A', padding: '25px', borderRadius: '24px' }}>
-              <h2 style={{ color: '#FFC107', marginBottom: '15px' }}>{t.aboutTitle}</h2>
-              <p style={{ lineHeight: '1.6', color: '#ADB5BD' }}>{t.aboutContent}</p>
-            </section>
-            <section style={{ backgroundColor: '#1A1A1A', padding: '25px', borderRadius: '24px' }}>
-              <h2 style={{ color: '#FFC107', marginBottom: '15px' }}>{t.privacyTitle}</h2>
-              <p style={{ lineHeight: '1.6', color: '#ADB5BD' }}>{t.privacyContent}</p>
-            </section>
-          </div>
-        )}
-      </main>
-
-      {/* Footer Navigation */}
-      <nav style={{ position: 'fixed', bottom: '20px', left: '20px', right: '20px', backgroundColor: '#1A1A1A', padding: '15px', borderRadius: '25px', display: 'flex', justifyContent: 'space-around', alignItems: 'center', zIndex: 1000, boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }}>
-        <button onClick={() => setActiveTab('home')} style={{ background: 'none', border: 'none', color: activeTab === 'home' ? '#2563EB' : '#6C757D', cursor: 'pointer' }}>
-          <Home size={28} />
-        </button>
-        <button onClick={() => setActiveTab('grid')} style={{ background: 'none', border: 'none', color: activeTab === 'grid' ? '#2563EB' : '#6C757D', cursor: 'pointer' }}>
-          <LayoutGrid size={28} />
-        </button>
-        <button onClick={() => setActiveTab('info')} style={{ background: 'none', border: 'none', color: activeTab === 'info' ? '#2563EB' : '#6C757D', cursor: 'pointer' }}>
-          <Info size={28} />
-        </button>
-        <button style={{ background: 'none', border: 'none', color: '#6C757D', cursor: 'pointer' }}>
-          <Bell size={28} />
-        </button>
-      </nav>
-    </div>
-  );
-}
-
+            <button key={l} onClick={() => setLang(l)} style={{ background
