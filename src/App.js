@@ -14,9 +14,10 @@ export default function GeoDocsApp() {
     window.scrollTo(0, 0);
   }, [activeTab]);
 
-  // მთავარი მონაცემები
   const googleFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLSeVAyKyk8Wbe1H4y_UutBsRwrDpbsUNpWI7Z3ZeTV4rrP4SQg/viewform?usp=header";
-  const logoUrl = "https://geodocsservice.ge/logo.png"; 
+  
+  // აქ ჩაემატა თქვენი ატვირთული ფაილის ზუსტი სახელი
+  const logoUrl = "/Screenshot_20260326_020239_Facebook.jpg"; 
 
   const translations = {
     GE: {
@@ -34,7 +35,7 @@ export default function GeoDocsApp() {
         { title: "სივის გენერირება ულიმიტოდ", price: "75₾" }
       ],
       aboutTitle: "ჩვენს შესახებ",
-      aboutContent: "Geo Docs Service არის პირველი ქართული სრულად ავტომატიზებული პლატფორმა. ჩვენი მიზანია დოკუმენტების მომზადების პროცესის მაქსიმალური გამარტივება ხელოვნური ინტელექტის გამოყენებით.",
+      aboutContent: "Geo Docs Service არის პირველი ქართული სრულად ავტომატიზებული პლატფორმა.",
       privacyTitle: "კონფიდენციალურობის პოლიტიკა",
       privacyContent: "ჩვენთვის პრიორიტეტულია თქვენი ანონიმურობა. სისტემაში შეყვანილი ინფორმაცია გამოიყენება მხოლოდ დოკუმენტის შესაქმნელად და გენერირებიდან ზუსტად 2 წუთში სრულად იშლება ბაზიდან.",
       rights: "© 2026 GEO DOCS SERVICE. ყველა უფლება დაცულია."
@@ -54,7 +55,7 @@ export default function GeoDocsApp() {
         { title: "Unlimited CV Generation", price: "75₾" }
       ],
       aboutTitle: "About Us",
-      aboutContent: "Geo Docs Service is a fully automated platform for document generation.",
+      aboutContent: "Geo Docs Service is a fully automated platform.",
       privacyTitle: "Privacy Policy",
       privacyContent: "Your data is used only for processing and is permanently deleted within 2 minutes.",
       rights: "© 2026 GEO DOCS SERVICE. All rights reserved."
@@ -88,139 +89,107 @@ export default function GeoDocsApp() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // ლოგოს კომპონენტი შეცდომის დამუშავებით
-  const LogoImage = ({ size }) => {
-    const [error, setError] = useState(false);
-    return (
-      <div style={{ 
-        width: size, 
-        height: size, 
-        borderRadius: '50%', 
-        backgroundColor: '#007AFF', 
-        display: 'flex', 
-        alignItems: 'center', 
-        justifyContent: 'center', 
-        overflow: 'hidden',
-        flexShrink: 0
-      }}>
-        {!error ? (
-          <img 
-            src={logoUrl} 
-            alt="GD" 
-            style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
-            onError={() => setError(true)}
-          />
-        ) : (
-          <span style={{ fontSize: size/3, fontWeight: 'bold', color: 'white' }}>GD</span>
-        )}
-      </div>
-    );
-  };
-
   return (
     <div style={{ backgroundColor: '#6D757D', minHeight: '100vh', color: 'white', fontFamily: 'Arial, sans-serif', paddingBottom: '120px', overflowX: 'hidden' }}>
       
       {/* Header */}
       <header style={{ backgroundColor: '#1A1A1A', padding: '15px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'sticky', top: 0, zIndex: 100 }}>
         <div onClick={handleLogoClick} style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
-          <LogoImage size={35} />
-          <div style={{ fontWeight: '900', fontStyle: 'italic', fontSize: '13px', whiteSpace: 'nowrap' }}>GEO DOCS SERVICE</div>
+          <img 
+            src={logoUrl} 
+            alt="Logo" 
+            style={{ width: '40px', height: '40px', borderRadius: '50%', objectFit: 'cover', border: '2px solid #FFC107' }} 
+            onError={(e) => { e.target.style.display = 'none'; }} 
+          />
+          <div style={{ fontWeight: '900', fontStyle: 'italic', fontSize: '13px' }}>GEO DOCS SERVICE</div>
         </div>
         <div style={{ backgroundColor: '#000', padding: '3px', borderRadius: '8px', display: 'flex', gap: '4px' }}>
           {['GE', 'EN', 'RU'].map(l => (
-            <button key={l} onClick={() => setLang(l)} style={{ backgroundColor: lang === l ? '#007AFF' : 'transparent', color: 'white', border: 'none', padding: '5px 10px', borderRadius: '6px', fontSize: '10px', fontWeight: 'bold', cursor: 'pointer' }}>{l}</button>
+            <button 
+              key={l} 
+              onClick={() => setLang(l)} 
+              style={{ 
+                background: lang === l ? '#2563EB' : 'transparent',
+                color: 'white',
+                border: 'none',
+                padding: '5px 10px',
+                borderRadius: '5px',
+                fontSize: '11px',
+                cursor: 'pointer'
+              }}
+            >
+              {l}
+            </button>
           ))}
         </div>
       </header>
 
-      <main style={{ padding: '20px' }}>
-        {activeTab === 'home' || activeTab === 'prices' ? (
-          <div>
-            <div style={{ textAlign: 'center', marginBottom: '30px' }}>
-              <div style={{ backgroundColor: 'rgba(255,255,255,0.15)', padding: '8px 15px', borderRadius: '20px', fontSize: '11px', display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
-                <ShieldCheck size={14} color="#FFB800" /> {t.alert}
+      {/* Main Content */}
+      <main style={{ padding: '20px', maxWidth: '500px', margin: '0 auto' }}>
+        {activeTab === 'home' && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            <div style={{ textAlign: 'center', padding: '40px 0' }}>
+              <h1 style={{ fontSize: '42px', fontWeight: '900', marginBottom: '10px', lineHeight: '1.1' }}>{t.slogan}</h1>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', color: '#ADB5BD', fontSize: '14px', backgroundColor: 'rgba(0,0,0,0.2)', padding: '10px', borderRadius: '12px' }}>
+                <ShieldCheck size={16} />
+                <span>{t.alert}</span>
               </div>
-              <h1 style={{ fontSize: '34px', fontWeight: '900', fontStyle: 'italic', marginTop: '25px', lineHeight: 1.1 }}>{t.slogan}</h1>
             </div>
 
-            {/* AI CV Button */}
-            <button onClick={() => window.open(googleFormUrl, '_blank')} style={{ backgroundColor: '#FFB800', width: '100%', padding: '20px', borderRadius: '20px', border: 'none', fontWeight: '900', fontSize: '20px', cursor: 'pointer', marginBottom: '15px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
-              <Zap fill="black" size={20} /> {t.cvBtn}
+            <a href={googleFormUrl} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+              <button style={{ width: '100%', padding: '22px', borderRadius: '18px', border: 'none', backgroundColor: '#FFC107', color: 'black', fontSize: '20px', fontWeight: '800', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', cursor: 'pointer', boxShadow: '0 4px 15px rgba(255,193,7,0.3)' }}>
+                <Zap fill="black" /> {t.cvBtn}
+              </button>
+            </a>
+
+            <button disabled style={{ width: '100%', padding: '22px', borderRadius: '18px', border: 'none', backgroundColor: '#212529', color: '#6C757D', fontSize: '18px', fontWeight: '700', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', cursor: 'not-allowed' }}>
+              <FileText /> {t.invoiceBtn}
             </button>
 
-            {/* Invoice Button */}
-            <button onClick={() => window.open(googleFormUrl, '_blank')} style={{ backgroundColor: '#2A2A2A', width: '100%', padding: '20px', borderRadius: '20px', border: '2px dashed #FFB800', color: 'white', fontWeight: 'bold', fontSize: '16px', cursor: 'pointer', marginBottom: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', opacity: 0.9 }}>
-              <FileText size={20} color="#FFB800" /> {t.invoiceBtn}
-            </button>
-
-            {/* Pricing Section */}
-            <div ref={pricingRef} style={{ paddingTop: '20px', marginBottom: '40px' }}>
-              <h2 style={{ fontSize: '24px', fontStyle: 'italic', marginBottom: '20px', color: '#FFB800', fontWeight: '900' }}>{t.pricesTitle}</h2>
-              {t.prices.map((p, i) => (
-                <button key={i} onClick={() => window.open(googleFormUrl, '_blank')} style={{ backgroundColor: '#2A2A2A', width: '100%', padding: '20px', borderRadius: '25px', border: 'none', color: 'white', textAlign: 'left', marginBottom: '12px', cursor: 'pointer' }}>
-                  <div style={{ fontSize: '14px', opacity: 0.8 }}>{p.title}</div>
-                  <div style={{ color: '#FFB800', fontSize: '28px', fontWeight: '900', fontStyle: 'italic' }}>{p.price}</div>
-                </button>
-              ))}
-            </div>
-
-            {/* Why Us Section */}
-            <div style={{ backgroundColor: '#2A2A2A', padding: '25px', borderRadius: '30px', marginBottom: '30px' }}>
-              <h3 style={{ color: '#FFB800', fontStyle: 'italic', marginBottom: '20px', fontSize: '18px', fontWeight: '900' }}>{t.whyTitle}</h3>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
-                {t.whyItems.map((item, i) => (
-                  <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px' }}>
-                    <CheckCircle2 size={16} color="#007AFF" /> {item}
+            <section style={{ backgroundColor: '#1A1A1A', padding: '25px', borderRadius: '24px', marginTop: '10px' }}>
+              <h2 style={{ fontSize: '22px', marginBottom: '15px' }}>{t.pricesTitle}</h2>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                {t.prices.map((p, i) => (
+                  <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '15px', backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: '14px' }}>
+                    <span style={{ fontSize: '15px', color: '#E9ECEF' }}>{p.title}</span>
+                    <span style={{ fontWeight: '800', color: '#FFC107', fontSize: '18px' }}>{p.price}</span>
                   </div>
                 ))}
               </div>
-            </div>
-          </div>
-        ) : activeTab === 'about' ? (
-          <div style={{ padding: '20px 0', textAlign: 'center' }}>
-            <div style={{ backgroundColor: '#2A2A2A', padding: '30px', borderRadius: '30px' }}>
-              <Info size={40} color="#FFB800" style={{marginBottom: '20px'}} />
-              <h2 style={{ fontStyle: 'italic', fontSize: '28px', marginBottom: '20px', fontWeight: '900' }}>{t.aboutTitle}</h2>
-              <p style={{ lineHeight: '1.8', fontSize: '16px', color: '#eee' }}>{t.aboutContent}</p>
-            </div>
-          </div>
-        ) : (
-          <div style={{ padding: '20px 0', textAlign: 'center' }}>
-             <div style={{ backgroundColor: '#2A2A2A', padding: '30px', borderRadius: '30px' }}>
-              <ShieldCheck size={40} color="#FFB800" style={{marginBottom: '20px'}} />
-              <h2 style={{ fontStyle: 'italic', fontSize: '28px', marginBottom: '20px', fontWeight: '900' }}>{t.privacyTitle}</h2>
-              <p style={{ lineHeight: '1.8', fontSize: '16px', color: '#eee' }}>{t.privacyContent}</p>
-            </div>
+            </section>
           </div>
         )}
 
-        {/* Footer */}
-        <footer style={{ textAlign: 'center', marginTop: '40px', padding: '20px' }}>
-          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '10px' }}>
-            <div onClick={handleLogoClick} style={{ cursor: 'pointer' }}>
-               <LogoImage size={50} />
-            </div>
+        {activeTab === 'info' && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '25px' }}>
+            <section style={{ backgroundColor: '#1A1A1A', padding: '25px', borderRadius: '24px' }}>
+              <h2 style={{ color: '#FFC107', marginBottom: '15px' }}>{t.aboutTitle}</h2>
+              <p style={{ lineHeight: '1.6', color: '#ADB5BD' }}>{t.aboutContent}</p>
+            </section>
+            <section style={{ backgroundColor: '#1A1A1A', padding: '25px', borderRadius: '24px' }}>
+              <h2 style={{ color: '#FFC107', marginBottom: '15px' }}>{t.privacyTitle}</h2>
+              <p style={{ lineHeight: '1.6', color: '#ADB5BD' }}>{t.privacyContent}</p>
+            </section>
           </div>
-          <h3 style={{ fontStyle: 'italic', fontWeight: '900', fontSize: '18px', cursor: 'pointer' }} onClick={handleLogoClick}>GEO DOCS SERVICE</h3>
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '25px', margin: '20px 0' }}>
-            <Instagram size={24} style={{cursor:'pointer'}} /> <Facebook size={24} style={{cursor:'pointer'}} /> <Send size={24} style={{cursor:'pointer'}} />
-          </div>
-          <button onClick={() => setActiveTab('privacy')} style={{ background: 'none', border: 'none', color: 'white', textDecoration: 'underline', cursor: 'pointer', fontSize: '14px' }}>
-            {t.privacyTitle}
-          </button>
-          <p style={{ fontSize: '11px', opacity: 0.5, marginTop: '20px' }}>{t.rights}</p>
-        </footer>
+        )}
       </main>
 
-      {/* Navigation Bar */}
-      <div style={{ position: 'fixed', bottom: '20px', left: 0, right: 0, display: 'flex', justifyContent: 'center', zIndex: 1000 }}>
-        <div style={{ width: '90%', maxWidth: '350px', backgroundColor: '#1A1A1A', borderRadius: '40px', padding: '12px', display: 'flex', justifyContent: 'space-around', alignItems: 'center', borderBottom: '4px solid #007AFF', boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }}>
-          <Home size={26} onClick={handleLogoClick} style={{ cursor: 'pointer', color: activeTab === 'home' ? '#007AFF' : 'white' }} />
-          <LayoutGrid size={26} onClick={() => { setActiveTab('home'); setTimeout(() => pricingRef.current?.scrollIntoView({ behavior: 'smooth' }), 100); }} style={{ cursor: 'pointer', color: activeTab === 'prices' ? '#007AFF' : 'white' }} />
-          <Info size={26} onClick={() => setActiveTab('about')} style={{ cursor: 'pointer', color: activeTab === 'about' ? '#007AFF' : 'white' }} />
-          <Bell size={26} color="#444" style={{ opacity: 0.5 }} />
-        </div>
-      </div>
+      {/* Footer Navigation */}
+      <nav style={{ position: 'fixed', bottom: '20px', left: '20px', right: '20px', backgroundColor: '#1A1A1A', padding: '15px', borderRadius: '25px', display: 'flex', justifyContent: 'space-around', alignItems: 'center', zIndex: 1000, boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }}>
+        <button onClick={() => setActiveTab('home')} style={{ background: 'none', border: 'none', color: activeTab === 'home' ? '#2563EB' : '#6C757D', cursor: 'pointer' }}>
+          <Home size={28} />
+        </button>
+        <button onClick={() => setActiveTab('grid')} style={{ background: 'none', border: 'none', color: activeTab === 'grid' ? '#2563EB' : '#6C757D', cursor: 'pointer' }}>
+          <LayoutGrid size={28} />
+        </button>
+        <button onClick={() => setActiveTab('info')} style={{ background: 'none', border: 'none', color: activeTab === 'info' ? '#2563EB' : '#6C757D', cursor: 'pointer' }}>
+          <Info size={28} />
+        </button>
+        <button style={{ background: 'none', border: 'none', color: '#6C757D', cursor: 'pointer' }}>
+          <Bell size={28} />
+        </button>
+      </nav>
     </div>
   );
 }
+
