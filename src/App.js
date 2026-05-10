@@ -16,9 +16,8 @@ export default function GeoDocsApp() {
 
   const googleFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLSeVAyKyk8Wbe1H4y_UutBsRwrDpbsUNpWI7Z3ZeTV4rrP4SQg/viewform?usp=header";
   
-  // აქ ჩაწერეთ თქვენი ლოგოს პირდაპირი ლინკი. 
-  // თუ ფაილი ატვირთული გაქვთ საიტზე, გამოიყენეთ ფაილის სახელი, მაგ: "/logo.png"
-  const logoUrl = "https://geodocsservice.ge/logo.png"; 
+  // თქვენი ატვირთული ლოგოს ზუსტი მისამართი
+  const logoUrl = "/Screenshot_20260326_020239_Facebook.jpg"; 
 
   const translations = {
     GE: {
@@ -36,7 +35,7 @@ export default function GeoDocsApp() {
         { title: "სივის გენერირება ულიმიტოდ", price: "75₾" }
       ],
       aboutTitle: "ჩვენს შესახებ",
-      aboutContent: "Geo Docs Service არის პირველი ქართული სრულად ავტომატიზებული პლატფორმა.",
+      aboutContent: "Geo Docs Service არის პირველი ქართული სრულად ავტომატიზებული პლატფორმა. ჩვენი მიზანია დოკუმენტების მომზადების პროცესის მაქსიმალური გამარტივება ხელოვნური ინტელექტის გამოყენებით.",
       privacyTitle: "კონფიდენციალურობის პოლიტიკა",
       privacyContent: "ჩვენთვის პრიორიტეტულია თქვენი ანონიმურობა. სისტემაში შეყვანილი ინფორმაცია გამოიყენება მხოლოდ დოკუმენტის შესაქმნელად და გენერირებიდან ზუსტად 2 წუთში სრულად იშლება ბაზიდან.",
       rights: "© 2026 GEO DOCS SERVICE. ყველა უფლება დაცულია."
@@ -56,7 +55,7 @@ export default function GeoDocsApp() {
         { title: "Unlimited CV Generation", price: "75₾" }
       ],
       aboutTitle: "About Us",
-      aboutContent: "Geo Docs Service is a fully automated platform.",
+      aboutContent: "Geo Docs Service is a fully automated platform for document generation.",
       privacyTitle: "Privacy Policy",
       privacyContent: "Your data is used only for processing and is permanently deleted within 2 minutes.",
       rights: "© 2026 GEO DOCS SERVICE. All rights reserved."
@@ -90,20 +89,26 @@ export default function GeoDocsApp() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const LogoImage = ({ size }) => (
+    <div style={{ 
+      width: size, height: size, borderRadius: '50%', 
+      display: 'flex', alignItems: 'center', justifyContent: 'center', 
+      overflow: 'hidden', flexShrink: 0, border: '2px solid #FFB800'
+    }}>
+      <img 
+        src={logoUrl} 
+        alt="Logo" 
+        style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+        onError={(e) => { e.target.style.display = 'none'; }}
+      />
+    </div>
+  );
+
   return (
     <div style={{ backgroundColor: '#6D757D', minHeight: '100vh', color: 'white', fontFamily: 'Arial, sans-serif', paddingBottom: '120px', overflowX: 'hidden' }}>
       
       {/* Header */}
       <header style={{ backgroundColor: '#1A1A1A', padding: '15px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'sticky', top: 0, zIndex: 100 }}>
         <div onClick={handleLogoClick} style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
-          <img 
-            src={logoUrl} 
-            alt="Logo" 
-            style={{ width: '35px', height: '35px', borderRadius: '50%', objectFit: 'cover' }} 
-            onError={(e) => { e.target.src = "https://via.placeholder.com/35"; }} // თუ სურათი არ ჩაიტვირთა
-          />
-          <div style={{ fontWeight: '900', fontStyle: 'italic', fontSize: '13px' }}>GEO DOCS SERVICE</div>
-        </div>
-        <div style={{ backgroundColor: '#000', padding: '3px', borderRadius: '8px', display: 'flex', gap: '4px' }}>
-          {['GE', 'EN', 'RU'].map(l => (
-            <button key={l} onClick={() => setLang(l)} style={{ background
+          <LogoImage size={35} />
+          <div style={{ fontWeight: '9
