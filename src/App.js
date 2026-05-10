@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+ import React, { useState, useRef, useEffect } from 'react';
 import { 
   Zap, Home, LayoutGrid, Info, Bell, FileText,
   Instagram, Facebook, Send, ShieldCheck, CheckCircle2 
@@ -14,10 +14,8 @@ export default function GeoDocsApp() {
     window.scrollTo(0, 0);
   }, [activeTab]);
 
-  // Google Form-ის ჩაშენებული ლინკი
-  const embedFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLSeVAyKyk8Wbe1H4y_UutBsRwrDpbsUNpWI7Z3ZeTV4rrP4SQg/viewform?embedded=true";
-  
-  // ლოგოს ლინკი (დარწმუნდი რომ ფაილი ატვირთულია ამ მისამართზე)
+  // შენი ფორმის პირდაპირი ლინკი
+  const googleFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLSeVAyKyk8Wbe1H4y_UutBsRwrDpbsUNpWI7Z3ZeTV4rrP4SQg/viewform?usp=header";
   const logoUrl = "https://geodocsservice.ge/logo.png"; 
 
   const translations = {
@@ -90,6 +88,10 @@ export default function GeoDocsApp() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const openForm = () => {
+    window.open(googleFormUrl, '_blank');
+  };
+
   return (
     <div style={{ backgroundColor: '#6D757D', minHeight: '100vh', color: 'white', fontFamily: 'Arial, sans-serif', paddingBottom: '120px', overflowX: 'hidden' }}>
       
@@ -111,10 +113,9 @@ export default function GeoDocsApp() {
         </div>
       </header>
 
-      <main style={{ padding: activeTab === 'form' ? '0' : '20px' }}>
+      <main style={{ padding: '20px' }}>
         {activeTab === 'home' || activeTab === 'prices' ? (
           <div>
-            {/* Hero Section */}
             <div style={{ textAlign: 'center', marginBottom: '30px' }}>
               <div style={{ backgroundColor: 'rgba(255,255,255,0.15)', padding: '8px 15px', borderRadius: '20px', fontSize: '11px', display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
                 <ShieldCheck size={14} color="#FFB800" /> {t.alert}
@@ -123,27 +124,27 @@ export default function GeoDocsApp() {
             </div>
 
             {/* AI CV Button */}
-            <button onClick={() => setActiveTab('form')} style={{ backgroundColor: '#FFB800', width: '100%', padding: '20px', borderRadius: '20px', border: 'none', fontWeight: '900', fontSize: '20px', cursor: 'pointer', marginBottom: '15px' }}>
+            <button onClick={openForm} style={{ backgroundColor: '#FFB800', width: '100%', padding: '20px', borderRadius: '20px', border: 'none', fontWeight: '900', fontSize: '20px', cursor: 'pointer', marginBottom: '15px' }}>
               <Zap fill="black" size={20} style={{marginRight: '8px'}} /> {t.cvBtn}
             </button>
 
-            {/* Invoice Button (Soon) - Now also leads to form */}
-            <button onClick={() => setActiveTab('form')} style={{ backgroundColor: '#2A2A2A', width: '100%', padding: '20px', borderRadius: '20px', border: '2px dashed #FFB800', color: 'white', fontWeight: 'bold', fontSize: '16px', cursor: 'pointer', marginBottom: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', opacity: 0.9 }}>
+            {/* Invoice Button */}
+            <button onClick={openForm} style={{ backgroundColor: '#2A2A2A', width: '100%', padding: '20px', borderRadius: '20px', border: '2px dashed #FFB800', color: 'white', fontWeight: 'bold', fontSize: '16px', cursor: 'pointer', marginBottom: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', opacity: 0.9 }}>
               <FileText size={20} color="#FFB800" /> {t.invoiceBtn}
             </button>
 
-            {/* Pricing Section */}
+            {/* Prices */}
             <div ref={pricingRef} style={{ paddingTop: '20px', marginBottom: '40px' }}>
               <h2 style={{ fontSize: '24px', fontStyle: 'italic', marginBottom: '20px', color: '#FFB800', fontWeight: '900' }}>{t.pricesTitle}</h2>
               {t.prices.map((p, i) => (
-                <button key={i} onClick={() => setActiveTab('form')} style={{ backgroundColor: '#2A2A2A', width: '100%', padding: '20px', borderRadius: '25px', border: 'none', color: 'white', textAlign: 'left', marginBottom: '12px', cursor: 'pointer' }}>
+                <button key={i} onClick={openForm} style={{ backgroundColor: '#2A2A2A', width: '100%', padding: '20px', borderRadius: '25px', border: 'none', color: 'white', textAlign: 'left', marginBottom: '12px', cursor: 'pointer' }}>
                   <div style={{ fontSize: '14px', opacity: 0.8 }}>{p.title}</div>
                   <div style={{ color: '#FFB800', fontSize: '28px', fontWeight: '900', fontStyle: 'italic' }}>{p.price}</div>
                 </button>
               ))}
             </div>
 
-            {/* Why Us Section */}
+            {/* Why Us */}
             <div style={{ backgroundColor: '#2A2A2A', padding: '25px', borderRadius: '30px', marginBottom: '30px' }}>
               <h3 style={{ color: '#FFB800', fontStyle: 'italic', marginBottom: '20px', fontSize: '18px', fontWeight: '900' }}>{t.whyTitle}</h3>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
@@ -154,18 +155,6 @@ export default function GeoDocsApp() {
                 ))}
               </div>
             </div>
-          </div>
-        ) : activeTab === 'form' ? (
-          <div style={{ width: '100%', height: 'calc(100vh - 150px)', overflow: 'hidden', padding: '0 5px' }}>
-             <iframe 
-               src={embedFormUrl} 
-               width="100%" 
-               height="100%" 
-               frameBorder="0" 
-               marginHeight="0" 
-               marginWidth="0"
-               style={{ borderRadius: '15px', backgroundColor: '#fff' }}
-             >იტვირთება...</iframe>
           </div>
         ) : activeTab === 'about' ? (
           <div style={{ padding: '20px 0', textAlign: 'center' }}>
@@ -185,23 +174,22 @@ export default function GeoDocsApp() {
           </div>
         )}
 
-        {/* Footer (Hidden on form tab to save space) */}
-        {activeTab !== 'form' && (
-          <footer style={{ textAlign: 'center', marginTop: '40px', padding: '20px' }}>
-            <img src={logoUrl} alt="Footer Logo" style={{ width: '50px', marginBottom: '10px', borderRadius: '50%' }} onClick={handleLogoClick} />
-            <h3 style={{ fontStyle: 'italic', fontWeight: '900', fontSize: '18px', cursor: 'pointer' }} onClick={handleLogoClick}>GEO DOCS SERVICE</h3>
-            <div style={{ display: 'flex', justifyContent: 'center', gap: '25px', margin: '20px 0' }}>
-              <Instagram size={24} style={{cursor:'pointer'}} /> <Facebook size={24} style={{cursor:'pointer'}} /> <Send size={24} style={{cursor:'pointer'}} />
-            </div>
-            <button onClick={() => setActiveTab('privacy')} style={{ background: 'none', border: 'none', color: 'white', textDecoration: 'underline', cursor: 'pointer', fontSize: '14px' }}>
-              {t.privacyTitle}
-            </button>
-            <p style={{ fontSize: '11px', opacity: 0.5, marginTop: '20px' }}>{t.rights}</p>
-          </footer>
-        )}
+        {/* Footer */}
+        <footer style={{ textAlign: 'center', marginTop: '40px', padding: '20px' }}>
+          <img src={logoUrl} alt="Footer Logo" style={{ width: '50px', marginBottom: '10px', borderRadius: '50%', cursor: 'pointer' }} onClick={handleLogoClick} />
+          <h3 style={{ fontStyle: 'italic', fontWeight: '900', fontSize: '18px', cursor: 'pointer' }} onClick={handleLogoClick}>GEO DOCS SERVICE</h3>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '25px', margin: '20px 0' }}>
+            <Instagram size={24} style={{cursor:'pointer'}} /> <Facebook size={24} style={{cursor:'pointer'}} /> <Send size={24} style={{cursor:'pointer'}} />
+          </div>
+          {/* Privacy Link on footer */}
+          <button onClick={() => setActiveTab('privacy')} style={{ background: 'none', border: 'none', color: 'white', textDecoration: 'underline', cursor: 'pointer', fontSize: '14px' }}>
+            {t.privacyTitle}
+          </button>
+          <p style={{ fontSize: '11px', opacity: 0.5, marginTop: '20px' }}>{t.rights}</p>
+        </footer>
       </main>
 
-      {/* Navigation Bar */}
+      {/* Navbar */}
       <div style={{ position: 'fixed', bottom: '20px', left: 0, right: 0, display: 'flex', justifyContent: 'center', zIndex: 1000 }}>
         <div style={{ width: '90%', maxWidth: '350px', backgroundColor: '#1A1A1A', borderRadius: '40px', padding: '12px', display: 'flex', justifyContent: 'space-around', alignItems: 'center', borderBottom: '4px solid #007AFF', boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }}>
           <Home size={26} onClick={handleLogoClick} style={{ cursor: 'pointer', color: activeTab === 'home' ? '#007AFF' : 'white' }} />
@@ -213,4 +201,3 @@ export default function GeoDocsApp() {
     </div>
   );
 }
-
