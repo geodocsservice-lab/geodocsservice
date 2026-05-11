@@ -16,7 +16,6 @@ export default function GeoDocsApp() {
   }, [activeTab]);
 
   const googleFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLSeVAyKyk8Wbe1H4y_UutBsRwrDpbsUNpWI7Z3ZeTV4rrP4SQg/viewform?usp=header";
-  // დარწმუნდით, რომ ეს ფაილი არის public ფოლდერში
   const logoUrl = "/Screenshot_20260326_020239_Facebook.jpg"; 
 
   const translations = {
@@ -40,7 +39,7 @@ export default function GeoDocsApp() {
       privacyTitle: "კონფიდენციალურობის პოლიტიკა",
       privacyContent: "ჩვენთვის პრიორიტეტულია თქვენი ანონიმურობა. სისტემაში შეყვანილი ინფორმაცია გამოიყენება მხოლოდ დოკუმენტის შესაქმნელად და გენერირებიდან ზუსტად 2 წუთში სრულად იშლება ბაზიდან. ჩვენ არ ვინახავთ თქვენს პერსონალურ მონაცემებს გრძელვადიანად.",
       rights: "© 2026 GEO DOCS SERVICE. ყველა უფლება დაცულია.",
-      cookieMsg: "ჩვენ ვიყენებთ ქეშ ფაილებს საუკეთესო გამოცდილებისთვის.",
+      cookieMsg: "საიტი იყენებს ქეშ (Cache) ფაილებს მომსახურების გასაუმჯობესებლად.",
       cookieBtn: "ვეთანხმები"
     },
     EN: {
@@ -59,12 +58,12 @@ export default function GeoDocsApp() {
         { title: "Unlimited CV Generation", price: "75₾" }
       ],
       aboutTitle: "About Us",
-      aboutContent: "Geo Docs Service is the first fully automated Georgian platform. Our goal is to simplify document preparation using AI, saving you time and delivering professional results instantly.",
+      aboutContent: "Geo Docs Service is the first fully automated Georgian platform. Our goal is to simplify the document preparation process using artificial intelligence, allowing you to save time and get professional results in seconds.",
       privacyTitle: "Privacy Policy",
-      privacyContent: "Your anonymity is our priority. Information entered is used only for generation and is deleted from the database exactly 2 minutes after processing. We do not store personal data long-term.",
+      privacyContent: "Your anonymity is our priority. Information entered into the system is used only for document generation and is completely deleted from the database exactly 2 minutes after generation. We do not store your personal data long-term.",
       rights: "© 2026 GEO DOCS SERVICE. All rights reserved.",
-      cookieMsg: "We use cache files to improve your experience.",
-      cookieBtn: "Accept"
+      cookieMsg: "We use cache files to ensure the best experience on our website.",
+      cookieBtn: "I Agree"
     },
     RU: {
       sloganPart1: "Не отвлекайтесь ",
@@ -82,16 +81,21 @@ export default function GeoDocsApp() {
         { title: "Безлимитное резюме", price: "75₾" }
       ],
       aboutTitle: "О нас",
-      aboutContent: "Geo Docs Service — первая полностью автоматизированная грузинская платформа. Наша цель — упростить подготовку документов с помощью ИИ, экономя ваше время.",
+      aboutContent: "Geo Docs Service — первая полностью автоматизированная грузинская платформа. Наша цель — максимально упростить процесс подготовки документов с помощью ИИ, экономя ваше время.",
       privacyTitle: "Конфиденциальность",
-      privacyContent: "Ваша анонимность — приоритет. Информация используется только для создания документа и удаляется через 2 минуты. Мы не храним личные данные.",
+      privacyContent: "Ваша анонимность — наш приоритет. Информация, вводимая в систему, используется только для создания документа и полностью удаляется из базы данных через 2 минуты. Мы не храним ваши данные.",
       rights: "© 2026 GEO DOCS SERVICE. Все права защищены.",
-      cookieMsg: "Мы используем кэш для вашего удобства.",
-      cookieBtn: "Согласен"
+      cookieMsg: "Мы используем файлы кэша для улучшения работы сайта.",
+      cookieBtn: "Я согласен"
     }
   };
 
   const t = translations[lang] || translations['GE'];
+
+  const handleLogoClick = () => {
+    setActiveTab('home');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
     <div style={{ backgroundColor: '#6D757D', minHeight: '100vh', color: 'white', fontFamily: 'Arial, sans-serif', paddingBottom: '120px', overflowX: 'hidden' }}>
@@ -108,9 +112,9 @@ export default function GeoDocsApp() {
         left: 0,
         right: 0,
         zIndex: 1000,
-        boxShadow: '0 2px 10px rgba(0,0,0,0.3)'
+        boxShadow: '0 2px 10px rgba(0,0,0,0.5)'
       }}>
-        <div onClick={() => setActiveTab('home')} style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
+        <div onClick={handleLogoClick} style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
           <img 
             src={logoUrl} 
             alt="Logo" 
@@ -126,15 +130,19 @@ export default function GeoDocsApp() {
         </div>
       </header>
 
-      <main style={{ padding: '80px 20px 20px 20px' }}> {/* Margin-top for fixed header */}
+      {/* Spacing for Fixed Header */}
+      <div style={{ height: '70px' }}></div>
+
+      <main style={{ padding: '20px' }}>
         {activeTab === 'home' || activeTab === 'prices' ? (
           <div>
             <div style={{ textAlign: 'center', marginBottom: '30px' }}>
-              <Lock size={24} color="#FFB800" style={{ marginBottom: '10px' }} />
+              <Lock size={30} color="#FFB800" style={{ marginBottom: '10px' }} />
+              <br />
               <div style={{ backgroundColor: 'rgba(255,255,255,0.15)', padding: '8px 15px', borderRadius: '20px', fontSize: '11px', display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
                 <ShieldCheck size={14} color="#FFB800" /> {t.alert}
               </div>
-              <h1 style={{ fontSize: '34px', fontWeight: '900', fontStyle: 'italic', marginTop: '15px', lineHeight: 1.1 }}>
+              <h1 style={{ fontSize: '34px', fontWeight: '900', fontStyle: 'italic', marginTop: '25px', lineHeight: 1.1 }}>
                 <span style={{ color: '#FFB800' }}>{t.sloganPart1}</span>
                 <span style={{ color: 'white' }}>{t.sloganPart2}</span>
               </h1>
@@ -157,13 +165,24 @@ export default function GeoDocsApp() {
                 </button>
               ))}
             </div>
+
+            <div style={{ backgroundColor: '#2A2A2A', padding: '25px', borderRadius: '30px', marginBottom: '30px' }}>
+              <h3 style={{ color: '#FFB800', fontStyle: 'italic', marginBottom: '20px', fontSize: '18px', fontWeight: '900' }}>{t.whyTitle}</h3>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
+                {t.whyItems.map((item, i) => (
+                  <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px' }}>
+                    <CheckCircle2 size={16} color="#007AFF" /> {item}
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         ) : activeTab === 'about' ? (
           <div style={{ padding: '20px 0', textAlign: 'center' }}>
             <div style={{ backgroundColor: '#2A2A2A', padding: '30px', borderRadius: '30px' }}>
               <Info size={40} color="#FFB800" style={{marginBottom: '20px'}} />
               <h2 style={{ fontStyle: 'italic', fontSize: '28px', marginBottom: '20px', fontWeight: '900' }}>{t.aboutTitle}</h2>
-              <p style={{ lineHeight: '1.6', fontSize: '14px', color: '#eee' }}>{t.aboutContent}</p>
+              <p style={{ lineHeight: '1.8', fontSize: '15px', color: '#eee' }}>{t.aboutContent}</p>
             </div>
           </div>
         ) : (
@@ -171,14 +190,16 @@ export default function GeoDocsApp() {
              <div style={{ backgroundColor: '#2A2A2A', padding: '30px', borderRadius: '30px' }}>
               <ShieldCheck size={40} color="#FFB800" style={{marginBottom: '20px'}} />
               <h2 style={{ fontStyle: 'italic', fontSize: '24px', marginBottom: '20px', fontWeight: '900' }}>{t.privacyTitle}</h2>
-              <p style={{ lineHeight: '1.5', fontSize: '12.5px', color: '#eee', textAlign: 'justify' }}>{t.privacyContent}</p>
+              {/* დაპატარავებული შრიფტი კონფიდენციალურობისთვის */}
+              <p style={{ lineHeight: '1.6', fontSize: '12px', color: '#eee', textAlign: 'justify' }}>{t.privacyContent}</p>
             </div>
           </div>
         )}
 
+        {/* Footer */}
         <footer style={{ textAlign: 'center', marginTop: '40px', padding: '20px' }}>
-          <img src={logoUrl} alt="Footer Logo" style={{ width: '50px', marginBottom: '10px', borderRadius: '50%' }} />
-          <h3 style={{ fontStyle: 'italic', fontWeight: '900', fontSize: '18px' }}>GEO DOCS SERVICE</h3>
+          <img src={logoUrl} alt="Footer Logo" style={{ width: '50px', marginBottom: '10px', borderRadius: '50%', cursor: 'pointer' }} onClick={handleLogoClick} />
+          <h3 style={{ fontStyle: 'italic', fontWeight: '900', fontSize: '18px', cursor: 'pointer' }} onClick={handleLogoClick}>GEO DOCS SERVICE</h3>
           <div style={{ display: 'flex', justifyContent: 'center', gap: '25px', margin: '20px 0' }}>
             <Instagram size={24} style={{cursor:'pointer'}} /> <Facebook size={24} style={{cursor:'pointer'}} /> <Send size={24} style={{cursor:'pointer'}} />
           </div>
@@ -189,18 +210,35 @@ export default function GeoDocsApp() {
         </footer>
       </main>
 
-      {/* Cookie/Cache Consent */}
+      {/* Cache/Cookie Consent Banner */}
       {showCookieConsent && (
-        <div style={{ position: 'fixed', bottom: '100px', left: '20px', right: '20px', backgroundColor: '#1A1A1A', padding: '15px', borderRadius: '15px', border: '1px solid #FFB800', display: 'flex', flexDirection: 'column', gap: '10px', zIndex: 2000 }}>
-          <p style={{ fontSize: '12px', margin: 0 }}>{t.cookieMsg}</p>
-          <button onClick={() => setShowCookieConsent(false)} style={{ backgroundColor: '#FFB800', border: 'none', padding: '8px', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer' }}>{t.cookieBtn}</button>
+        <div style={{ 
+          position: 'fixed', 
+          bottom: '100px', 
+          left: '20px', 
+          right: '20px', 
+          backgroundColor: '#1A1A1A', 
+          padding: '15px', 
+          borderRadius: '15px', 
+          border: '1px solid #FFB800', 
+          zIndex: 2000,
+          boxShadow: '0 5px 15px rgba(0,0,0,0.5)',
+          textAlign: 'center'
+        }}>
+          <p style={{ fontSize: '12px', marginBottom: '10px' }}>{t.cookieMsg}</p>
+          <button 
+            onClick={() => setShowCookieConsent(false)} 
+            style={{ backgroundColor: '#FFB800', color: 'black', border: 'none', padding: '8px 20px', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer' }}
+          >
+            {t.cookieBtn}
+          </button>
         </div>
       )}
 
       {/* Navigation Bar */}
       <div style={{ position: 'fixed', bottom: '20px', left: 0, right: 0, display: 'flex', justifyContent: 'center', zIndex: 1000 }}>
         <div style={{ width: '90%', maxWidth: '350px', backgroundColor: '#1A1A1A', borderRadius: '40px', padding: '12px', display: 'flex', justifyContent: 'space-around', alignItems: 'center', borderBottom: '4px solid #007AFF', boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }}>
-          <Home size={26} onClick={() => setActiveTab('home')} style={{ cursor: 'pointer', color: activeTab === 'home' ? '#007AFF' : 'white' }} />
+          <Home size={26} onClick={handleLogoClick} style={{ cursor: 'pointer', color: activeTab === 'home' ? '#007AFF' : 'white' }} />
           <LayoutGrid size={26} onClick={() => { setActiveTab('home'); setTimeout(() => pricingRef.current?.scrollIntoView({ behavior: 'smooth' }), 100); }} style={{ cursor: 'pointer', color: activeTab === 'prices' ? '#007AFF' : 'white' }} />
           <Info size={26} onClick={() => setActiveTab('about')} style={{ cursor: 'pointer', color: activeTab === 'about' ? '#007AFF' : 'white' }} />
           <Bell size={26} color="#444" style={{ opacity: 0.5 }} />
