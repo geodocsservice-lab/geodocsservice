@@ -9,8 +9,6 @@ export default function GeoDocsApp() {
   const [activeTab, setActiveTab] = useState('home');
   const [showCookieConsent, setShowCookieConsent] = useState(true);
   
-  const pricingRef = useRef(null);
-
   const googleFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLSeVAyKyk8Wbe1H4y_UutBsRwrDpbsUNpWI7Z3ZeTV4rrP4SQg/viewform?usp=header";
   const logoUrl = "/Screenshot_20260326_020239_Facebook.jpg"; 
   const robotUrl = "/robot.png";
@@ -23,9 +21,8 @@ export default function GeoDocsApp() {
       pricesTitle: "ტარიფები",
       prices: [{ title: "სივის ქართულად გენერირება", price: "20₾" }, { title: "სივის უცხო ენაზე გენერირება", price: "35₾" }, { title: "სივის გენერირება 5 ენაზე", price: "55₾" }, { title: "სივის გენერირება ულიმიტოდ", price: "75₾" }],
       aboutTitle: "ჩვენს შესახებ",
-      aboutContent: "Geo Docs Service არის პირველი ქართული სრულად ავტომატიზებული პლატფორმა. ჩვენი მიზანია დოკუმენტების მომზადების პროცესის მაქსიმალური გამარტივება ხელოვნური ინტელექტის გამოყენებით.",
+      aboutContent: "Geo Docs Service არის პირველი ქართული სრულად ავტომატიზებული პლატფორმა. ჩვენი მიზანია დოკუმენტების მომზადების პროცესის მაქსიმალური გამარტივება ხელოვნური ინტელექტის გამოყენებით, რაც საშუალებას გაძლევთ დაზოგოთ დრო და მიიღოთ პროფესიონალური შედეგი წამებში.",
       rights: "© 2026 GEO DOCS SERVICE. ყველა უფლება დაცულია.",
-      cookieMsg: "საიტი იყენებს ქეშ ფაილებს მომსახურების გასაუმჯობესებლად.", cookieBtn: "ვეთანხმები",
       profileTitle: "პირადი კაბინეტი"
     },
     EN: {
@@ -35,10 +32,9 @@ export default function GeoDocsApp() {
       pricesTitle: "Pricing",
       prices: [{ title: "CV in Georgian", price: "20₾" }, { title: "CV in Foreign Language", price: "35₾" }, { title: "CV in 5 Languages", price: "55₾" }, { title: "Unlimited CV Generation", price: "75₾" }],
       aboutTitle: "About Us",
-      aboutContent: "Geo Docs Service is the first fully automated Georgian platform. Our goal is to simplify document preparation using AI.",
+      aboutContent: "Geo Docs Service is the first fully automated Georgian platform. Our goal is to completely simplify the document preparation process using artificial intelligence, allowing you to save time and get professional results in seconds.",
       rights: "© 2026 GEO DOCS SERVICE. All rights reserved.",
-      cookieMsg: "We use cache files to ensure the best experience.", cookieBtn: "I Agree",
-      profileTitle: "Profile"
+      profileTitle: "Personal Cabinet"
     },
     RU: {
       sloganPart1: "Не отвлекайтесь ", sloganPart2: "от дел",
@@ -47,9 +43,8 @@ export default function GeoDocsApp() {
       pricesTitle: "Тарифы",
       prices: [{ title: "Резюме на грузинском", price: "20₾" }, { title: "Резюме на ин. языке", price: "35₾" }, { title: "Резюме на 5 языках", price: "55₾" }, { title: "Безлимитное резюме", price: "75₾" }],
       aboutTitle: "О нас",
-      aboutContent: "Geo Docs Service — первая полностью автоматизированная грузинская платформа. Наша цель — упростить процесс подготовки документов с помощью ИИ.",
+      aboutContent: "Geo Docs Service — первая полностью автоматизированная грузинская платформа. Наша цель — максимально упростить процесс подготовки документов с помощью искусственного интеллекта, что позволяет вам экономить время и получать профессиональный результат за считанные секунды.",
       rights: "© 2026 GEO DOCS SERVICE. Все права защищены.",
-      cookieMsg: "Мы используем кэш для улучшения работы сайта.", cookieBtn: "Согласен",
       profileTitle: "Личный кабинет"
     }
   };
@@ -94,18 +89,20 @@ export default function GeoDocsApp() {
           </div>
         )}
         {activeTab === 'about' && (
-          <div style={{ backgroundColor: '#2A2A2A', padding: '30px', borderRadius: '30px', textAlign: 'center' }}>
+          <div style={{ backgroundColor: '#2A2A2A', padding: '30px', borderRadius: '30px', textAlign: 'center', marginTop: '20px' }}>
             <Info size={40} color="#FFB800" style={{marginBottom: '20px'}} />
             <h2 style={{ fontSize: '24px', fontWeight: '900' }}>{t.aboutTitle}</h2>
-            <p style={{ lineHeight: '1.7', fontSize: '14px' }}>{t.aboutContent}</p>
+            <p style={{ lineHeight: '1.7', fontSize: '14px', textAlign: 'center' }}>{t.aboutContent}</p>
           </div>
         )}
         {activeTab === 'profile' && (
-          <div style={{ textAlign: 'center', padding: '40px' }}>
-            <User size={60} color="#FFB800" style={{marginBottom: '20px'}} />
-            <h2>{t.profileTitle}</h2>
+          <div style={{ textAlign: 'center', padding: '40px 20px', marginTop: '20px' }}>
+            <User size={80} color="#FFB800" style={{marginBottom: '20px', margin: '0 auto', display: 'block'}} />
+            <h2 style={{ fontSize: '24px', fontWeight: '900' }}>{t.profileTitle}</h2>
+            <p style={{marginTop: '20px', opacity: 0.7}}>შესვლა და რეგისტრაცია მალე იქნება ხელმისაწვდომი.</p>
           </div>
         )}
+        
         <footer style={{ textAlign: 'center', marginTop: '50px' }}>
           <img src={logoUrl} alt="Logo" style={{ width: '45px', borderRadius: '50%' }} onError={(e) => e.target.style.display = 'none'} />
           <h3 style={{ fontStyle: 'italic', fontWeight: '900' }}>GEO DOCS SERVICE</h3>
@@ -114,7 +111,6 @@ export default function GeoDocsApp() {
         </footer>
       </main>
 
-      {/* Bottom Nav */}
       <div style={{ position: 'fixed', bottom: '20px', left: '7.5%', width: '85%', backgroundColor: '#1A1A1A', borderRadius: '40px', padding: '10px', display: 'flex', justifyContent: 'space-around', alignItems: 'center', borderBottom: '3px solid #007AFF' }}>
         <Home size={24} onClick={() => setActiveTab('home')} color={activeTab === 'home' ? '#007AFF' : 'white'} style={{ cursor: 'pointer' }} />
         <LayoutGrid size={24} onClick={() => setActiveTab('home')} style={{ cursor: 'pointer' }} />
