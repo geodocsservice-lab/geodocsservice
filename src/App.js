@@ -11,7 +11,6 @@ export default function GeoDocsApp() {
   const [lastScrollY, setLastScrollY] = useState(0);
 
   const googleFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLSeVAyKyk8Wbe1H4y_UutBsRwrDpbsUNpWI7Z3ZeTV4rrP4SQg/viewform?usp=header";
-  const logoUrl = "/Screenshot_20260326_020239_Facebook.jpg"; 
   const robotUrl = "/robot.png";
 
   useEffect(() => {
@@ -89,16 +88,23 @@ export default function GeoDocsApp() {
             <button style={{ width: '100%', padding: '15px', background: 'transparent', border: '2px dashed #FFB800', marginTop: '15px', borderRadius: '20px', color: 'white' }}>{t.invoiceBtn}</button>
             
             <h2 style={{ marginTop: '30px', textAlign: 'left' }}>{t.pricesTitle}</h2>
+            {/* აქ ტარიფები გარდაიქმნა ღილაკებად */}
             {t.prices.map((p, i) => (
-              <div key={i} style={{ background: '#2A2A2A', padding: '15px', borderRadius: '15px', marginBottom: '10px', display: 'flex', justifyContent: 'space-between' }}>
-                <span>{p.title}</span> <b style={{ color: '#FFB800' }}>{p.price}</b>
-              </div>
+              <button key={i} onClick={() => window.open(googleFormUrl, '_blank')} style={{ 
+                width: '100%', background: '#2A2A2A', padding: '20px', borderRadius: '20px', 
+                border: '1px solid #444', marginBottom: '10px', color: 'white', 
+                display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' 
+              }}>
+                <span style={{ fontSize: '14px' }}>{p.title}</span> 
+                <b style={{ color: '#FFB800', fontSize: '18px' }}>{p.price}</b>
+              </button>
             ))}
           </div>
         )}
 
+        {/* დანარჩენი სექციები იგივე რჩება */}
         {activeTab === 'profile' && (
-          <div style={{ textAlign: 'center' }}>
+           <div style={{ textAlign: 'center' }}>
             <User size={80} style={{ margin: '20px auto' }} />
             <p>დარეგისტრირდი საიტის სრული ფუნქციონალის გამოსაყენებლად</p>
             <button onClick={() => setActiveTab('login')} style={{ width: '100%', padding: '15px', background: '#007AFF', borderRadius: '15px', border: 'none', color: 'white' }}>{t.loginTitle}</button>
