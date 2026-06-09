@@ -32,7 +32,7 @@ export default function GeoDocsApp() {
     <div style={{ backgroundColor: '#6D757D', minHeight: '100vh', color: 'white', fontFamily: 'Arial, sans-serif', paddingBottom: '100px' }}>
       {/* Header */}
       <header style={{ backgroundColor: '#1A1A1A', padding: '15px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <div style={{ fontWeight: '900', fontStyle: 'italic', fontSize: '16px' }}>GEO DOCS SERVICE</div>
+        <div style={{ fontWeight: '900', fontStyle: 'italic' }}>GEO DOCS SERVICE</div>
         <div style={{ backgroundColor: '#000', borderRadius: '8px', padding: '2px' }}>
           {['GE', 'EN', 'RU'].map(l => (
             <button key={l} onClick={() => setLang(l)} style={{ backgroundColor: lang === l ? '#007AFF' : 'transparent', color: 'white', border: 'none', borderRadius: '6px', padding: '5px 10px', cursor: 'pointer', fontSize: '12px' }}>{l}</button>
@@ -49,7 +49,7 @@ export default function GeoDocsApp() {
             <h1 style={{ margin: '20px 0', fontSize: '24px', fontWeight: 'bold' }}>{t.slogan}</h1>
             <div style={{ width: '120px', height: '120px', backgroundColor: '#555', margin: '20px auto', borderRadius: '50%' }}></div>
             <button style={{ backgroundColor: '#FFB800', border: 'none', padding: '18px', width: '100%', borderRadius: '20px', fontWeight: 'bold', fontSize: '16px', cursor: 'pointer', marginBottom: '10px' }}>{t.cvBtn}</button>
-            <button style={{ backgroundColor: '#2A2A2A', border: '2px dashed #FFB800', padding: '15px', width: '100%', borderRadius: '20px', color: 'white', fontWeight: 'bold' }}>{t.invoiceBtn}</button>
+            <button style={{ backgroundColor: '#2A2A2A', border: '2px dashed #FFB800', padding: '15px', width: '100%', borderRadius: '20px', color: 'white', fontWeight: 'bold', cursor: 'pointer' }}>{t.invoiceBtn}</button>
             
             <h3 style={{ textAlign: 'left', marginTop: '30px' }}>{t.pricesTitle}</h3>
             {t.prices.map((p, i) => (
