@@ -19,11 +19,9 @@ export default function GeoDocsApp() {
       cvBtn: "AI CV 2 წუთში", invoiceBtn: "ინვოისი (მალე)",
       pricesTitle: "ტარიფები",
       aboutTitle: "ჩვენს შესახებ",
-      aboutContent: "Geo Docs Service არის პირველი ქართული სრულად ავტომატიზებული პლატფორმა. ჩვენი მიზანია დოკუმენტების მომზადების პროცესის მაქსიმალური გამარტივება ხელოვნური ინტელექტის გამოყენებით.",
+      aboutContent: "Geo Docs Service არის პირველი ქართული სრულად ავტომატიზებული პლატფორმა. ჩვენი მიზანია დოკუმენტების მომზადების პროცესის მაქსიმალური გამარტივება ხელოვნური ინტელექტის გამოყენებით, რაც საშუალებას გაძლევთ დაზოგოთ დრო და მიიღოთ პროფესიონალური შედეგი წამებში.",
       rights: "© 2026 GEO DOCS SERVICE. ყველა უფლება დაცულია.",
-      profileTitle: "პირადი კაბინეტი",
-      login: "შესვლა",
-      register: "რეგისტრაცია"
+      profileTitle: "პირადი კაბინეტი", login: "შესვლა", register: "რეგისტრაცია"
     },
     EN: {
       sloganPart1: "Stay Focused on ", sloganPart2: "Your Business",
@@ -31,11 +29,9 @@ export default function GeoDocsApp() {
       cvBtn: "AI CV in 2 Minutes", invoiceBtn: "Invoice (Soon)",
       pricesTitle: "Pricing",
       aboutTitle: "About Us",
-      aboutContent: "Geo Docs Service is the first fully automated Georgian platform. Our goal is to simplify document preparation using AI.",
+      aboutContent: "Geo Docs Service is the first fully automated Georgian platform. Our goal is to completely simplify the document preparation process using artificial intelligence, allowing you to save time and get professional results in seconds.",
       rights: "© 2026 GEO DOCS SERVICE. All rights reserved.",
-      profileTitle: "Profile",
-      login: "Login",
-      register: "Register"
+      profileTitle: "Profile", login: "Login", register: "Register"
     },
     RU: {
       sloganPart1: "Не отвлекайтесь ", sloganPart2: "от дел",
@@ -43,11 +39,9 @@ export default function GeoDocsApp() {
       cvBtn: "AI CV за 2 минуты", invoiceBtn: "Инвойс (Скоро)",
       pricesTitle: "Тарифы",
       aboutTitle: "О нас",
-      aboutContent: "Geo Docs Service — первая полностью автоматизированная грузинская платформа. Наша цель — упростить процесс подготовки документов с помощью ИИ.",
+      aboutContent: "Geo Docs Service — первая полностью автоматизированная грузинская платформа. Наша цель — максимально упростить процесс подготовки документов с помощью искусственного интеллекта, что позволяет вам экономить время и получать профессиональный результат за считанные секунды.",
       rights: "© 2026 GEO DOCS SERVICE. Все права защищены.",
-      profileTitle: "Личный кабинет",
-      login: "Вход",
-      register: "Регистрация"
+      profileTitle: "Личный кабинет", login: "Вход", register: "Регистрация"
     }
   };
 
@@ -70,24 +64,40 @@ export default function GeoDocsApp() {
       <div style={{ height: '80px' }}></div>
 
       <main style={{ padding: '0 20px' }}>
-        {activeTab === 'profile' ? (
+        {activeTab === 'home' && (
+          <div style={{ textAlign: 'center' }}>
+            <div style={{ backgroundColor: 'rgba(255,255,255,0.15)', padding: '8px 15px', borderRadius: '20px', fontSize: '11px', display: 'inline-flex', alignItems: 'center', gap: '5px', marginTop: '10px' }}>
+              <ShieldCheck size={14} color="#FFB800" /> {t.alert}
+            </div>
+            <h1 style={{ fontSize: '32px', fontWeight: '900', fontStyle: 'italic', marginTop: '25px' }}><span style={{ color: '#FFB800' }}>{t.sloganPart1}</span>{t.sloganPart2}</h1>
+            <img src={robotUrl} alt="AI" style={{ width: '260px', margin: '25px 0' }} onError={(e) => e.target.style.display = 'none'} />
+            <button onClick={() => window.open(googleFormUrl, '_blank')} style={{ backgroundColor: '#FFB800', width: '100%', padding: '20px', borderRadius: '20px', border: 'none', fontWeight: '900', fontSize: '19px', cursor: 'pointer', marginBottom: '15px' }}>{t.cvBtn}</button>
+          </div>
+        )}
+
+        {activeTab === 'about' && (
+          <div style={{ backgroundColor: '#2A2A2A', padding: '30px', borderRadius: '30px', textAlign: 'center', marginTop: '20px' }}>
+            <Info size={40} color="#FFB800" style={{marginBottom: '20px'}} />
+            <h2 style={{ fontSize: '24px', fontWeight: '900' }}>{t.aboutTitle}</h2>
+            <p style={{ lineHeight: '1.7', fontSize: '14px', textAlign: 'center' }}>{t.aboutContent}</p>
+          </div>
+        )}
+
+        {activeTab === 'profile' && (
           <div style={{ textAlign: 'center', padding: '40px 20px', marginTop: '20px' }}>
             <User size={80} color="#FFB800" style={{marginBottom: '20px', margin: '0 auto', display: 'block'}} />
             <h2 style={{ fontSize: '24px', fontWeight: '900', marginBottom: '30px' }}>{t.profileTitle}</h2>
-            
-            <button style={{ width: '100%', padding: '18px', borderRadius: '15px', border: 'none', backgroundColor: '#007AFF', color: 'white', fontSize: '16px', fontWeight: 'bold', marginBottom: '15px', cursor: 'pointer' }}>
-              {t.login}
-            </button>
-            <button style={{ width: '100%', padding: '18px', borderRadius: '15px', border: '2px solid white', backgroundColor: 'transparent', color: 'white', fontSize: '16px', fontWeight: 'bold', cursor: 'pointer' }}>
-              {t.register}
-            </button>
-          </div>
-        ) : (
-          /* აქ დარჩენილია შენი დანარჩენი გვერდების ლოგიკა */
-          <div style={{ textAlign: 'center', marginTop: '50px' }}>
-            <h2>Content for {activeTab}</h2>
+            <button style={{ width: '100%', padding: '18px', borderRadius: '15px', border: 'none', backgroundColor: '#007AFF', color: 'white', fontSize: '16px', fontWeight: 'bold', marginBottom: '15px', cursor: 'pointer' }}>{t.login}</button>
+            <button style={{ width: '100%', padding: '18px', borderRadius: '15px', border: '2px solid white', backgroundColor: 'transparent', color: 'white', fontSize: '16px', fontWeight: 'bold', cursor: 'pointer' }}>{t.register}</button>
           </div>
         )}
+
+        <footer style={{ textAlign: 'center', marginTop: '50px' }}>
+          <img src={logoUrl} alt="Logo" style={{ width: '45px', borderRadius: '50%' }} onError={(e) => e.target.style.display = 'none'} />
+          <h3 style={{ fontStyle: 'italic', fontWeight: '900' }}>GEO DOCS SERVICE</h3>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', margin: '15px 0' }}><Instagram size={22} /><Facebook size={22} /><Send size={22} /></div>
+          <p style={{ fontSize: '11px', opacity: 0.5 }}>{t.rights}</p>
+        </footer>
       </main>
 
       <div style={{ position: 'fixed', bottom: '20px', left: '7.5%', width: '85%', backgroundColor: '#1A1A1A', borderRadius: '40px', padding: '10px', display: 'flex', justifyContent: 'space-around', alignItems: 'center', borderBottom: '3px solid #007AFF' }}>
