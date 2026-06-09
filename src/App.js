@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { 
   Zap, Home, LayoutGrid, Info, Bell, FileText,
-  Instagram, Facebook, Send, ShieldCheck, Lock 
+  Instagram, Facebook, Send, ShieldCheck
 } from 'lucide-react';
 
 export default function GeoDocsApp() {
@@ -17,6 +17,7 @@ export default function GeoDocsApp() {
 
   const googleFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLSeVAyKyk8Wbe1H4y_UutBsRwrDpbsUNpWI7Z3ZeTV4rrP4SQg/viewform?usp=header";
   const logoUrl = "/Screenshot_20260326_020239_Facebook.jpg"; 
+  const robotUrl = "/robot.png"; // აქ უკვე წერია .png რობოტისთვის
 
   const translations = {
     GE: {
@@ -58,9 +59,9 @@ export default function GeoDocsApp() {
         { title: "Unlimited CV Generation", price: "75₾" }
       ],
       aboutTitle: "About Us",
-      aboutContent: "Geo Docs Service is the first fully automated Georgian platform. Our goal is to simplify the document preparation process using AI.",
+      aboutContent: "Geo Docs Service is the first fully automated Georgian platform. Our goal is to completely simplify the document preparation process using artificial intelligence, allowing you to save time and get professional results in seconds.",
       privacyTitle: "Privacy Policy",
-      privacyContent: "Anonymity is our priority. Information entered is used only for generation and is deleted from the database exactly 2 minutes after processing. We do not store personal data long-term.",
+      privacyContent: "Your anonymity is our priority. Information entered into the system is used solely for document creation and is completely deleted from the database exactly 2 minutes after generation. We do not store your personal data long-term.",
       rights: "© 2026 GEO DOCS SERVICE. All rights reserved.",
       cookieMsg: "We use cache files to ensure the best experience.",
       cookieBtn: "I Agree"
@@ -81,9 +82,9 @@ export default function GeoDocsApp() {
         { title: "Безлимитное резюме", price: "75₾" }
       ],
       aboutTitle: "О нас",
-      aboutContent: "Geo Docs Service — первая полностью автоматизированная грузинская платформа.",
+      aboutContent: "Geo Docs Service — первая полностью автоматизированная грузинская платформа. Наша цель — максимально упростить процесс подготовки документов с помощью искусственного интеллекта, что позволяет вам экономить время и получать профессиональный результат за считанные секунды.",
       privacyTitle: "Конфиденциальность",
-      privacyContent: "Ваша анонимность — приоритет. Информация используется только для создания документа и удаляется через 2 минуты.",
+      privacyContent: "Ваша анонимность — наш приоритет. Информация, введенная в систему, используется только для создания документа и полностью удаляется из базы данных ровно через 2 минуты после генерации. Мы не храним ваши персональные данные в долгосрочной перспективе.",
       rights: "© 2026 GEO DOCS SERVICE. Все права защищены.",
       cookieMsg: "Мы используем кэш для улучшения работы сайта.",
       cookieBtn: "Согласен"
@@ -95,7 +96,7 @@ export default function GeoDocsApp() {
   return (
     <div style={{ backgroundColor: '#6D757D', minHeight: '100vh', color: 'white', fontFamily: 'Arial, sans-serif', paddingBottom: '120px', overflowX: 'hidden' }}>
       
-      {/* Header - Clean style without simulated lock bar */}
+      {/* Header - სუფთა დიზაინი ხელოვნური ბოქლომის გარეშე */}
       <header style={{ 
         backgroundColor: '#1A1A1A', 
         padding: '12px 15px', 
@@ -134,7 +135,7 @@ export default function GeoDocsApp() {
       <main style={{ padding: '0 20px' }}>
         {activeTab === 'home' || activeTab === 'prices' ? (
           <div>
-            <div style={{ textAlign: 'center', marginBottom: '30px' }}>
+            <div style={{ textAlign: 'center', marginBottom: '25px' }}>
               <div style={{ backgroundColor: 'rgba(255,255,255,0.15)', padding: '8px 15px', borderRadius: '20px', fontSize: '11px', display: 'inline-flex', alignItems: 'center', gap: '5px', marginTop: '10px' }}>
                 <ShieldCheck size={14} color="#FFB800" /> {t.alert}
               </div>
@@ -142,6 +143,16 @@ export default function GeoDocsApp() {
                 <span style={{ color: '#FFB800' }}>{t.sloganPart1}</span>
                 <span style={{ color: 'white' }}>{t.sloganPart2}</span>
               </h1>
+            </div>
+
+            {/* რობოტი ბიჭუნას სურათი სლოგანის ბოლოში */}
+            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '25px' }}>
+              <img 
+                src={robotUrl} 
+                alt="AI Robot" 
+                style={{ width: '160px', height: '160px', objectFit: 'contain' }}
+                onError={(e) => { e.target.style.display = 'none'; }}
+              />
             </div>
 
             <button onClick={() => window.open(googleFormUrl, '_blank')} style={{ backgroundColor: '#FFB800', width: '100%', padding: '20px', borderRadius: '20px', border: 'none', fontWeight: '900', fontSize: '19px', cursor: 'pointer', marginBottom: '15px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', color: 'black' }}>
@@ -167,7 +178,7 @@ export default function GeoDocsApp() {
             <div style={{ backgroundColor: '#2A2A2A', padding: '30px', borderRadius: '30px', textAlign: 'center' }}>
               <Info size={40} color="#FFB800" style={{marginBottom: '20px'}} />
               <h2 style={{ fontStyle: 'italic', fontSize: '24px', marginBottom: '20px', fontWeight: '900' }}>{t.aboutTitle}</h2>
-              <p style={{ lineHeight: '1.7', fontSize: '14px', color: '#eee' }}>{t.aboutContent}</p>
+              <p style={{ lineHeight: '1.7', fontSize: '14px', color: '#eee', textAlign: 'center' }}>{t.aboutContent}</p>
             </div>
           </div>
         ) : (
