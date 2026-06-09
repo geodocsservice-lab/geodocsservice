@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { 
-  Zap, Home, LayoutGrid, Info, User, FileText, Bell, ShieldCheck
+  Zap, Home, LayoutGrid, Info, User, FileText, Bell, ShieldCheck, Instagram, Facebook, Send
 } from 'lucide-react';
 
 export default function GeoDocsApp() {
@@ -18,24 +18,23 @@ export default function GeoDocsApp() {
   const logoUrl = "/Screenshot_20260326_020239_Facebook.jpg"; 
   const robotUrl = "/robot.png";
 
-  const t = {
+  const translations = {
     GE: {
       sloganPart1: "ნუ მოწყდები ", sloganPart2: "შენს საქმეს",
       alert: "პერსონალური ინფორმაცია იშლება ავტომატურად 2 წუთში!",
       cvBtn: "AI CV 2 წუთში", invoiceBtn: "ინვოისი (მალე)",
-      login: "შესვლა და რეგისტრაცია", loginBtn: "შესვლა", regBtn: "რეგისტრაცია"
+      pricesTitle: "ტარიფები", aboutTitle: "ჩვენს შესახებ",
+      login: "შესვლა და რეგისტრაცია", loginBtn: "შესვლა", regBtn: "რეგისტრაცია",
+      aboutContent: "Geo Docs Service არის პირველი ქართული სრულად ავტომატიზებული პლატფორმა...",
+      rights: "© 2026 GEO DOCS SERVICE. ყველა უფლება დაცულია."
     }
-  }[lang] || {
-    sloganPart1: "ნუ მოწყდები ", sloganPart2: "შენს საქმეს",
-    alert: "პერსონალური ინფორმაცია იშლება ავტომატურად 2 წუთში!",
-    cvBtn: "AI CV 2 წუთში", invoiceBtn: "ინვოისი (მალე)",
-    login: "შესვლა და რეგისტრაცია", loginBtn: "შესვლა", regBtn: "რეგისტრაცია"
   };
+
+  const t = translations[lang] || translations['GE'];
 
   return (
     <div style={{ backgroundColor: '#6D757D', minHeight: '100vh', color: 'white', fontFamily: 'Arial, sans-serif', paddingBottom: '120px' }}>
       
-      {/* Header */}
       <header style={{ backgroundColor: '#1A1A1A', padding: '15px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000 }}>
         <div onClick={() => setActiveTab('home')} style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
           <img src={logoUrl} alt="Logo" style={{ width: '32px', height: '32px', borderRadius: '50%' }} onError={(e) => e.target.style.display = 'none'}/>
@@ -71,7 +70,7 @@ export default function GeoDocsApp() {
               {t.cvBtn}
             </button>
 
-            <button style={{ backgroundColor: '#2A2A2A', width: '100%', padding: '20px', borderRadius: '20px', border: '2px dashed #FFB800', color: 'white', fontWeight: 'bold', fontSize: '16px', opacity: 0.9 }}>
+            <button style={{ backgroundColor: '#2A2A2A', width: '100%', padding: '20px', borderRadius: '20px', border: '2px dashed #FFB800', color: 'white', fontWeight: 'bold', fontSize: '16px', marginBottom: '40px' }}>
               {t.invoiceBtn}
             </button>
           </div>
@@ -82,10 +81,14 @@ export default function GeoDocsApp() {
                 <button style={{ backgroundColor: '#007AFF', width: '100%', padding: '15px', borderRadius: '15px', border: 'none', color: 'white', marginBottom: '10px' }}>{t.loginBtn}</button>
                 <button style={{ backgroundColor: 'transparent', width: '100%', padding: '15px', borderRadius: '15px', border: '1px solid #FFB800', color: '#FFB800' }}>{t.regBtn}</button>
             </div>
+        ) : activeTab === 'about' ? (
+            <div style={{ padding: '20px', textAlign: 'center' }}>
+                <h2>{t.aboutTitle}</h2>
+                <p>{t.aboutContent}</p>
+            </div>
         ) : null}
       </main>
 
-      {/* Bottom Nav */}
       <div style={{ position: 'fixed', bottom: '20px', left: 0, right: 0, display: 'flex', justifyContent: 'center', zIndex: 1000 }}>
         <div style={{ width: '90%', maxWidth: '380px', backgroundColor: '#1A1A1A', borderRadius: '40px', padding: '12px', display: 'flex', justifyContent: 'space-around', alignItems: 'center', borderBottom: '3px solid #007AFF', boxShadow: '0 10px 30px rgba(0,0,0,0.6)' }}>
           <Home size={22} onClick={() => setActiveTab('home')} color={activeTab === 'home' ? '#007AFF' : 'white'} />
