@@ -7,13 +7,22 @@ import {
 export default function GeoDocsApp() {
   const [lang, setLang] = useState('GE');
   const [activeTab, setActiveTab] = useState('home');
-  const [showCookieConsent, setShowCookieConsent] = useState(true);
+  const [showCookieConsent, setShowCookieConsent] = useState(false);
   
   const pricingRef = useRef(null);
 
   useEffect(() => {
+    // ქუქების შემოწმება (თუ უკვე დათანხმდა, არ აჩვენოს)
+    if (!localStorage.getItem('cookiesAccepted')) {
+      setShowCookieConsent(true);
+    }
     window.scrollTo(0, 0);
   }, [activeTab]);
+
+  const handleCookieAccept = () => {
+    localStorage.setItem('cookiesAccepted', 'true');
+    setShowCookieConsent(false);
+  };
 
   const googleFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLSeVAyKyk8Wbe1H4y_UutBsRwrDpbsUNpWI7Z3ZeTV4rrP4SQg/viewform?usp=header";
   const logoUrl = "/Screenshot_20260326_020239_Facebook.jpg"; 
@@ -24,110 +33,90 @@ export default function GeoDocsApp() {
       sloganPart1: "ნუ მოწყდები ", sloganPart2: "შენს საქმეს",
       alert: "ინფორმაცია იშლება ავტომატურად 2 წუთში!",
       cvBtn: "AI CV 2 წუთში", invoiceBtn: "ინვოისი (მალე)",
-      whyTitle: "რატომ ჩვენ?", whyItems: ["სწრაფი გენერირება (2 წთ)", "მრავალენოვანი მხარდაჭერა", "მაქსიმალური სიზუსტე AI-თ", "სრული ანონიმურობა"],
-      pricesTitle: "ტარიფები",
-      prices: [
-        { title: "სივის ქართულად გენერირება", price: "20₾" },
-        { title: "სივის უცხო ენაზე გენერირება", price: "35₾" },
-        { title: "სივის გენერირება 5 ენაზე", price: "55₾" },
-        { title: "სივის გენერირება ულიმიტოდ", price: "75₾" }
-      ],
-      aboutTitle: "ჩვენს შესახებ",
-      aboutContent: "Geo Docs Service არის პირველი ქართული სრულად ავტომატიზებული პლატფორმა. ჩვენი მიზანია დოკუმენტების მომზადების პროცესის მაქსიმალური გამარტივება ხელოვნური ინტელექტის გამოყენებით.",
-      privacyTitle: "კონფიდენციალურობის პოლიტიკა",
-      privacyContent: "ჩვენთვის პრიორიტეტულია თქვენი ანონიმურობა. ინფორმაცია იშლება 2 წუთში.",
+      pricesTitle: "ტარიფები", aboutTitle: "ჩვენს შესახებ",
+      aboutContent: "Geo Docs Service არის პირველი ქართული სრულად ავტომატიზებული პლატფორმა.",
+      login: "შესვლა და რეგისტრაცია", loginBtn: "შესვლა", regBtn: "რეგისტრაცია",
+      privacyTitle: "კონფიდენციალურობა",
+      privacyContent: "ჩვენთვის პრიორიტეტულია თქვენი ანონიმურობა. მონაცემები იშლება 2 წუთში.",
       rights: "© 2026 GEO DOCS SERVICE. ყველა უფლება დაცულია.",
-      cookieMsg: "საიტი იყენებს ქეშ (Cache) ფაილებს.", cookieBtn: "ვეთანხმები",
-      login: "შესვლა და რეგისტრაცია", loginBtn: "შესვლა", regBtn: "რეგისტრაცია"
+      cookieMsg: "საიტი იყენებს ქეშ ფაილებს.", cookieBtn: "ვეთანხმები"
+    },
+    EN: {
+      sloganPart1: "Stay Focused on ", sloganPart2: "Your Business",
+      alert: "Data is auto-deleted in 2 minutes!",
+      cvBtn: "AI CV in 2 Minutes", invoiceBtn: "Invoice (Soon)",
+      pricesTitle: "Pricing", aboutTitle: "About Us",
+      aboutContent: "Geo Docs Service is the first fully automated Georgian platform.",
+      login: "Login & Register", loginBtn: "Login", regBtn: "Register",
+      privacyTitle: "Privacy Policy",
+      privacyContent: "Your anonymity is our priority. Data is deleted in 2 minutes.",
+      rights: "© 2026 GEO DOCS SERVICE. All rights reserved.",
+      cookieMsg: "We use cache files for better experience.", cookieBtn: "I Agree"
+    },
+    RU: {
+      sloganPart1: "Не отвлекайтесь ", sloganPart2: "от дел",
+      alert: "Данные удаляются через 2 минуты!",
+      cvBtn: "AI CV за 2 минуты", invoiceBtn: "Инвойс (Скоро)",
+      pricesTitle: "Тарифы", aboutTitle: "О нас",
+      aboutContent: "Geo Docs Service — первая полностью автоматизированная грузинская платформа.",
+      login: "Вход и Регистрация", loginBtn: "Войти", regBtn: "Регистрация",
+      privacyTitle: "Конфиденциальность",
+      privacyContent: "Ваша анонимность — приоритет. Данные удаляются через 2 минуты.",
+      rights: "© 2026 GEO DOCS SERVICE. Все права защищены.",
+      cookieMsg: "Мы используем кэш для улучшения работы.", cookieBtn: "Согласен"
     }
   };
 
-  const t = translations[lang] || translations['GE'];
+  const t = translations[lang];
 
   return (
-    <div style={{ backgroundColor: '#6D757D', minHeight: '100vh', color: 'white', fontFamily: 'Arial, sans-serif', paddingBottom: '120px', overflowX: 'hidden' }}>
+    <div style={{ backgroundColor: '#6D757D', minHeight: '100vh', color: 'white', fontFamily: 'Arial, sans-serif', paddingBottom: '120px' }}>
       
-      <header style={{ backgroundColor: '#1A1A1A', padding: '12px 15px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000, boxShadow: '0 2px 10px rgba(0,0,0,0.5)' }}>
-        <div onClick={() => setActiveTab('home')} style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
-          <img src={logoUrl} alt="Logo" style={{ width: '32px', height: '32px', borderRadius: '50%', objectFit: 'cover' }} onError={(e) => { e.target.style.display = 'none'; }} />
-          <div style={{ fontWeight: '900', fontStyle: 'italic', fontSize: '15px' }}>GEO DOCS SERVICE</div>
+      <header style={{ backgroundColor: '#1A1A1A', padding: '12px 15px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000 }}>
+        <div onClick={() => setActiveTab('home')} style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+          <img src={logoUrl} alt="Logo" style={{ width: '32px', height: '32px', borderRadius: '50%' }} />
+          <div style={{ fontSize: '12px', fontWeight: 'bold' }}>GEO DOCS</div>
+        </div>
+        <div style={{ display: 'flex', gap: '5px' }}>
+          {['GE', 'EN', 'RU'].map(l => (
+            <button key={l} onClick={() => setLang(l)} style={{ background: lang === l ? '#007AFF' : '#333', color: 'white', border: 'none', padding: '4px 8px', borderRadius: '5px', fontSize: '10px', cursor: 'pointer' }}>{l}</button>
+          ))}
         </div>
       </header>
 
       <div style={{ height: '80px' }}></div>
 
       <main style={{ padding: '0 20px' }}>
-        {activeTab === 'home' || activeTab === 'prices' ? (
+        {activeTab === 'home' && (
           <div>
-            <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-              <div style={{ backgroundColor: 'rgba(255,255,255,0.15)', padding: '8px 15px', borderRadius: '20px', fontSize: '11px', display: 'inline-flex', alignItems: 'center', gap: '5px', marginTop: '10px' }}>
-                <ShieldCheck size={14} color="#FFB800" /> {t.alert}
-              </div>
-              <h1 style={{ fontSize: '32px', fontWeight: '900', fontStyle: 'italic', marginTop: '25px', lineHeight: 1.1 }}>
-                <span style={{ color: '#FFB800' }}>{t.sloganPart1}</span>{t.sloganPart2}
-              </h1>
-            </div>
-
-            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '25px' }}>
-              <img src={robotUrl} alt="Robot" style={{ width: '260px', height: 'auto' }} />
-            </div>
-
-            <button onClick={() => window.open(googleFormUrl, '_blank')} style={{ backgroundColor: '#FFB800', width: '100%', padding: '20px', borderRadius: '20px', border: 'none', fontWeight: '900', fontSize: '19px', cursor: 'pointer', marginBottom: '15px' }}>{t.cvBtn}</button>
-            <button onClick={() => window.open(googleFormUrl, '_blank')} style={{ backgroundColor: '#2A2A2A', width: '100%', padding: '20px', borderRadius: '20px', border: '2px dashed #FFB800', color: 'white', fontWeight: 'bold', fontSize: '16px', marginBottom: '40px' }}>{t.invoiceBtn}</button>
-
-            <div ref={pricingRef} style={{ marginBottom: '40px' }}>
-              <h2 style={{ fontSize: '22px', fontStyle: 'italic', marginBottom: '20px', color: '#FFB800', fontWeight: '900' }}>{t.pricesTitle}</h2>
-              {t.prices.map((p, i) => (
-                <button key={i} onClick={() => window.open(googleFormUrl, '_blank')} style={{ backgroundColor: '#2A2A2A', width: '100%', padding: '20px', borderRadius: '25px', border: 'none', color: 'white', textAlign: 'left', marginBottom: '12px', cursor: 'pointer' }}>
-                  <div style={{ opacity: 0.8 }}>{p.title}</div>
-                  <div style={{ color: '#FFB800', fontSize: '26px', fontWeight: '900' }}>{p.price}</div>
-                </button>
-              ))}
-            </div>
-          </div>
-        ) : activeTab === 'profile' ? (
-          <div style={{ padding: '40px 20px', textAlign: 'center', backgroundColor: '#2A2A2A', borderRadius: '30px', marginTop: '20px' }}>
-            <User size={60} color="#FFB800" style={{ marginBottom: '20px' }} />
-            <h2 style={{ fontStyle: 'italic', marginBottom: '20px' }}>{t.login}</h2>
-            <button style={{ backgroundColor: '#007AFF', width: '100%', padding: '15px', borderRadius: '15px', border: 'none', color: 'white', marginBottom: '10px' }}>{t.loginBtn}</button>
-            <button style={{ backgroundColor: 'transparent', width: '100%', padding: '15px', borderRadius: '15px', border: '1px solid #FFB800', color: '#FFB800' }}>{t.regBtn}</button>
-          </div>
-        ) : (
-          <div style={{ padding: '20px 0' }}>
-            <div style={{ backgroundColor: '#2A2A2A', padding: '30px', borderRadius: '30px', textAlign: 'center' }}>
-              <Info size={40} color="#FFB800" style={{marginBottom: '20px'}} />
-              <h2 style={{ fontStyle: 'italic', fontSize: '24px', fontWeight: '900' }}>{t.aboutTitle}</h2>
-              <p>{t.aboutContent}</p>
-            </div>
+            <h1 style={{ textAlign: 'center', fontSize: '28px' }}>{t.sloganPart1}<span style={{color: '#FFB800'}}>{t.sloganPart2}</span></h1>
+            <img src={robotUrl} alt="Robot" style={{ width: '180px', display: 'block', margin: '20px auto' }} />
+            <button onClick={() => window.open(googleFormUrl, '_blank')} style={{ width: '100%', padding: '15px', backgroundColor: '#FFB800', border: 'none', borderRadius: '20px', fontWeight: 'bold' }}>{t.cvBtn}</button>
           </div>
         )}
-
-        <footer style={{ textAlign: 'center', marginTop: '30px', padding: '20px' }}>
-          <img src={logoUrl} alt="Logo" style={{ width: '45px', borderRadius: '50%' }} onError={(e) => e.target.style.display='none'}/>
-          <h3 style={{ fontStyle: 'italic', fontWeight: '900', fontSize: '16px', marginTop: '10px' }}>GEO DOCS SERVICE</h3>
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '25px', margin: '20px 0' }}>
-            <Instagram size={22} /> <Facebook size={22} /> <Send size={22} />
+        {activeTab === 'profile' && (
+          <div style={{ textAlign: 'center', padding: '40px' }}>
+            <User size={60} color="#FFB800" />
+            <h2>{t.login}</h2>
+            <button style={{ width: '100%', padding: '10px', marginTop: '10px' }}>{t.loginBtn}</button>
           </div>
-          <p style={{ fontSize: '11px', opacity: 0.5 }}>{t.rights}</p>
-        </footer>
+        )}
       </main>
 
       {showCookieConsent && (
-        <div style={{ position: 'fixed', bottom: '100px', left: '20px', right: '20px', backgroundColor: '#1A1A1A', padding: '15px', borderRadius: '15px', border: '1px solid #FFB800', zIndex: 2000, textAlign: 'center' }}>
-          <p style={{ fontSize: '11px', marginBottom: '10px', color: '#eee' }}>{t.cookieMsg}</p>
-          <button onClick={() => setShowCookieConsent(false)} style={{ backgroundColor: '#FFB800', color: 'black', border: 'none', padding: '6px 20px', borderRadius: '8px', fontWeight: 'bold' }}>{t.cookieBtn}</button>
+        <div style={{ position: 'fixed', bottom: '100px', padding: '10px', backgroundColor: '#333', textAlign: 'center', margin: '0 20px', borderRadius: '15px' }}>
+          <p style={{fontSize: '12px'}}>{t.cookieMsg}</p>
+          <button onClick={handleCookieAccept} style={{ padding: '5px 15px' }}>{t.cookieBtn}</button>
         </div>
       )}
 
-      <div style={{ position: 'fixed', bottom: '20px', left: 0, right: 0, display: 'flex', justifyContent: 'center', zIndex: 1000 }}>
-        <div style={{ width: '85%', maxWidth: '340px', backgroundColor: '#1A1A1A', borderRadius: '40px', padding: '10px', display: 'flex', justifyContent: 'space-around', alignItems: 'center', borderBottom: '3px solid #007AFF', boxShadow: '0 10px 30px rgba(0,0,0,0.6)' }}>
-          <Home size={24} onClick={() => setActiveTab('home')} color={activeTab === 'home' ? '#007AFF' : 'white'} style={{ cursor: 'pointer' }} />
-          <LayoutGrid size={24} onClick={() => { setActiveTab('home'); setTimeout(() => pricingRef.current?.scrollIntoView({ behavior: 'smooth' }), 100); }} color={activeTab === 'prices' ? '#007AFF' : 'white'} style={{ cursor: 'pointer' }} />
-          <Info size={24} onClick={() => setActiveTab('about')} color={activeTab === 'about' ? '#007AFF' : 'white'} style={{ cursor: 'pointer' }} />
-          <User size={24} onClick={() => setActiveTab('profile')} color={activeTab === 'profile' ? '#007AFF' : 'white'} style={{ cursor: 'pointer' }} />
-        </div>
+      {/* Bottom Nav - მცოცავი და ზარის იკონკით */}
+      <div style={{ position: 'fixed', bottom: '20px', left: '5%', width: '90%', backgroundColor: '#1A1A1A', padding: '15px', borderRadius: '40px', display: 'flex', justifyContent: 'space-around', zIndex: 1000 }}>
+        <Home size={24} onClick={() => setActiveTab('home')} color={activeTab === 'home' ? '#007AFF' : 'white'} />
+        <Info size={24} onClick={() => setActiveTab('about')} color={activeTab === 'about' ? '#007AFF' : 'white'} />
+        <Bell size={24} color="white" />
+        <User size={24} onClick={() => setActiveTab('profile')} color={activeTab === 'profile' ? '#007AFF' : 'white'} />
       </div>
     </div>
   );
 }
-
