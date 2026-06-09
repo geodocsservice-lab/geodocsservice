@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Zap, Home, LayoutGrid, Info, FileText,
   Instagram, Facebook, Send, ShieldCheck, User 
@@ -11,8 +11,9 @@ export default function GeoDocsApp() {
   const [lastScrollY, setLastScrollY] = useState(0);
 
   const googleFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLSeVAyKyk8Wbe1H4y_UutBsRwrDpbsUNpWI7Z3ZeTV4rrP4SQg/viewform?usp=header";
-  const robotUrl = "/robot.png";
+  const robotUrl = "/robot.png"; // დარწმუნდით, რომ ფაილი არსებობს
 
+  // სქროლის ლოგიკა მენიუსთვის
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
@@ -38,7 +39,8 @@ export default function GeoDocsApp() {
       aboutContent: "Geo Docs Service არის პირველი ქართული სრულად ავტომატიზებული პლატფორმა.",
       loginTitle: "შესვლა", registerTitle: "რეგისტრაცია",
       regFields: ["სახელი", "გვარი", "ელ-ფოსტა", "ტელეფონის ნომერი"],
-      rights: "© 2026 GEO DOCS SERVICE."
+      profileHint: "დარეგისტრირდი საიტის სრული ფუნქციონალის გამოსაყენებლად",
+      rights: "© 2026 GEO DOCS SERVICE. ყველა უფლება დაცულია."
     },
     EN: {
       sloganPart1: "Stay Focused on ", sloganPart2: "Your Business",
@@ -50,7 +52,8 @@ export default function GeoDocsApp() {
       aboutContent: "Geo Docs Service is the first fully automated Georgian platform.",
       loginTitle: "Login", registerTitle: "Registration",
       regFields: ["First Name", "Last Name", "Email", "Phone Number"],
-      rights: "© 2026 GEO DOCS SERVICE."
+      profileHint: "Register to use the full functionality of the site",
+      rights: "© 2026 GEO DOCS SERVICE. All rights reserved."
     },
     RU: {
       sloganPart1: "Не отвлекайтесь ", sloganPart2: "от дел",
@@ -62,7 +65,8 @@ export default function GeoDocsApp() {
       aboutContent: "Geo Docs Service — первая полностью автоматизированная грузинская платформа.",
       loginTitle: "Вход", registerTitle: "Регистрация",
       regFields: ["Имя", "Фамилия", "Email", "Номер телефона"],
-      rights: "© 2026 GEO DOCS SERVICE."
+      profileHint: "Зарегистрируйтесь, чтобы использовать полную функциональность сайта",
+      rights: "© 2026 GEO DOCS SERVICE. Все права защищены."
     }
   }[lang];
 
@@ -88,13 +92,8 @@ export default function GeoDocsApp() {
             <button style={{ width: '100%', padding: '15px', background: 'transparent', border: '2px dashed #FFB800', marginTop: '15px', borderRadius: '20px', color: 'white' }}>{t.invoiceBtn}</button>
             
             <h2 style={{ marginTop: '30px', textAlign: 'left' }}>{t.pricesTitle}</h2>
-            {/* აქ ტარიფები გარდაიქმნა ღილაკებად */}
             {t.prices.map((p, i) => (
-              <button key={i} onClick={() => window.open(googleFormUrl, '_blank')} style={{ 
-                width: '100%', background: '#2A2A2A', padding: '20px', borderRadius: '20px', 
-                border: '1px solid #444', marginBottom: '10px', color: 'white', 
-                display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' 
-              }}>
+              <button key={i} onClick={() => window.open(googleFormUrl, '_blank')} style={{ width: '100%', background: '#2A2A2A', padding: '20px', borderRadius: '20px', border: '1px solid #444', marginBottom: '10px', color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }}>
                 <span style={{ fontSize: '14px' }}>{p.title}</span> 
                 <b style={{ color: '#FFB800', fontSize: '18px' }}>{p.price}</b>
               </button>
@@ -102,31 +101,35 @@ export default function GeoDocsApp() {
           </div>
         )}
 
-        {/* დანარჩენი სექციები იგივე რჩება */}
         {activeTab === 'profile' && (
-           <div style={{ textAlign: 'center' }}>
-            <User size={80} style={{ margin: '20px auto' }} />
-            <p>დარეგისტრირდი საიტის სრული ფუნქციონალის გამოსაყენებლად</p>
-            <button onClick={() => setActiveTab('login')} style={{ width: '100%', padding: '15px', background: '#007AFF', borderRadius: '15px', border: 'none', color: 'white' }}>{t.loginTitle}</button>
-            <button onClick={() => setActiveTab('register')} style={{ width: '100%', padding: '15px', background: 'transparent', border: '1px solid white', marginTop: '10px', borderRadius: '15px' }}>{t.registerTitle}</button>
+          <div style={{ textAlign: 'center', marginTop: '20px' }}>
+            <User size={80} style={{ margin: '0 auto 20px' }} />
+            <p>{t.profileHint}</p>
+            <button onClick={() => setActiveTab('login')} style={{ width: '100%', padding: '15px', background: '#007AFF', borderRadius: '15px', border: 'none', color: 'white', marginBottom: '10px' }}>{t.loginTitle}</button>
+            <button onClick={() => setActiveTab('register')} style={{ width: '100%', padding: '15px', background: 'transparent', border: '1px solid white', borderRadius: '15px', color: 'white' }}>{t.registerTitle}</button>
           </div>
         )}
 
         {(activeTab === 'login' || activeTab === 'register') && (
-          <div style={{ background: '#1A1A1A', padding: '20px', borderRadius: '20px' }}>
+          <div style={{ background: '#1A1A1A', padding: '20px', borderRadius: '20px', marginTop: '20px' }}>
             <h2>{activeTab === 'login' ? t.loginTitle : t.registerTitle}</h2>
             {activeTab === 'register' && t.regFields.map(f => <input key={f} placeholder={f} style={{ width: '100%', padding: '12px', margin: '8px 0', borderRadius: '10px', border: 'none' }} />)}
-            {activeTab === 'login' && <><input placeholder="Email" style={{ width: '100%', padding: '12px', margin: '8px 0', borderRadius: '10px' }} /><input placeholder="Password" style={{ width: '100%', padding: '12px', margin: '8px 0', borderRadius: '10px' }} /></>}
+            {activeTab === 'login' && <><input placeholder="Email" style={{ width: '100%', padding: '12px', margin: '8px 0', borderRadius: '10px', border: 'none' }} /><input placeholder="Password" style={{ width: '100%', padding: '12px', margin: '8px 0', borderRadius: '10px', border: 'none' }} /></>}
             <button style={{ width: '100%', padding: '15px', background: '#FFB800', border: 'none', borderRadius: '10px', marginTop: '10px', fontWeight: 'bold' }}>Submit</button>
           </div>
         )}
 
         {activeTab === 'about' && (
-          <div style={{ background: '#2A2A2A', padding: '20px', borderRadius: '20px' }}>
+          <div style={{ background: '#2A2A2A', padding: '20px', borderRadius: '20px', marginTop: '20px' }}>
             <h2>{t.aboutTitle}</h2>
             <p>{t.aboutContent}</p>
           </div>
         )}
+
+        <footer style={{ textAlign: 'center', marginTop: '40px', opacity: 0.6 }}>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', marginBottom: '10px' }}><Instagram /><Facebook /><Send /></div>
+          <p style={{ fontSize: '10px' }}>{t.rights}</p>
+        </footer>
       </main>
 
       <nav style={{ 
