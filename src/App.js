@@ -19,9 +19,12 @@ export default function GeoDocsApp() {
       cvBtn: "AI CV 2 წუთში", invoiceBtn: "ინვოისი (მალე)",
       pricesTitle: "ტარიფები",
       aboutTitle: "ჩვენს შესახებ",
-      aboutContent: "Geo Docs Service არის პირველი ქართული სრულად ავტომატიზებული პლატფორმა. ჩვენი მიზანია დოკუმენტების მომზადების პროცესის მაქსიმალური გამარტივება ხელოვნური ინტელექტის გამოყენებით, რაც საშუალებას გაძლევთ დაზოგოთ დრო და მიიღოთ პროფესიონალური შედეგი წამებში.",
+      aboutContent: "Geo Docs Service არის პირველი ქართული სრულად ავტომატიზებული პლატფორმა. ჩვენი მიზანია დოკუმენტების მომზადების პროცესის მაქსიმალური გამარტივება ხელოვნური ინტელექტის გამოყენებით.",
       rights: "© 2026 GEO DOCS SERVICE. ყველა უფლება დაცულია.",
-      profileTitle: "პირადი კაბინეტი", login: "შესვლა", register: "რეგისტრაცია"
+      profileTitle: "პირადი კაბინეტი", 
+      login: "შესვლა", 
+      register: "რეგისტრაცია",
+      regHint: "დარეგისტრირდი საიტის სრული ფუნქციონალის გამოსაყენებლად"
     },
     EN: {
       sloganPart1: "Stay Focused on ", sloganPart2: "Your Business",
@@ -29,9 +32,12 @@ export default function GeoDocsApp() {
       cvBtn: "AI CV in 2 Minutes", invoiceBtn: "Invoice (Soon)",
       pricesTitle: "Pricing",
       aboutTitle: "About Us",
-      aboutContent: "Geo Docs Service is the first fully automated Georgian platform. Our goal is to completely simplify the document preparation process using artificial intelligence, allowing you to save time and get professional results in seconds.",
+      aboutContent: "Geo Docs Service is the first fully automated Georgian platform. Our goal is to simplify document preparation using AI.",
       rights: "© 2026 GEO DOCS SERVICE. All rights reserved.",
-      profileTitle: "Profile", login: "Login", register: "Register"
+      profileTitle: "Profile", 
+      login: "Login", 
+      register: "Register",
+      regHint: "Register to use the full functionality of the site"
     },
     RU: {
       sloganPart1: "Не отвлекайтесь ", sloganPart2: "от дел",
@@ -39,9 +45,12 @@ export default function GeoDocsApp() {
       cvBtn: "AI CV за 2 минуты", invoiceBtn: "Инвойс (Скоро)",
       pricesTitle: "Тарифы",
       aboutTitle: "О нас",
-      aboutContent: "Geo Docs Service — первая полностью автоматизированная грузинская платформа. Наша цель — максимально упростить процесс подготовки документов с помощью искусственного интеллекта, что позволяет вам экономить время и получать профессиональный результат за считанные секунды.",
+      aboutContent: "Geo Docs Service — первая полностью автоматизированная грузинская платформа. Наша цель — упростить процесс подготовки документов с помощью ИИ.",
       rights: "© 2026 GEO DOCS SERVICE. Все права защищены.",
-      profileTitle: "Личный кабинет", login: "Вход", register: "Регистрация"
+      profileTitle: "Личный кабинет", 
+      login: "Вход", 
+      register: "Регистрация",
+      regHint: "Зарегистрируйтесь, чтобы использовать полную функциональность сайта"
     }
   };
 
@@ -66,12 +75,9 @@ export default function GeoDocsApp() {
       <main style={{ padding: '0 20px' }}>
         {activeTab === 'home' && (
           <div style={{ textAlign: 'center' }}>
-            <div style={{ backgroundColor: 'rgba(255,255,255,0.15)', padding: '8px 15px', borderRadius: '20px', fontSize: '11px', display: 'inline-flex', alignItems: 'center', gap: '5px', marginTop: '10px' }}>
-              <ShieldCheck size={14} color="#FFB800" /> {t.alert}
-            </div>
             <h1 style={{ fontSize: '32px', fontWeight: '900', fontStyle: 'italic', marginTop: '25px' }}><span style={{ color: '#FFB800' }}>{t.sloganPart1}</span>{t.sloganPart2}</h1>
             <img src={robotUrl} alt="AI" style={{ width: '260px', margin: '25px 0' }} onError={(e) => e.target.style.display = 'none'} />
-            <button onClick={() => window.open(googleFormUrl, '_blank')} style={{ backgroundColor: '#FFB800', width: '100%', padding: '20px', borderRadius: '20px', border: 'none', fontWeight: '900', fontSize: '19px', cursor: 'pointer', marginBottom: '15px' }}>{t.cvBtn}</button>
+            <button onClick={() => window.open(googleFormUrl, '_blank')} style={{ backgroundColor: '#FFB800', width: '100%', padding: '20px', borderRadius: '20px', border: 'none', fontWeight: '900', fontSize: '19px', cursor: 'pointer' }}>{t.cvBtn}</button>
           </div>
         )}
 
@@ -79,12 +85,13 @@ export default function GeoDocsApp() {
           <div style={{ backgroundColor: '#2A2A2A', padding: '30px', borderRadius: '30px', textAlign: 'center', marginTop: '20px' }}>
             <Info size={40} color="#FFB800" style={{marginBottom: '20px'}} />
             <h2 style={{ fontSize: '24px', fontWeight: '900' }}>{t.aboutTitle}</h2>
-            <p style={{ lineHeight: '1.7', fontSize: '14px', textAlign: 'center' }}>{t.aboutContent}</p>
+            <p style={{ lineHeight: '1.7', fontSize: '14px' }}>{t.aboutContent}</p>
           </div>
         )}
 
         {activeTab === 'profile' && (
           <div style={{ textAlign: 'center', padding: '40px 20px', marginTop: '20px' }}>
+            <p style={{ fontSize: '14px', marginBottom: '15px', color: '#fff', opacity: 0.9 }}>{t.regHint}</p>
             <User size={80} color="#FFB800" style={{marginBottom: '20px', margin: '0 auto', display: 'block'}} />
             <h2 style={{ fontSize: '24px', fontWeight: '900', marginBottom: '30px' }}>{t.profileTitle}</h2>
             <button style={{ width: '100%', padding: '18px', borderRadius: '15px', border: 'none', backgroundColor: '#007AFF', color: 'white', fontSize: '16px', fontWeight: 'bold', marginBottom: '15px', cursor: 'pointer' }}>{t.login}</button>
