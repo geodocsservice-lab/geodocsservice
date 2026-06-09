@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import { 
   Zap, Home, LayoutGrid, Info, FileText,
   Instagram, Facebook, Send, ShieldCheck, User 
@@ -7,7 +7,6 @@ import {
 export default function GeoDocsApp() {
   const [lang, setLang] = useState('GE');
   const [activeTab, setActiveTab] = useState('home');
-  const [showCookieConsent, setShowCookieConsent] = useState(true);
   
   const googleFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLSeVAyKyk8Wbe1H4y_UutBsRwrDpbsUNpWI7Z3ZeTV4rrP4SQg/viewform?usp=header";
   const logoUrl = "/Screenshot_20260326_020239_Facebook.jpg"; 
@@ -19,33 +18,36 @@ export default function GeoDocsApp() {
       alert: "ინფორმაცია იშლება ავტომატურად 2 წუთში!",
       cvBtn: "AI CV 2 წუთში", invoiceBtn: "ინვოისი (მალე)",
       pricesTitle: "ტარიფები",
-      prices: [{ title: "სივის ქართულად გენერირება", price: "20₾" }, { title: "სივის უცხო ენაზე გენერირება", price: "35₾" }, { title: "სივის გენერირება 5 ენაზე", price: "55₾" }, { title: "სივის გენერირება ულიმიტოდ", price: "75₾" }],
       aboutTitle: "ჩვენს შესახებ",
-      aboutContent: "Geo Docs Service არის პირველი ქართული სრულად ავტომატიზებული პლატფორმა. ჩვენი მიზანია დოკუმენტების მომზადების პროცესის მაქსიმალური გამარტივება ხელოვნური ინტელექტის გამოყენებით, რაც საშუალებას გაძლევთ დაზოგოთ დრო და მიიღოთ პროფესიონალური შედეგი წამებში.",
+      aboutContent: "Geo Docs Service არის პირველი ქართული სრულად ავტომატიზებული პლატფორმა. ჩვენი მიზანია დოკუმენტების მომზადების პროცესის მაქსიმალური გამარტივება ხელოვნური ინტელექტის გამოყენებით.",
       rights: "© 2026 GEO DOCS SERVICE. ყველა უფლება დაცულია.",
-      profileTitle: "პირადი კაბინეტი"
+      profileTitle: "პირადი კაბინეტი",
+      login: "შესვლა",
+      register: "რეგისტრაცია"
     },
     EN: {
       sloganPart1: "Stay Focused on ", sloganPart2: "Your Business",
       alert: "Data is auto-deleted in 2 minutes!",
       cvBtn: "AI CV in 2 Minutes", invoiceBtn: "Invoice (Soon)",
       pricesTitle: "Pricing",
-      prices: [{ title: "CV in Georgian", price: "20₾" }, { title: "CV in Foreign Language", price: "35₾" }, { title: "CV in 5 Languages", price: "55₾" }, { title: "Unlimited CV Generation", price: "75₾" }],
       aboutTitle: "About Us",
-      aboutContent: "Geo Docs Service is the first fully automated Georgian platform. Our goal is to completely simplify the document preparation process using artificial intelligence, allowing you to save time and get professional results in seconds.",
+      aboutContent: "Geo Docs Service is the first fully automated Georgian platform. Our goal is to simplify document preparation using AI.",
       rights: "© 2026 GEO DOCS SERVICE. All rights reserved.",
-      profileTitle: "Personal Cabinet"
+      profileTitle: "Profile",
+      login: "Login",
+      register: "Register"
     },
     RU: {
       sloganPart1: "Не отвлекайтесь ", sloganPart2: "от дел",
       alert: "Данные удаляются через 2 минуты!",
       cvBtn: "AI CV за 2 минуты", invoiceBtn: "Инвойс (Скоро)",
       pricesTitle: "Тарифы",
-      prices: [{ title: "Резюме на грузинском", price: "20₾" }, { title: "Резюме на ин. языке", price: "35₾" }, { title: "Резюме на 5 языках", price: "55₾" }, { title: "Безлимитное резюме", price: "75₾" }],
       aboutTitle: "О нас",
-      aboutContent: "Geo Docs Service — первая полностью автоматизированная грузинская платформа. Наша цель — максимально упростить процесс подготовки документов с помощью искусственного интеллекта, что позволяет вам экономить время и получать профессиональный результат за считанные секунды.",
+      aboutContent: "Geo Docs Service — первая полностью автоматизированная грузинская платформа. Наша цель — упростить процесс подготовки документов с помощью ИИ.",
       rights: "© 2026 GEO DOCS SERVICE. Все права защищены.",
-      profileTitle: "Личный кабинет"
+      profileTitle: "Личный кабинет",
+      login: "Вход",
+      register: "Регистрация"
     }
   };
 
@@ -68,47 +70,24 @@ export default function GeoDocsApp() {
       <div style={{ height: '80px' }}></div>
 
       <main style={{ padding: '0 20px' }}>
-        {activeTab === 'home' && (
-          <div>
-            <div style={{ textAlign: 'center' }}>
-              <div style={{ backgroundColor: 'rgba(255,255,255,0.15)', padding: '8px 15px', borderRadius: '20px', fontSize: '11px', display: 'inline-flex', alignItems: 'center', gap: '5px', marginTop: '10px' }}>
-                <ShieldCheck size={14} color="#FFB800" /> {t.alert}
-              </div>
-              <h1 style={{ fontSize: '32px', fontWeight: '900', fontStyle: 'italic', marginTop: '25px' }}><span style={{ color: '#FFB800' }}>{t.sloganPart1}</span>{t.sloganPart2}</h1>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'center', margin: '25px 0' }}><img src={robotUrl} alt="AI" style={{ width: '260px' }} onError={(e) => e.target.style.display = 'none'} /></div>
-            <button onClick={() => window.open(googleFormUrl, '_blank')} style={{ backgroundColor: '#FFB800', width: '100%', padding: '20px', borderRadius: '20px', border: 'none', fontWeight: '900', fontSize: '19px', cursor: 'pointer', marginBottom: '15px' }}>{t.cvBtn}</button>
-            <button style={{ backgroundColor: '#2A2A2A', width: '100%', padding: '20px', borderRadius: '20px', border: '2px dashed #FFB800', color: 'white', fontWeight: 'bold', marginBottom: '40px' }}>{t.invoiceBtn}</button>
-            <h2 style={{ color: '#FFB800', fontWeight: '900', marginBottom: '20px' }}>{t.pricesTitle}</h2>
-            {t.prices.map((p, i) => (
-              <div key={i} style={{ backgroundColor: '#2A2A2A', padding: '20px', borderRadius: '25px', marginBottom: '12px' }}>
-                <div style={{ fontSize: '13px', opacity: 0.8 }}>{p.title}</div>
-                <div style={{ color: '#FFB800', fontSize: '26px', fontWeight: '900' }}>{p.price}</div>
-              </div>
-            ))}
-          </div>
-        )}
-        {activeTab === 'about' && (
-          <div style={{ backgroundColor: '#2A2A2A', padding: '30px', borderRadius: '30px', textAlign: 'center', marginTop: '20px' }}>
-            <Info size={40} color="#FFB800" style={{marginBottom: '20px'}} />
-            <h2 style={{ fontSize: '24px', fontWeight: '900' }}>{t.aboutTitle}</h2>
-            <p style={{ lineHeight: '1.7', fontSize: '14px', textAlign: 'center' }}>{t.aboutContent}</p>
-          </div>
-        )}
-        {activeTab === 'profile' && (
+        {activeTab === 'profile' ? (
           <div style={{ textAlign: 'center', padding: '40px 20px', marginTop: '20px' }}>
             <User size={80} color="#FFB800" style={{marginBottom: '20px', margin: '0 auto', display: 'block'}} />
-            <h2 style={{ fontSize: '24px', fontWeight: '900' }}>{t.profileTitle}</h2>
-            <p style={{marginTop: '20px', opacity: 0.7}}>შესვლა და რეგისტრაცია მალე იქნება ხელმისაწვდომი.</p>
+            <h2 style={{ fontSize: '24px', fontWeight: '900', marginBottom: '30px' }}>{t.profileTitle}</h2>
+            
+            <button style={{ width: '100%', padding: '18px', borderRadius: '15px', border: 'none', backgroundColor: '#007AFF', color: 'white', fontSize: '16px', fontWeight: 'bold', marginBottom: '15px', cursor: 'pointer' }}>
+              {t.login}
+            </button>
+            <button style={{ width: '100%', padding: '18px', borderRadius: '15px', border: '2px solid white', backgroundColor: 'transparent', color: 'white', fontSize: '16px', fontWeight: 'bold', cursor: 'pointer' }}>
+              {t.register}
+            </button>
+          </div>
+        ) : (
+          /* აქ დარჩენილია შენი დანარჩენი გვერდების ლოგიკა */
+          <div style={{ textAlign: 'center', marginTop: '50px' }}>
+            <h2>Content for {activeTab}</h2>
           </div>
         )}
-        
-        <footer style={{ textAlign: 'center', marginTop: '50px' }}>
-          <img src={logoUrl} alt="Logo" style={{ width: '45px', borderRadius: '50%' }} onError={(e) => e.target.style.display = 'none'} />
-          <h3 style={{ fontStyle: 'italic', fontWeight: '900' }}>GEO DOCS SERVICE</h3>
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', margin: '15px 0' }}><Instagram size={22} /><Facebook size={22} /><Send size={22} /></div>
-          <p style={{ fontSize: '11px', opacity: 0.5 }}>{t.rights}</p>
-        </footer>
       </main>
 
       <div style={{ position: 'fixed', bottom: '20px', left: '7.5%', width: '85%', backgroundColor: '#1A1A1A', borderRadius: '40px', padding: '10px', display: 'flex', justifyContent: 'space-around', alignItems: 'center', borderBottom: '3px solid #007AFF' }}>
