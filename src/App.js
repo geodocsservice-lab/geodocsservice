@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { 
   Zap, Home, LayoutGrid, Info, Bell, FileText,
-  Instagram, Facebook, Send, ShieldCheck, CheckCircle2, Lock 
+  Instagram, Facebook, Send, ShieldCheck, Lock 
 } from 'lucide-react';
 
 export default function GeoDocsApp() {
@@ -95,7 +95,7 @@ export default function GeoDocsApp() {
   return (
     <div style={{ backgroundColor: '#6D757D', minHeight: '100vh', color: 'white', fontFamily: 'Arial, sans-serif', paddingBottom: '120px', overflowX: 'hidden' }}>
       
-      {/* Header - Fixed with LOCK ICON near "GEO" */}
+      {/* Header - Clean style without simulated lock bar */}
       <header style={{ 
         backgroundColor: '#1A1A1A', 
         padding: '12px 15px', 
@@ -109,25 +109,15 @@ export default function GeoDocsApp() {
         zIndex: 1000,
         boxShadow: '0 2px 10px rgba(0,0,0,0.5)'
       }}>
-        <div onClick={() => setActiveTab('home')} style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+        <div onClick={() => setActiveTab('home')} style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
           <img 
             src={logoUrl} 
             alt="Logo" 
             style={{ width: '32px', height: '32px', borderRadius: '50%', objectFit: 'cover' }} 
             onError={(e) => { e.target.style.display = 'none'; }}
           />
-          {/* LOCK ICON IN ADDRESS BAR SIMULATION */}
-          <div style={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            gap: '5px', 
-            backgroundColor: '#000', 
-            padding: '4px 10px', 
-            borderRadius: '15px',
-            border: '1px solid #333'
-          }}>
-            <Lock size={12} color="#4ade80" fill="#4ade80" /> 
-            <div style={{ fontWeight: '900', fontStyle: 'italic', fontSize: '12px', letterSpacing: '0.5px' }}>GEO DOCS SERVICE</div>
+          <div style={{ fontWeight: '900', fontStyle: 'italic', fontSize: '15px', letterSpacing: '0.5px' }}>
+            GEO DOCS SERVICE
           </div>
         </div>
         
