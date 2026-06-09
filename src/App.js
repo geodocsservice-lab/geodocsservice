@@ -17,7 +17,7 @@ export default function GeoDocsApp() {
 
   const googleFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLSeVAyKyk8Wbe1H4y_UutBsRwrDpbsUNpWI7Z3ZeTV4rrP4SQg/viewform?usp=header";
   const logoUrl = "/Screenshot_20260326_020239_Facebook.jpg"; 
-  const robotUrl = "/robot.png"; // აქ უკვე წერია .png რობოტისთვის
+  const robotUrl = "/robot.png";
 
   const translations = {
     GE: {
@@ -96,7 +96,7 @@ export default function GeoDocsApp() {
   return (
     <div style={{ backgroundColor: '#6D757D', minHeight: '100vh', color: 'white', fontFamily: 'Arial, sans-serif', paddingBottom: '120px', overflowX: 'hidden' }}>
       
-      {/* Header - სუფთა დიზაინი ხელოვნური ბოქლომის გარეშე */}
+      {/* Header */}
       <header style={{ 
         backgroundColor: '#1A1A1A', 
         padding: '12px 15px', 
@@ -135,7 +135,7 @@ export default function GeoDocsApp() {
       <main style={{ padding: '0 20px' }}>
         {activeTab === 'home' || activeTab === 'prices' ? (
           <div>
-            <div style={{ textAlign: 'center', marginBottom: '25px' }}>
+            <div style={{ textAlign: 'center', marginBottom: '20px' }}>
               <div style={{ backgroundColor: 'rgba(255,255,255,0.15)', padding: '8px 15px', borderRadius: '20px', fontSize: '11px', display: 'inline-flex', alignItems: 'center', gap: '5px', marginTop: '10px' }}>
                 <ShieldCheck size={14} color="#FFB800" /> {t.alert}
               </div>
@@ -145,12 +145,12 @@ export default function GeoDocsApp() {
               </h1>
             </div>
 
-            {/* რობოტი ბიჭუნას სურათი სლოგანის ბოლოში */}
+            {/* რობოტი ბიჭუნას გაზრდილი და მკვეთრი ვერსია */}
             <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '25px' }}>
               <img 
                 src={robotUrl} 
                 alt="AI Robot" 
-                style={{ width: '160px', height: '160px', objectFit: 'contain' }}
+                style={{ width: '260px', height: 'auto', display: 'block', maxHeight: '350px', objectFit: 'contain' }}
                 onError={(e) => { e.target.style.display = 'none'; }}
               />
             </div>
