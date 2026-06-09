@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { 
   Zap, Home, LayoutGrid, Info, Bell, FileText,
-  Instagram, Facebook, Send, ShieldCheck, CheckCircle2, Lock, Shield
+  Instagram, Facebook, Send, ShieldCheck, CheckCircle2, Lock 
 } from 'lucide-react';
 
 export default function GeoDocsApp() {
@@ -17,7 +17,6 @@ export default function GeoDocsApp() {
 
   const googleFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLSeVAyKyk8Wbe1H4y_UutBsRwrDpbsUNpWI7Z3ZeTV4rrP4SQg/viewform?usp=header";
   const logoUrl = "/Screenshot_20260326_020239_Facebook.jpg"; 
-  const robotUrl = "/damiso-ok-high-res.png"; 
 
   const translations = {
     GE: {
@@ -36,9 +35,9 @@ export default function GeoDocsApp() {
         { title: "სივის გენერირება ულიმიტოდ", price: "75₾" }
       ],
       aboutTitle: "ჩვენს შესახებ",
-      aboutContent: "Geo Docs Service არის პირველი ქართული სრულად ავტომატიზებული პლატფორმა. ჩვენი მიზანია დოკუმენტების მომზადების პროცესის მაქსიმალური გამარტივება ხელოვნური ინტელექტის გამოყენებით.",
+      aboutContent: "Geo Docs Service არის პირველი ქართული სრულად ავტომატიზებული პლატფორმა. ჩვენი მიზანია დოკუმენტების მომზადების პროცესის მაქსიმალური გამარტივება ხელოვნური ინტელექტის გამოყენებით, რაც საშუალებას გაძლევთ დაზოგოთ დრო და მიიღოთ პროფესიონალური შედეგი წამებში.",
       privacyTitle: "კონფიდენციალურობის პოლიტიკა",
-      privacyContent: "ჩვენთვის პრიორიტეტულია თქვენი ანონიმურობა. სისტემაში შეყვანილი ინფორმაცია გამოიყენება მხოლოდ დოკუმენტის შესაქმნელად და გენერირებიდან ზუსტად 2 წუთში სრულად იშლება ბაზიდან.",
+      privacyContent: "ჩვენთვის პრიორიტეტულია თქვენი ანონიმურობა. სისტემაში შეყვანილი ინფორმაცია გამოიყენება მხოლოდ დოკუმენტის შესაქმნელად და გენერირებიდან ზუსტად 2 წუთში სრულად იშლება ბაზიდან. ჩვენ არ ვინახავთ თქვენს პერსონალურ მონაცემებს გრძელვადიანად.",
       rights: "© 2026 GEO DOCS SERVICE. ყველა უფლება დაცულია.",
       cookieMsg: "საიტი იყენებს ქეშ (Cache) ფაილებს მომსახურების გასაუმჯობესებლად.",
       cookieBtn: "ვეთანხმები"
@@ -59,12 +58,35 @@ export default function GeoDocsApp() {
         { title: "Unlimited CV Generation", price: "75₾" }
       ],
       aboutTitle: "About Us",
-      aboutContent: "Geo Docs Service is the first fully automated Georgian platform. Our goal is to simplify document preparation using AI.",
+      aboutContent: "Geo Docs Service is the first fully automated Georgian platform. Our goal is to simplify the document preparation process using AI.",
       privacyTitle: "Privacy Policy",
-      privacyContent: "Anonymity is our priority. Information is used only for generation and is deleted exactly 2 minutes after processing.",
+      privacyContent: "Anonymity is our priority. Information entered is used only for generation and is deleted from the database exactly 2 minutes after processing. We do not store personal data long-term.",
       rights: "© 2026 GEO DOCS SERVICE. All rights reserved.",
       cookieMsg: "We use cache files to ensure the best experience.",
       cookieBtn: "I Agree"
+    },
+    RU: {
+      sloganPart1: "Не отвлекайтесь ",
+      sloganPart2: "от дел",
+      alert: "Данные удаляются через 2 минуты!",
+      cvBtn: "AI CV за 2 минуты",
+      invoiceBtn: "Инвойс (Скоро)",
+      whyTitle: "Почему мы?",
+      whyItems: ["Быстрая генерация (2 мин)", "Мультиязычность", "Точность ИИ", "Анонимность"],
+      pricesTitle: "Тарифы",
+      prices: [
+        { title: "Резюме на грузинском", price: "20₾" },
+        { title: "Резюме на ин. языке", price: "35₾" },
+        { title: "Резюме на 5 языках", price: "55₾" },
+        { title: "Безлимитное резюме", price: "75₾" }
+      ],
+      aboutTitle: "О нас",
+      aboutContent: "Geo Docs Service — первая полностью автоматизированная грузинская платформа.",
+      privacyTitle: "Конфиденциальность",
+      privacyContent: "Ваша анонимность — приоритет. Информация используется только для создания документа и удаляется через 2 минуты.",
+      rights: "© 2026 GEO DOCS SERVICE. Все права защищены.",
+      cookieMsg: "Мы используем кэш для улучшения работы сайта.",
+      cookieBtn: "Согласен"
     }
   };
 
@@ -73,124 +95,132 @@ export default function GeoDocsApp() {
   return (
     <div style={{ backgroundColor: '#6D757D', minHeight: '100vh', color: 'white', fontFamily: 'Arial, sans-serif', paddingBottom: '120px', overflowX: 'hidden' }}>
       
-      {/* Header with Search Bar and Lock */}
-      <header style={{ backgroundColor: '#1A1A1A', padding: '12px 15px', position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000 }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-          <div onClick={() => setActiveTab('home')} style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
-            <img src={logoUrl} alt="Logo" style={{ width: '28px', height: '28px', borderRadius: '50%' }} />
-            <span style={{ fontWeight: '900', fontSize: '14px', fontStyle: 'italic' }}>GEO DOCS</span>
-          </div>
-          <div style={{ display: 'flex', gap: '5px' }}>
-            {['GE', 'EN'].map(l => (
-              <button key={l} onClick={() => setLang(l)} style={{ backgroundColor: lang === l ? '#007AFF' : '#333', color: 'white', border: 'none', padding: '4px 10px', borderRadius: '5px', fontSize: '11px', fontWeight: 'bold' }}>{l}</button>
-            ))}
+      {/* Header - Fixed with LOCK ICON near "GEO" */}
+      <header style={{ 
+        backgroundColor: '#1A1A1A', 
+        padding: '12px 15px', 
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        alignItems: 'center', 
+        position: 'fixed', 
+        top: 0, 
+        left: 0,
+        right: 0,
+        zIndex: 1000,
+        boxShadow: '0 2px 10px rgba(0,0,0,0.5)'
+      }}>
+        <div onClick={() => setActiveTab('home')} style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+          <img 
+            src={logoUrl} 
+            alt="Logo" 
+            style={{ width: '32px', height: '32px', borderRadius: '50%', objectFit: 'cover' }} 
+            onError={(e) => { e.target.style.display = 'none'; }}
+          />
+          {/* LOCK ICON IN ADDRESS BAR SIMULATION */}
+          <div style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: '5px', 
+            backgroundColor: '#000', 
+            padding: '4px 10px', 
+            borderRadius: '15px',
+            border: '1px solid #333'
+          }}>
+            <Lock size={12} color="#4ade80" fill="#4ade80" /> 
+            <div style={{ fontWeight: '900', fontStyle: 'italic', fontSize: '12px', letterSpacing: '0.5px' }}>GEO DOCS SERVICE</div>
           </div>
         </div>
-        <div style={{ backgroundColor: '#000', borderRadius: '10px', padding: '8px', display: 'flex', alignItems: 'center', gap: '8px', border: '1px solid #333', justifyContent: 'center' }}>
-          <Lock size={12} color="#4ade80" />
-          <span style={{ fontSize: '12px', color: '#ccc' }}>www.geodocsservice.ge</span>
+        
+        <div style={{ backgroundColor: '#000', padding: '3px', borderRadius: '8px', display: 'flex', gap: '4px' }}>
+          {['GE', 'EN', 'RU'].map(l => (
+            <button key={l} onClick={() => setLang(l)} style={{ backgroundColor: lang === l ? '#007AFF' : 'transparent', color: 'white', border: 'none', padding: '5px 8px', borderRadius: '6px', fontSize: '10px', fontWeight: 'bold', cursor: 'pointer' }}>{l}</button>
+          ))}
         </div>
       </header>
 
-      <div style={{ height: '120px' }}></div>
+      {/* Spacing */}
+      <div style={{ height: '80px' }}></div>
 
       <main style={{ padding: '0 20px' }}>
-        {activeTab === 'home' ? (
-          <>
-            <div style={{ textAlign: 'center', marginBottom: '35px' }}>
-              <div style={{ backgroundColor: 'rgba(255,255,255,0.15)', padding: '8px 15px', borderRadius: '20px', fontSize: '11px', display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
+        {activeTab === 'home' || activeTab === 'prices' ? (
+          <div>
+            <div style={{ textAlign: 'center', marginBottom: '30px' }}>
+              <div style={{ backgroundColor: 'rgba(255,255,255,0.15)', padding: '8px 15px', borderRadius: '20px', fontSize: '11px', display: 'inline-flex', alignItems: 'center', gap: '5px', marginTop: '10px' }}>
                 <ShieldCheck size={14} color="#FFB800" /> {t.alert}
               </div>
-              
-              <div style={{ position: 'relative', display: 'inline-block', marginTop: '25px', width: '100%' }}>
-                <h1 style={{ fontSize: '32px', fontWeight: '900', fontStyle: 'italic', lineHeight: 1.1, margin: 0 }}>
-                  <span style={{ color: '#FFB800' }}>{t.sloganPart1}</span><br />
-                  <span style={{ color: 'white' }}>{t.sloganPart2}</span>
-                </h1>
-                <img 
-                  src={robotUrl} 
-                  alt="Damiso" 
-                  style={{ 
-                    width: '75px', 
-                    position: 'absolute', 
-                    right: '0', 
-                    top: '-10px',
-                    borderRadius: '15px' 
-                  }} 
-                />
-              </div>
+              <h1 style={{ fontSize: '32px', fontWeight: '900', fontStyle: 'italic', marginTop: '25px', lineHeight: 1.1 }}>
+                <span style={{ color: '#FFB800' }}>{t.sloganPart1}</span>
+                <span style={{ color: 'white' }}>{t.sloganPart2}</span>
+              </h1>
             </div>
 
-            <button onClick={() => window.open(googleFormUrl, '_blank')} style={{ backgroundColor: '#FFB800', width: '100%', padding: '20px', borderRadius: '20px', border: 'none', fontWeight: '900', fontSize: '19px', marginBottom: '15px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', color: 'black' }}>
+            <button onClick={() => window.open(googleFormUrl, '_blank')} style={{ backgroundColor: '#FFB800', width: '100%', padding: '20px', borderRadius: '20px', border: 'none', fontWeight: '900', fontSize: '19px', cursor: 'pointer', marginBottom: '15px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', color: 'black' }}>
               <Zap fill="black" size={20} /> {t.cvBtn}
             </button>
 
-            <button style={{ backgroundColor: '#2A2A2A', width: '100%', padding: '18px', borderRadius: '20px', border: '2px dashed #FFB800', color: 'white', fontWeight: 'bold', fontSize: '16px', marginBottom: '40px', opacity: 0.9 }}>
+            <button onClick={() => window.open(googleFormUrl, '_blank')} style={{ backgroundColor: '#2A2A2A', width: '100%', padding: '20px', borderRadius: '20px', border: '2px dashed #FFB800', color: 'white', fontWeight: 'bold', fontSize: '16px', cursor: 'pointer', marginBottom: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', opacity: 0.9 }}>
               <FileText size={20} color="#FFB800" /> {t.invoiceBtn}
             </button>
-
-            <div style={{ marginBottom: '40px' }}>
-              <h2 style={{ fontSize: '22px', fontStyle: 'italic', marginBottom: '20px', color: '#FFB800', fontWeight: '900' }}>{t.whyTitle}</h2>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                {t.whyItems.map((item, i) => (
-                  <div key={i} style={{ backgroundColor: 'rgba(0,0,0,0.2)', padding: '15px', borderRadius: '18px', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: '8px' }}>
-                    <CheckCircle2 size={20} color="#FFB800" />
-                    <span style={{ fontSize: '11px', fontWeight: 'bold' }}>{item}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
 
             <div ref={pricingRef} style={{ marginBottom: '40px' }}>
               <h2 style={{ fontSize: '22px', fontStyle: 'italic', marginBottom: '20px', color: '#FFB800', fontWeight: '900' }}>{t.pricesTitle}</h2>
               {t.prices.map((p, i) => (
-                <div key={i} style={{ backgroundColor: '#2A2A2A', padding: '20px', borderRadius: '25px', marginBottom: '12px', borderLeft: '4px solid #FFB800' }}>
+                <button key={i} onClick={() => window.open(googleFormUrl, '_blank')} style={{ backgroundColor: '#2A2A2A', width: '100%', padding: '20px', borderRadius: '25px', border: 'none', color: 'white', textAlign: 'left', marginBottom: '12px', cursor: 'pointer' }}>
                   <div style={{ fontSize: '13px', opacity: 0.8 }}>{p.title}</div>
                   <div style={{ color: '#FFB800', fontSize: '26px', fontWeight: '900', fontStyle: 'italic' }}>{p.price}</div>
-                </div>
+                </button>
               ))}
             </div>
-
-            <div style={{ backgroundColor: 'rgba(0,0,0,0.3)', padding: '25px', borderRadius: '25px', marginTop: '20px' }}>
-              <h3 style={{ fontSize: '18px', color: '#FFB800', marginBottom: '10px', fontWeight: '900', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <Shield size={20} /> {t.privacyTitle}
-              </h3>
-              <p style={{ fontSize: '13px', lineHeight: '1.6', opacity: 0.9 }}>{t.privacyContent}</p>
-            </div>
-          </>
-        ) : (
+          </div>
+        ) : activeTab === 'about' ? (
           <div style={{ padding: '20px 0' }}>
             <div style={{ backgroundColor: '#2A2A2A', padding: '30px', borderRadius: '30px', textAlign: 'center' }}>
               <Info size={40} color="#FFB800" style={{marginBottom: '20px'}} />
               <h2 style={{ fontStyle: 'italic', fontSize: '24px', marginBottom: '20px', fontWeight: '900' }}>{t.aboutTitle}</h2>
-              <p style={{ lineHeight: '1.7', fontSize: '15px', color: '#eee' }}>{t.aboutContent}</p>
+              <p style={{ lineHeight: '1.7', fontSize: '14px', color: '#eee' }}>{t.aboutContent}</p>
+            </div>
+          </div>
+        ) : (
+          <div style={{ padding: '20px 0' }}>
+             <div style={{ backgroundColor: '#2A2A2A', padding: '35px 25px', borderRadius: '30px' }}>
+              <div style={{ textAlign: 'center' }}>
+                <ShieldCheck size={40} color="#FFB800" style={{marginBottom: '20px'}} />
+                <h2 style={{ fontStyle: 'italic', fontSize: '20px', marginBottom: '20px', fontWeight: '900' }}>{t.privacyTitle}</h2>
+              </div>
+              <p style={{ lineHeight: '1.6', fontSize: '12.5px', color: '#ccc', textAlign: 'left', padding: '0 5px' }}>
+                {t.privacyContent}
+              </p>
             </div>
           </div>
         )}
 
-        <footer style={{ textAlign: 'center', marginTop: '50px', paddingBottom: '30px' }}>
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '30px', marginBottom: '20px' }}>
-            <Instagram size={24} /> <Facebook size={24} /> <Send size={24} />
+        <footer style={{ textAlign: 'center', marginTop: '30px', padding: '20px' }}>
+          <img src={logoUrl} alt="Logo" style={{ width: '45px', borderRadius: '50%' }} onError={(e) => e.target.style.display='none'}/>
+          <h3 style={{ fontStyle: 'italic', fontWeight: '900', fontSize: '16px', marginTop: '10px' }}>GEO DOCS SERVICE</h3>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '25px', margin: '20px 0' }}>
+            <Instagram size={22} /> <Facebook size={22} /> <Send size={22} />
           </div>
           <p style={{ fontSize: '11px', opacity: 0.5 }}>{t.rights}</p>
         </footer>
       </main>
 
+      {/* Cookie Consent */}
       {showCookieConsent && (
         <div style={{ position: 'fixed', bottom: '100px', left: '20px', right: '20px', backgroundColor: '#1A1A1A', padding: '15px', borderRadius: '15px', border: '1px solid #FFB800', zIndex: 2000, textAlign: 'center', boxShadow: '0 5px 20px rgba(0,0,0,0.8)' }}>
-          <p style={{ fontSize: '11px', marginBottom: '10px' }}>{t.cookieMsg}</p>
-          <button onClick={() => setShowCookieConsent(false)} style={{ backgroundColor: '#FFB800', color: 'black', border: 'none', padding: '8px 25px', borderRadius: '8px', fontWeight: 'bold', fontSize: '12px' }}>{t.cookieBtn}</button>
+          <p style={{ fontSize: '11px', marginBottom: '10px', color: '#eee' }}>{t.cookieMsg}</p>
+          <button onClick={() => setShowCookieConsent(false)} style={{ backgroundColor: '#FFB800', color: 'black', border: 'none', padding: '6px 20px', borderRadius: '8px', fontWeight: 'bold', fontSize: '12px', cursor: 'pointer' }}>{t.cookieBtn}</button>
         </div>
       )}
 
-      <nav style={{ position: 'fixed', bottom: '20px', left: 0, right: 0, display: 'flex', justifyContent: 'center', zIndex: 1000 }}>
-        <div style={{ width: '85%', maxWidth: '350px', backgroundColor: '#1A1A1A', borderRadius: '40px', padding: '12px', display: 'flex', justifyContent: 'space-around', alignItems: 'center', borderBottom: '4px solid #007AFF', boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }}>
-          <Home size={26} onClick={() => setActiveTab('home')} style={{ cursor: 'pointer', color: activeTab === 'home' ? '#007AFF' : 'white' }} />
-          <LayoutGrid size={26} onClick={() => { setActiveTab('home'); setTimeout(() => pricingRef.current?.scrollIntoView({ behavior: 'smooth' }), 100); }} style={{ cursor: 'pointer', color: 'white' }} />
-          <Info size={26} onClick={() => setActiveTab('about')} style={{ cursor: 'pointer', color: activeTab === 'about' ? '#007AFF' : 'white' }} />
-          <ShieldCheck size={26} style={{ color: 'white', opacity: 0.8 }} />
+      {/* Bottom Nav */}
+      <div style={{ position: 'fixed', bottom: '20px', left: 0, right: 0, display: 'flex', justifyContent: 'center', zIndex: 1000 }}>
+        <div style={{ width: '85%', maxWidth: '340px', backgroundColor: '#1A1A1A', borderRadius: '40px', padding: '10px', display: 'flex', justifyContent: 'space-around', alignItems: 'center', borderBottom: '3px solid #007AFF', boxShadow: '0 10px 30px rgba(0,0,0,0.6)' }}>
+          <Home size={24} onClick={() => setActiveTab('home')} style={{ cursor: 'pointer', color: activeTab === 'home' ? '#007AFF' : 'white' }} />
+          <LayoutGrid size={24} onClick={() => { setActiveTab('home'); setTimeout(() => pricingRef.current?.scrollIntoView({ behavior: 'smooth' }), 100); }} style={{ cursor: 'pointer', color: activeTab === 'prices' ? '#007AFF' : 'white' }} />
+          <Info size={24} onClick={() => setActiveTab('about')} style={{ cursor: 'pointer', color: activeTab === 'about' ? '#007AFF' : 'white' }} />
+          <Bell size={24} color="#444" style={{ opacity: 0.5 }} />
         </div>
-      </nav>
+      </div>
     </div>
   );
 }
