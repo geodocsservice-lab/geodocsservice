@@ -8,111 +8,103 @@ export default function GeoDocsApp() {
   const [lang, setLang] = useState('GE');
   const [activeTab, setActiveTab] = useState('home');
   
-  const googleFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLSeVAyKyk8Wbe1H4y_UutBsRwrDpbsUNpWI7Z3ZeTV4rrP4SQg/viewform?usp=header";
-  const logoUrl = "/Screenshot_20260326_020239_Facebook.jpg"; 
-  const robotUrl = "/robot.png";
+  const googleFormUrl = "#"; // აქ ჩასვი შენი Google Form-ის ლინკი
+  const logoUrl = "/logo.png"; // შენი ლოგოს მისამართი
+  const robotUrl = "/robot.png"; // რობოტის სურათის მისამართი
 
   const translations = {
     GE: {
-      sloganPart1: "ნუ მოწყდები ", sloganPart2: "შენს საქმეს",
-      alert: "ინფორმაცია იშლება ავტომატურად 2 წუთში!",
-      cvBtn: "AI CV 2 წუთში", invoiceBtn: "ინვოისი (მალე)",
-      pricesTitle: "ტარიფები",
-      aboutTitle: "ჩვენს შესახებ",
-      aboutContent: "Geo Docs Service არის პირველი ქართული სრულად ავტომატიზებული პლატფორმა. ჩვენი მიზანია დოკუმენტების მომზადების პროცესის მაქსიმალური გამარტივება ხელოვნური ინტელექტის გამოყენებით.",
+      alert: "პერსონალური ინფორმაცია იშლება ავტომატურად 2 წუთში!",
+      slogan: "ნუ მოწყდები შენს საქმეს",
+      aiBtn: "AI CV 2 წუთში",
+      aboutTitle: "About Us",
+      aboutContent: "Geo Docs Service is the first fully automated Georgian platform.",
       rights: "© 2026 GEO DOCS SERVICE. ყველა უფლება დაცულია.",
-      profileTitle: "პირადი კაბინეტი", 
-      login: "შესვლა", 
-      register: "რეგისტრაცია",
-      regHint: "დარეგისტრირდი საიტის სრული ფუნქციონალის გამოსაყენებლად"
+      profileTitle: "პირადი კაბინეტი"
     },
     EN: {
-      sloganPart1: "Stay Focused on ", sloganPart2: "Your Business",
-      alert: "Data is auto-deleted in 2 minutes!",
-      cvBtn: "AI CV in 2 Minutes", invoiceBtn: "Invoice (Soon)",
-      pricesTitle: "Pricing",
+      alert: "Personal data is deleted automatically in 2 minutes!",
+      slogan: "Stay focused on your business",
+      aiBtn: "AI CV in 2 minutes",
       aboutTitle: "About Us",
-      aboutContent: "Geo Docs Service is the first fully automated Georgian platform. Our goal is to simplify document preparation using AI.",
+      aboutContent: "Geo Docs Service is the first fully automated Georgian platform.",
       rights: "© 2026 GEO DOCS SERVICE. All rights reserved.",
-      profileTitle: "Profile", 
-      login: "Login", 
-      register: "Register",
-      regHint: "Register to use the full functionality of the site"
+      profileTitle: "Profile"
     },
     RU: {
-      sloganPart1: "Не отвлекайтесь ", sloganPart2: "от дел",
-      alert: "Данные удаляются через 2 минуты!",
-      cvBtn: "AI CV за 2 минуты", invoiceBtn: "Инвойс (Скоро)",
-      pricesTitle: "Тарифы",
+      alert: "Персональные данные удаляются автоматически через 2 минуты!",
+      slogan: "Не отвлекайтесь от дел",
+      aiBtn: "AI CV за 2 минуты",
       aboutTitle: "О нас",
-      aboutContent: "Geo Docs Service — первая полностью автоматизированная грузинская платформа. Наша цель — упростить процесс подготовки документов с помощью ИИ.",
+      aboutContent: "Geo Docs Service — первая полностью автоматизированная грузинская платформа.",
       rights: "© 2026 GEO DOCS SERVICE. Все права защищены.",
-      profileTitle: "Личный кабинет", 
-      login: "Вход", 
-      register: "Регистрация",
-      regHint: "Зарегистрируйтесь, чтобы использовать полную функциональность сайта"
+      profileTitle: "Личный кабинет"
     }
   };
 
-  const t = translations[lang] || translations['GE'];
+  const t = translations[lang];
 
   return (
-    <div style={{ backgroundColor: '#6D757D', minHeight: '100vh', color: 'white', fontFamily: 'Arial, sans-serif', paddingBottom: '120px' }}>
-      <header style={{ backgroundColor: '#1A1A1A', padding: '12px 15px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000 }}>
-        <div onClick={() => setActiveTab('home')} style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
-          <img src={logoUrl} alt="Logo" style={{ width: '32px', height: '32px', borderRadius: '50%', objectFit: 'cover' }} onError={(e) => e.target.style.display = 'none'} />
-          <div style={{ fontWeight: '900', fontStyle: 'italic', fontSize: '15px' }}>GEO DOCS SERVICE</div>
+    <div style={{ backgroundColor: '#6D757D', minHeight: '100vh', color: 'white', fontFamily: 'Arial, sans-serif' }}>
+      {/* Header */}
+      <header style={{ backgroundColor: '#1A1A1A', padding: '15px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <img src={logoUrl} alt="Logo" style={{ width: '40px' }} />
+          <span style={{ fontWeight: 'bold', fontSize: '18px' }}>GEO DOCS SERVICE</span>
         </div>
-        <div style={{ backgroundColor: '#000', padding: '3px', borderRadius: '8px', display: 'flex', gap: '4px' }}>
+        <div style={{ backgroundColor: '#000', borderRadius: '5px', padding: '2px' }}>
           {['GE', 'EN', 'RU'].map(l => (
-            <button key={l} onClick={() => setLang(l)} style={{ backgroundColor: lang === l ? '#007AFF' : 'transparent', color: 'white', border: 'none', padding: '5px 8px', borderRadius: '6px', fontSize: '10px', fontWeight: 'bold', cursor: 'pointer' }}>{l}</button>
+            <button key={l} onClick={() => setLang(l)} style={{ backgroundColor: lang === l ? '#007AFF' : 'transparent', color: 'white', border: 'none', padding: '5px 10px', cursor: 'pointer' }}>{l}</button>
           ))}
         </div>
       </header>
 
-      <div style={{ height: '80px' }}></div>
-
-      <main style={{ padding: '0 20px' }}>
+      {/* Main Content */}
+      <main style={{ padding: '20px', textAlign: 'center' }}>
         {activeTab === 'home' && (
-          <div style={{ textAlign: 'center' }}>
-            <h1 style={{ fontSize: '32px', fontWeight: '900', fontStyle: 'italic', marginTop: '25px' }}><span style={{ color: '#FFB800' }}>{t.sloganPart1}</span>{t.sloganPart2}</h1>
-            <img src={robotUrl} alt="AI" style={{ width: '260px', margin: '25px 0' }} onError={(e) => e.target.style.display = 'none'} />
-            <button onClick={() => window.open(googleFormUrl, '_blank')} style={{ backgroundColor: '#FFB800', width: '100%', padding: '20px', borderRadius: '20px', border: 'none', fontWeight: '900', fontSize: '19px', cursor: 'pointer' }}>{t.cvBtn}</button>
-          </div>
+          <>
+            <div style={{ backgroundColor: '#555', padding: '10px', borderRadius: '10px', marginBottom: '20px', fontSize: '14px' }}>
+              <ShieldCheck style={{ verticalAlign: 'middle', marginRight: '5px' }} /> {t.alert}
+            </div>
+            <h1 style={{ fontSize: '28px', marginBottom: '20px' }}>{t.slogan}</h1>
+            <img src={robotUrl} alt="AI" style={{ width: '200px', marginBottom: '20px' }} />
+            <button style={{ backgroundColor: '#FFB800', border: 'none', padding: '20px 40px', borderRadius: '15px', fontSize: '18px', fontWeight: 'bold', cursor: 'pointer' }}>
+              {t.aiBtn}
+            </button>
+          </>
         )}
 
         {activeTab === 'about' && (
-          <div style={{ backgroundColor: '#2A2A2A', padding: '30px', borderRadius: '30px', textAlign: 'center', marginTop: '20px' }}>
-            <Info size={40} color="#FFB800" style={{marginBottom: '20px'}} />
-            <h2 style={{ fontSize: '24px', fontWeight: '900' }}>{t.aboutTitle}</h2>
-            <p style={{ lineHeight: '1.7', fontSize: '14px' }}>{t.aboutContent}</p>
+          <div style={{ backgroundColor: '#2A2A2A', padding: '20px', borderRadius: '15px' }}>
+            <h2>{t.aboutTitle}</h2>
+            <p>{t.aboutContent}</p>
           </div>
         )}
 
         {activeTab === 'profile' && (
-          <div style={{ textAlign: 'center', padding: '40px 20px', marginTop: '20px' }}>
-            <p style={{ fontSize: '14px', marginBottom: '15px', color: '#fff', opacity: 0.9 }}>{t.regHint}</p>
-            <User size={80} color="#FFB800" style={{marginBottom: '20px', margin: '0 auto', display: 'block'}} />
-            <h2 style={{ fontSize: '24px', fontWeight: '900', marginBottom: '30px' }}>{t.profileTitle}</h2>
-            <button style={{ width: '100%', padding: '18px', borderRadius: '15px', border: 'none', backgroundColor: '#007AFF', color: 'white', fontSize: '16px', fontWeight: 'bold', marginBottom: '15px', cursor: 'pointer' }}>{t.login}</button>
-            <button style={{ width: '100%', padding: '18px', borderRadius: '15px', border: '2px solid white', backgroundColor: 'transparent', color: 'white', fontSize: '16px', fontWeight: 'bold', cursor: 'pointer' }}>{t.register}</button>
+          <div>
+            <User size={80} style={{ margin: '20px auto' }} />
+            <h2>{t.profileTitle}</h2>
           </div>
         )}
-
-        <footer style={{ textAlign: 'center', marginTop: '50px' }}>
-          <img src={logoUrl} alt="Logo" style={{ width: '45px', borderRadius: '50%' }} onError={(e) => e.target.style.display = 'none'} />
-          <h3 style={{ fontStyle: 'italic', fontWeight: '900' }}>GEO DOCS SERVICE</h3>
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', margin: '15px 0' }}><Instagram size={22} /><Facebook size={22} /><Send size={22} /></div>
-          <p style={{ fontSize: '11px', opacity: 0.5 }}>{t.rights}</p>
-        </footer>
       </main>
 
-      <div style={{ position: 'fixed', bottom: '20px', left: '7.5%', width: '85%', backgroundColor: '#1A1A1A', borderRadius: '40px', padding: '10px', display: 'flex', justifyContent: 'space-around', alignItems: 'center', borderBottom: '3px solid #007AFF' }}>
-        <Home size={24} onClick={() => setActiveTab('home')} color={activeTab === 'home' ? '#007AFF' : 'white'} style={{ cursor: 'pointer' }} />
-        <LayoutGrid size={24} onClick={() => setActiveTab('home')} style={{ cursor: 'pointer' }} />
-        <Info size={24} onClick={() => setActiveTab('about')} color={activeTab === 'about' ? '#007AFF' : 'white'} style={{ cursor: 'pointer' }} />
-        <User size={24} onClick={() => setActiveTab('profile')} color={activeTab === 'profile' ? '#007AFF' : 'white'} style={{ cursor: 'pointer' }} />
-      </div>
+      {/* Footer & Nav */}
+      <footer style={{ marginTop: '50px', textAlign: 'center', paddingBottom: '100px' }}>
+        <img src={logoUrl} alt="Logo" style={{ width: '50px', marginBottom: '10px' }} />
+        <p>GEO DOCS SERVICE</p>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '15px', margin: '15px 0' }}>
+          <Instagram /> <Facebook /> <Send />
+        </div>
+        <p style={{ fontSize: '12px', opacity: 0.7 }}>{t.rights}</p>
+      </footer>
+
+      <nav style={{ position: 'fixed', bottom: '20px', left: '10%', width: '80%', backgroundColor: '#1A1A1A', padding: '15px', borderRadius: '30px', display: 'flex', justifyContent: 'space-around' }}>
+        <Home onClick={() => setActiveTab('home')} style={{ cursor: 'pointer' }} />
+        <LayoutGrid style={{ cursor: 'pointer' }} />
+        <Info onClick={() => setActiveTab('about')} style={{ cursor: 'pointer' }} />
+        <User onClick={() => setActiveTab('profile')} style={{ cursor: 'pointer' }} />
+      </nav>
     </div>
   );
 }
