@@ -23,6 +23,14 @@ export default function GeoDocsApp() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
 
+  // აქ უკვე შენი Manychat-ის ID ჩავსვი!
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "//widget.manychat.com/789289847608482.js"; 
+    script.async = true;
+    document.body.appendChild(script);
+  }, []);
+
   const t = {
     GE: {
       sloganPart1: "ნუ მოწყდები ", sloganPart2: "შენს საქმეს",
@@ -71,9 +79,7 @@ export default function GeoDocsApp() {
   return (
     <div style={{ backgroundColor: '#6D757D', minHeight: '100vh', color: 'white', fontFamily: 'Arial, sans-serif', width: '100%', overflowX: 'hidden' }}>
       
-      {/* Header */}
       <header style={{ backgroundColor: '#1A1A1A', padding: '15px', position: 'fixed', top: 0, width: '100%', zIndex: 1000, display: 'flex', justifyContent: 'space-between', alignItems: 'center', boxSizing: 'border-box' }}>
-        {/* ლოგოზე დაჭერისას ბრუნდება მთავარ გვერდზე */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }} onClick={() => setActiveTab('home')}>
             <img src={logoUrl} alt="Logo" style={{ width: '30px', height: '30px', borderRadius: '50%' }} />
             <div style={{ fontWeight: '900', fontStyle: 'italic' }}>GEO DOCS SERVICE</div>
@@ -87,14 +93,12 @@ export default function GeoDocsApp() {
 
       <main style={{ padding: '80px 20px 100px 20px', boxSizing: 'border-box' }}>
         
-        {/* Main Home Page */}
         {activeTab === 'home' && (
           <div style={{ textAlign: 'center' }}>
             <div style={{ backgroundColor: 'rgba(0,0,0,0.2)', padding: '10px', borderRadius: '15px', fontSize: '11px', marginBottom: '20px' }}>
               {t.alert}
             </div>
             
-            {/* ორფეროვანი სლოგანი */}
             <h1 style={{ fontSize: '26px', margin: '20px 0' }}>
               <span style={{ color: 'white' }}>{t.sloganPart1}</span>
               <span style={{ color: '#FFB800' }}>{t.sloganPart2}</span>
@@ -106,27 +110,22 @@ export default function GeoDocsApp() {
               {t.cvBtn}
             </button>
             
-            {/* ინვოისის განახლებული ღილაკი */}
             <button style={{ width: '100%', padding: '15px', background: '#007AFF', border: '2px dashed #FFB800', marginTop: '15px', borderRadius: '20px', color: 'white', fontWeight: 'bold' }}>
               {t.invoiceBtn}
             </button>
+
+            <div id="pricing-section" style={{ marginTop: '40px' }}>
+              <h2 style={{ textAlign: 'left', marginBottom: '20px', color: '#FFB800' }}>{t.pricesTitle}</h2>
+              {t.prices.map((p, i) => (
+                <button key={i} onClick={() => window.open(googleFormUrl, '_blank')} style={{ width: '100%', background: '#2A2A2A', padding: '20px', borderRadius: '20px', border: '1px solid #444', marginBottom: '10px', color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }}>
+                  <span style={{ fontSize: '14px' }}>{p.title}</span> 
+                  <b style={{ color: '#FFB800', fontSize: '18px' }}>{p.price}</b>
+                </button>
+              ))}
+            </div>
           </div>
         )}
 
-        {/* Pricing Tab (ტარიფების გვერდი) */}
-        {activeTab === 'pricing' && (
-          <div style={{ marginTop: '20px' }}>
-            <h2 style={{ textAlign: 'left', marginBottom: '20px', color: '#FFB800' }}>{t.pricesTitle}</h2>
-            {t.prices.map((p, i) => (
-              <button key={i} onClick={() => window.open(googleFormUrl, '_blank')} style={{ width: '100%', background: '#2A2A2A', padding: '20px', borderRadius: '20px', border: '1px solid #444', marginBottom: '10px', color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }}>
-                <span style={{ fontSize: '14px' }}>{p.title}</span> 
-                <b style={{ color: '#FFB800', fontSize: '18px' }}>{p.price}</b>
-              </button>
-            ))}
-          </div>
-        )}
-
-        {/* About Us */}
         {activeTab === 'about' && (
           <div style={{ background: '#2A2A2A', padding: '20px', borderRadius: '20px', marginTop: '20px' }}>
             <h2 style={{ color: '#FFB800' }}>{t.aboutTitle}</h2>
@@ -134,7 +133,6 @@ export default function GeoDocsApp() {
           </div>
         )}
 
-        {/* Footer */}
         <footer style={{ textAlign: 'center', marginTop: '40px', opacity: 0.6 }}>
           <img src={logoUrl} alt="Logo" style={{ width: '40px', height: '40px', borderRadius: '50%', marginBottom: '10px' }} />
           <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', marginBottom: '10px' }}>
@@ -146,7 +144,6 @@ export default function GeoDocsApp() {
         </footer>
       </main>
 
-      {/* Dr. Damiso Chat Button */}
       <div 
         style={{
           position: 'fixed',
@@ -162,15 +159,14 @@ export default function GeoDocsApp() {
           alignItems: 'center',
           boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
           cursor: 'pointer',
-          zIndex: 1001,
+          zIndex: 9999,
           transition: 'bottom 0.3s'
         }}
-        onClick={() => alert('Dr. Damiso ჩატი გაიხსნება აქ')} // შეცვალე შესაბამისი ფუნქციით (მაგ: Manychat ლოგიკით)
+        onClick={() => window.open('https://m.me/geodocsservice', '_blank')} 
       >
         <MessageCircle size={28} />
       </div>
 
-      {/* Navigation */}
       <nav style={{ 
         position: 'fixed', bottom: '15px', left: '5%', width: '90%', backgroundColor: '#1A1A1A', 
         padding: '15px', borderRadius: '40px', display: 'flex', justifyContent: 'space-around', 
@@ -180,8 +176,17 @@ export default function GeoDocsApp() {
         opacity: showNav ? 1 : 0
       }}>
         <Home onClick={() => setActiveTab('home')} style={{ color: activeTab === 'home' ? '#007AFF' : 'white', cursor: 'pointer' }} />
-        {/* მეორე ღილაკი (Grid) ახლა ხსნის ტარიფებს */}
-        <LayoutGrid onClick={() => setActiveTab('pricing')} style={{ color: activeTab === 'pricing' ? '#007AFF' : 'white', cursor: 'pointer' }} />
+        
+        <LayoutGrid 
+          onClick={() => {
+            setActiveTab('home');
+            setTimeout(() => {
+              document.getElementById('pricing-section')?.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+          }} 
+          style={{ cursor: 'pointer', color: 'white' }} 
+        />
+        
         <Info onClick={() => setActiveTab('about')} style={{ color: activeTab === 'about' ? '#007AFF' : 'white', cursor: 'pointer' }} />
       </nav>
     </div>
