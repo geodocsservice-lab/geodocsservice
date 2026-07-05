@@ -25,8 +25,11 @@ export default function GeoDocsApp() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
 
-  const handleChatSubmit = async () => {
+  // აქ დაემატა 'e' პარამეტრი და e.preventDefault()
+  const handleChatSubmit = async (e) => {
+    if (e) e.preventDefault(); // ეს აჩერებს გვერდის გადატვირთვას!
     if (!input.trim()) return;
+    
     const userMsg = { role: 'user', text: input };
     setMessages(prev => [...prev, userMsg]);
     setInput('');
@@ -42,17 +45,10 @@ export default function GeoDocsApp() {
       });
       const data = await response.json();
       setMessages(prev => [...prev, { role: 'bot', text: data.candidates[0].content.parts[0].text }]);
-    } catch (e) {
+    } catch (error) {
       setMessages(prev => [...prev, { role: 'bot', text: "დროებით ვერ გპასუხობ, სცადე ცოტა ხანში." }]);
     }
     setLoading(false);
-  };
-
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      handleChatSubmit();
-    }
   };
 
   const t = {
@@ -62,7 +58,7 @@ export default function GeoDocsApp() {
   }[lang];
 
   return (
-    <div style={{ backgroundColor: '#6D757D', minHeight: '100vh', color: 'white', fontFamily: 'Arial, sans-serif', width: '100vw', maxWidth: '100%', overflowX: 'hidden' }}>
+    <div style={{ backgroundColor: '#6D757D', minHeight: '100vh', color: 'white', fontFamily: 'Arial, sans-serif', width: '100%', overflowX: 'hidden' }}>
       
       {/* Header */}
       <header style={{ backgroundColor: '#1A1A1A', padding: '15px', position: 'fixed', top: 0, width: '100%', zIndex: 1000, display: 'flex', justifyContent: 'space-between', alignItems: 'center', boxSizing: 'border-box' }}>
@@ -137,7 +133,7 @@ export default function GeoDocsApp() {
       {/* Dr. Damiso Chat Window */}
       {isChatOpen && (
         <div style={{
-          position: 'fixed', bottom: '150px', right: '20px', width: '300px', maxWidth: '90vw', height: '400px',
+          position: 'fixed', bottom: '150px', right: '5%', width: '90%', maxWidth: '350px', height: '400px',
           backgroundColor: '#1A1A1A', borderRadius: '20px', border: '2px solid #007AFF',
           zIndex: 10000, display: 'flex', flexDirection: 'column', boxShadow: '0 10px 30px rgba(0,0,0,0.6)'
         }}>
@@ -152,26 +148,28 @@ export default function GeoDocsApp() {
                 {m.text}
               </div>
             ))}
-            {loading && <div style={{ alignSelf: 'flex-start', color: '#888', fontSize: '12px', fontStyle: 'italic' }}>დოქტორი დამისო ბეჭდავს...</div>}
+            {loading && <div style={{ alignSelf: 'flex-start', color: '#888', fontSize: '12px', fontStyle: 'italic' }}>ბეჭდავს...</div>}
           </div>
           
-          <div style={{ padding: '10px', display: 'flex', gap: '8px', borderTop: '1px solid #333' }}>
+          {/* აქ <form> ტეგში ჩაჯდა input და button, რომ დაიბლოკოს საიტის გადატვირთვა */}
+          <form 
+            onSubmit={handleChatSubmit} 
+            style={{ padding: '10px', display: 'flex', gap: '8px', borderTop: '1px solid #333', margin: 0 }}
+          >
             <input 
               type="text" 
               value={input} 
               onChange={(e) => setInput(e.target.value)} 
-              onKeyDown={handleKeyPress}
               placeholder="მოწერე შეტყობინება..." 
               style={{ flex: 1, padding: '10px 12px', borderRadius: '10px', border: 'none', backgroundColor: '#fff', color: '#000', fontSize: '14px', outline: 'none' }} 
             />
             <button 
-              type="button" 
-              onClick={handleChatSubmit} 
+              type="submit" 
               style={{ background: '#FFB800', border: 'none', borderRadius: '10px', padding: '0 15px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
             >
               <Send size={18} color="#000" />
             </button>
-          </div>
+          </form>
         </div>
       )}
 
