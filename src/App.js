@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Home, LayoutGrid, Info, Instagram, Facebook, Send, X, MessageCircle } from 'lucide-react';
+import { Home, LayoutGrid, Info, Instagram, Facebook, Send, X } from 'lucide-react';
 
 export default function GeoDocsApp() {
   const [lang, setLang] = useState('GE');
@@ -37,68 +37,191 @@ export default function GeoDocsApp() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          contents: [{ parts: [{ text: `შენ ხარ დოქტორი დამისო. წესები: CV ქართულად 10₾, უცხო ენაზე 15₾. მონაცემები იშლება 5 წუთში. უფასო ჩასწორება/განმეორებითი ფაილი: იმავე დღეს, იმავე ენაზე, იმავე იმეილით. თანხა არ ბრუნდება PDF-ის შემდეგ. პასუხე ქართულად. კითხვა: ${input}` }] }]
+          contents: [{ parts: [{ text: `შენ ხარ დოქტორი დამისო (Dr. Damiso), Geo Docs Service-ის ოფიციალური AI ასისტენტი. შენი წესები: CV ქართულად 10₾, უცხო ენაზე 15₾. მონაცემები იშლება 5 წუთში. უფასო ჩასწორება/განმეორებითი ფაილი: იმავე დღეს, იმავე ენაზე, იმავე იმეილით. მომსახურება ითვლება გაწეულად PDF-ის გაგზავნის შემდეგ. თანხა არ ბრუნდება. პასუხე ქართულად, იყავი ზრდილობიანი და ლაკონიური. კითხვა: ${input}` }] }]
         })
       });
       const data = await response.json();
       setMessages(prev => [...prev, { role: 'bot', text: data.candidates[0].content.parts[0].text }]);
     } catch (e) {
-      setMessages(prev => [...prev, { role: 'bot', text: "დროებით ვერ გპასუხობ." }]);
+      setMessages(prev => [...prev, { role: 'bot', text: "დროებით ვერ გპასუხობ, სცადე ცოტა ხანში." }]);
     }
     setLoading(false);
   };
 
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleChatSubmit();
+    }
+  };
+
   const t = {
-    GE: { sloganPart1: "ნუ მოწყდები ", sloganPart2: "შენს საქმეს", alert: "ინფორმაცია იშლება ავტომატურად 5 წუთში!", cvBtn: "AI CV 5 წუთში", invoiceBtn: "ინვოისი (მალე)", pricesTitle: "ტარიფები", prices: [{ title: "სივის ქართულად გენერირება", price: "10₾" }, { title: "სივის უცხო ენაზე გენერირება", price: "15₾" }], aboutTitle: "ჩვენს შესახებ", aboutContent: "Geo Docs Service არის პირველი ქართული სრულად ავტომატიზებული პლატფორმა...", rights: "© 2026 GEO DOCS SERVICE. ყველა უფლება დაცულია." },
-    EN: { sloganPart1: "Stay Focused on ", sloganPart2: "Your Business", alert: "Data is auto-deleted in 5 minutes!", cvBtn: "AI CV in 5 Minutes", invoiceBtn: "Invoice (Soon)", pricesTitle: "Pricing", prices: [{ title: "CV Generation in Georgian", price: "10₾" }, { title: "CV Generation in Foreign Language", price: "15₾" }], aboutTitle: "About Us", aboutContent: "Geo Docs Service is the first fully automated Georgian platform...", rights: "© 2026 GEO DOCS SERVICE. All rights reserved." },
-    RU: { sloganPart1: "Не отвлекайтесь ", sloganPart2: "от дел", alert: "Данные удаляются через 5 минут!", cvBtn: "AI CV за 5 минут", invoiceBtn: "Инвойс (Скоро)", pricesTitle: "Тарифы", prices: [{ title: "Генерация резюме на грузинском", price: "10₾" }, { title: "Генерация резюме на иностранном языке", price: "15₾" }], aboutTitle: "О нас", aboutContent: "Geo Docs Service — первая полностью автоматизированная грузинская платформа.", rights: "© 2026 GEO DOCS SERVICE. Все права защищены." }
+    GE: { sloganPart1: "ნუ მოწყდები ", sloganPart2: "შენს საქმეს", alert: "ინფორმაცია იშლება ავტომატურად 5 წუთში!", cvBtn: "AI CV 5 წუთში", invoiceBtn: "ინვოისი (მალე)", pricesTitle: "ტარიფები", prices: [{ title: "სივის ქართულად გენერირება", price: "10₾" }, { title: "სივის უცხო ენაზე გენერირება", price: "15₾" }], aboutTitle: "ჩვენს შესახებ", aboutContent: "Geo Docs Service არის პირველი ქართული სრულად ავტომატიზებული პლატფორმა. ჩვენი გუნდი მუშაობს მაღალი სიზუსტის ხელოვნურ ინტელექტზე, რათა თქვენი დოკუმენტები მომზადდეს წამებში. ჩვენ პრიორიტეტს ვანიჭებთ უსაფრთხოებას, კონფიდენციალურობას და მომხმარებლის კომფორტს.", rights: "© 2026 GEO DOCS SERVICE. ყველა უფლება დაცულია." },
+    EN: { sloganPart1: "Stay Focused on ", sloganPart2: "Your Business", alert: "Data is auto-deleted in 5 minutes!", cvBtn: "AI CV in 5 Minutes", invoiceBtn: "Invoice (Soon)", pricesTitle: "Pricing", prices: [{ title: "CV Generation in Georgian", price: "10₾" }, { title: "CV Generation in Foreign Language", price: "15₾" }], aboutTitle: "About Us", aboutContent: "Geo Docs Service is the first fully automated Georgian platform. Our team works on high-precision AI to ensure your documents are prepared in seconds. We prioritize security, confidentiality, and user comfort.", rights: "© 2026 GEO DOCS SERVICE. All rights reserved." },
+    RU: { sloganPart1: "Не отвлекайтесь ", sloganPart2: "от дел", alert: "Данные удаляются через 5 минут!", cvBtn: "AI CV за 5 минут", invoiceBtn: "Инвойс (Скоро)", pricesTitle: "Тарифы", prices: [{ title: "Генерация резюме на грузинском", price: "10₾" }, { title: "Генерация резюме на иностранном языке", price: "15₾" }], aboutTitle: "О нас", aboutContent: "Geo Docs Service — первая полностью автоматизированная грузинская платформа. Наша команда работает над высокоточным ИИ, чтобы ваши документы готовились за секунды.", rights: "© 2026 GEO DOCS SERVICE. Все права защищены." }
   }[lang];
 
   return (
-    <div style={{ backgroundColor: '#6D757D', minHeight: '100vh', color: 'white', fontFamily: 'Arial, sans-serif', width: '100%', overflowX: 'hidden' }}>
-      <header style={{ backgroundColor: '#1A1A1A', padding: '15px', position: 'fixed', top: 0, width: '100%', zIndex: 1000, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }} onClick={() => setActiveTab('home')}>
-            <img src={logoUrl} alt="Logo" style={{ width: '30px', height: '30px', borderRadius: '50%' }} />
+    <div style={{ backgroundColor: '#6D757D', minHeight: '100vh', color: 'white', fontFamily: 'Arial, sans-serif', width: '100vw', maxWidth: '100%', overflowX: 'hidden' }}>
+      
+      {/* Header */}
+      <header style={{ backgroundColor: '#1A1A1A', padding: '15px', position: 'fixed', top: 0, width: '100%', zIndex: 1000, display: 'flex', justifyContent: 'space-between', alignItems: 'center', boxSizing: 'border-box' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }} onClick={() => setActiveTab('home')}>
+            <img src={logoUrl} alt="Logo" style={{ width: '30px', height: '30px', borderRadius: '50%', objectFit: 'cover' }} />
             <div style={{ fontWeight: '900', fontStyle: 'italic' }}>GEO DOCS SERVICE</div>
         </div>
-        <div>{['GE', 'EN', 'RU'].map(l => <button key={l} onClick={() => setLang(l)} style={{ backgroundColor: lang === l ? '#007AFF' : 'transparent', color: 'white', border: 'none', padding: '5px 8px', borderRadius: '6px' }}>{l}</button>)}</div>
+        <div style={{ backgroundColor: '#000', borderRadius: '8px', padding: '2px' }}>
+          {['GE', 'EN', 'RU'].map(l => (
+            <button key={l} onClick={() => setLang(l)} style={{ backgroundColor: lang === l ? '#007AFF' : 'transparent', color: 'white', border: 'none', padding: '5px 8px', borderRadius: '6px', cursor: 'pointer', fontSize: '12px' }}>{l}</button>
+          ))}
+        </div>
       </header>
 
-      <main style={{ padding: '80px 20px 100px 20px' }}>
+      <main style={{ padding: '80px 20px 100px 20px', boxSizing: 'border-box' }}>
+        
+        {/* Home Tab */}
         {activeTab === 'home' && (
           <div style={{ textAlign: 'center' }}>
-            <div style={{ backgroundColor: 'rgba(0,0,0,0.2)', padding: '10px', borderRadius: '15px', fontSize: '11px', marginBottom: '20px' }}>{t.alert}</div>
-            <h1 style={{ fontSize: '26px', margin: '20px 0' }}><span>{t.sloganPart1}</span><span style={{ color: '#FFB800' }}>{t.sloganPart2}</span></h1>
+            <div style={{ backgroundColor: 'rgba(0,0,0,0.2)', padding: '10px', borderRadius: '15px', fontSize: '11px', marginBottom: '20px' }}>
+              {t.alert}
+            </div>
+            
+            <h1 style={{ fontSize: '26px', margin: '20px 0' }}>
+              <span style={{ color: 'white' }}>{t.sloganPart1}</span>
+              <span style={{ color: '#FFB800' }}>{t.sloganPart2}</span>
+            </h1>
+            
             <img src={robotUrl} alt="Robot" style={{ width: '220px', margin: '10px auto' }} />
-            <button onClick={() => window.open(googleFormUrl, '_blank')} style={{ width: '100%', padding: '18px', background: '#FFB800', border: 'none', borderRadius: '20px', fontWeight: 'bold' }}>{t.cvBtn}</button>
-            <div id="pricing-section" style={{ marginTop: '40px' }}><h2 style={{ textAlign: 'left', color: '#FFB800' }}>{t.pricesTitle}</h2>{t.prices.map((p, i) => <button key={i} style={{ width: '100%', background: '#2A2A2A', padding: '20px', margin: '5px 0', borderRadius: '20px', color: 'white', display: 'flex', justifyContent: 'space-between' }}><span>{p.title}</span> <b>{p.price}</b></button>)}</div>
+            
+            <button onClick={() => window.open(googleFormUrl, '_blank')} style={{ width: '100%', padding: '18px', background: '#FFB800', border: 'none', borderRadius: '20px', fontWeight: 'bold', cursor: 'pointer', color: 'black' }}>
+              {t.cvBtn}
+            </button>
+            
+            <button style={{ width: '100%', padding: '15px', background: '#007AFF', border: '2px dashed #FFB800', marginTop: '15px', borderRadius: '20px', color: 'white', fontWeight: 'bold' }}>
+              {t.invoiceBtn}
+            </button>
+
+            {/* Pricing Section */}
+            <div id="pricing-section" style={{ marginTop: '40px' }}>
+              <h2 style={{ textAlign: 'left', marginBottom: '20px', color: '#FFB800' }}>{t.pricesTitle}</h2>
+              {t.prices.map((p, i) => (
+                <button key={i} onClick={() => window.open(googleFormUrl, '_blank')} style={{ width: '100%', background: '#2A2A2A', padding: '20px', borderRadius: '20px', border: '1px solid #444', marginBottom: '10px', color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }}>
+                  <span style={{ fontSize: '14px' }}>{p.title}</span> 
+                  <b style={{ color: '#FFB800', fontSize: '18px' }}>{p.price}</b>
+                </button>
+              ))}
+            </div>
           </div>
         )}
-        {activeTab === 'about' && (<div style={{ background: '#2A2A2A', padding: '20px', borderRadius: '20px', marginTop: '20px' }}><h2>{t.aboutTitle}</h2><p>{t.aboutContent}</p></div>)}
-        <footer style={{ textAlign: 'center', marginTop: '40px' }}><p style={{ fontSize: '10px' }}>{t.rights}</p></footer>
+
+        {/* About Tab */}
+        {activeTab === 'about' && (
+          <div style={{ background: '#2A2A2A', padding: '20px', borderRadius: '20px', marginTop: '20px' }}>
+            <h2 style={{ color: '#FFB800' }}>{t.aboutTitle}</h2>
+            <p style={{ lineHeight: '1.6' }}>{t.aboutContent}</p>
+          </div>
+        )}
+
+        {/* Footer */}
+        <footer style={{ textAlign: 'center', marginTop: '40px', opacity: 0.6 }}>
+          <img src={logoUrl} alt="Logo" style={{ width: '40px', height: '40px', borderRadius: '50%', marginBottom: '10px', objectFit: 'cover' }} />
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', marginBottom: '10px' }}>
+            <Instagram size={20} />
+            <Facebook size={20} />
+            <Send size={20} />
+          </div>
+          <p style={{ fontSize: '10px' }}>{t.rights}</p>
+        </footer>
       </main>
 
-      {/* Dr. Damiso ჩატი */}
+      {/* Dr. Damiso Chat Window */}
       {isChatOpen && (
-        <div style={{ position: 'fixed', bottom: '150px', right: '20px', width: '300px', height: '400px', backgroundColor: '#1A1A1A', borderRadius: '20px', border: '2px solid #007AFF', zIndex: 10000, display: 'flex', flexDirection: 'column' }}>
-          <div style={{ padding: '10px', backgroundColor: '#007AFF', display: 'flex', justifyContent: 'space-between' }}><span>Dr. Damiso</span><X size={20} onClick={() => setIsChatOpen(false)} /></div>
-          <div style={{ flex: 1, padding: '10px', overflowY: 'auto' }}>{messages.map((m, i) => <div key={i} style={{ margin: '5px', padding: '8px', borderRadius: '10px', backgroundColor: m.role === 'user' ? '#007AFF' : '#333' }}>{m.text}</div>)}</div>
-          <div style={{ padding: '10px', display: 'flex' }}><input value={input} onChange={(e) => setInput(e.target.value)} style={{ flex: 1 }} /><button onClick={handleChatSubmit}><Send /></button></div>
+        <div style={{
+          position: 'fixed', bottom: '150px', right: '20px', width: '300px', maxWidth: '90vw', height: '400px',
+          backgroundColor: '#1A1A1A', borderRadius: '20px', border: '2px solid #007AFF',
+          zIndex: 10000, display: 'flex', flexDirection: 'column', boxShadow: '0 10px 30px rgba(0,0,0,0.6)'
+        }}>
+          <div style={{ padding: '12px 15px', backgroundColor: '#007AFF', color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTopLeftRadius: '15px', borderTopRightRadius: '15px' }}>
+            <span style={{ fontWeight: 'bold' }}>Dr. Damiso</span>
+            <X size={20} onClick={() => setIsChatOpen(false)} style={{ cursor: 'pointer' }} />
+          </div>
+          
+          <div style={{ flex: 1, padding: '15px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            {messages.map((m, i) => (
+              <div key={i} style={{ alignSelf: m.role === 'user' ? 'flex-end' : 'flex-start', backgroundColor: m.role === 'user' ? '#007AFF' : '#333', padding: '10px 14px', borderRadius: '15px', maxWidth: '85%', fontSize: '14px', lineHeight: '1.4' }}>
+                {m.text}
+              </div>
+            ))}
+            {loading && <div style={{ alignSelf: 'flex-start', color: '#888', fontSize: '12px', fontStyle: 'italic' }}>დოქტორი დამისო ბეჭდავს...</div>}
+          </div>
+          
+          <div style={{ padding: '10px', display: 'flex', gap: '8px', borderTop: '1px solid #333' }}>
+            <input 
+              type="text" 
+              value={input} 
+              onChange={(e) => setInput(e.target.value)} 
+              onKeyDown={handleKeyPress}
+              placeholder="მოწერე შეტყობინება..." 
+              style={{ flex: 1, padding: '10px 12px', borderRadius: '10px', border: 'none', backgroundColor: '#fff', color: '#000', fontSize: '14px', outline: 'none' }} 
+            />
+            <button 
+              type="button" 
+              onClick={handleChatSubmit} 
+              style={{ background: '#FFB800', border: 'none', borderRadius: '10px', padding: '0 15px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            >
+              <Send size={18} color="#000" />
+            </button>
+          </div>
         </div>
       )}
 
-      {/* ჩატის ღილაკი */}
-      <div style={{ position: 'fixed', bottom: '80px', right: '20px', display: 'flex', alignItems: 'center', gap: '10px', zIndex: 999 }}>
-        <div style={{ backgroundColor: '#1A1A1A', padding: '8px', borderRadius: '15px' }}>Dr. Damiso</div>
-        <img src={robotUrl} onClick={() => setIsChatOpen(!isChatOpen)} style={{ width: '50px', cursor: 'pointer', borderRadius: '50%', border: '2px solid #007AFF' }} />
+      {/* Dr. Damiso Chat Button */}
+      <div style={{
+          position: 'fixed', bottom: '80px', right: '20px', 
+          display: 'flex', alignItems: 'center', gap: '10px', zIndex: 9999
+      }}>
+        <div style={{
+          backgroundColor: '#1A1A1A', color: 'white', padding: '8px 15px', 
+          borderRadius: '20px', fontWeight: 'bold', fontSize: '14px',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.3)'
+        }}>
+          Dr. Damiso
+        </div>
+        <div 
+          onClick={() => setIsChatOpen(!isChatOpen)}
+          style={{
+            backgroundColor: 'white', border: '3px solid #007AFF', width: '60px', height: '60px',
+            borderRadius: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center', 
+            cursor: 'pointer', overflow: 'hidden', boxShadow: '0 4px 12px rgba(0,0,0,0.3)'
+          }}
+        >
+          <img src={robotUrl} alt="Dr. Damiso" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+        </div>
       </div>
 
-      {/* ნავიგაცია */}
-      <nav style={{ position: 'fixed', bottom: '15px', left: '5%', width: '90%', backgroundColor: '#1A1A1A', padding: '15px', borderRadius: '40px', display: 'flex', justifyContent: 'space-around', zIndex: 1000, transform: showNav ? 'translateY(0)' : 'translateY(100px)' }}>
-        <Home onClick={() => setActiveTab('home')} />
-        <LayoutGrid onClick={() => setActiveTab('home')} />
-        <Info onClick={() => setActiveTab('about')} />
+      {/* Navigation */}
+      <nav style={{ 
+        position: 'fixed', bottom: '15px', left: '5%', width: '90%', backgroundColor: '#1A1A1A', 
+        padding: '15px', borderRadius: '40px', display: 'flex', justifyContent: 'space-around', 
+        zIndex: 1000, boxSizing: 'border-box',
+        transition: 'transform 0.3s ease, opacity 0.3s ease',
+        transform: showNav ? 'translateY(0)' : 'translateY(100px)',
+        opacity: showNav ? 1 : 0,
+        boxShadow: '0 4px 20px rgba(0,0,0,0.5)'
+      }}>
+        <Home onClick={() => setActiveTab('home')} style={{ color: activeTab === 'home' ? '#007AFF' : 'white', cursor: 'pointer' }} />
+        <LayoutGrid 
+          onClick={() => {
+            setActiveTab('home');
+            setTimeout(() => {
+              document.getElementById('pricing-section')?.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+          }} 
+          style={{ cursor: 'pointer', color: 'white' }} 
+        />
+        <Info onClick={() => setActiveTab('about')} style={{ color: activeTab === 'about' ? '#007AFF' : 'white', cursor: 'pointer' }} />
       </nav>
+      
     </div>
   );
 }
