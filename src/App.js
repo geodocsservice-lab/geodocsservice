@@ -23,14 +23,6 @@ export default function GeoDocsApp() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
 
-  // აქ უკვე შენი Manychat-ის ID ჩავსვი!
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "//widget.manychat.com/789289847608482.js"; 
-    script.async = true;
-    document.body.appendChild(script);
-  }, []);
-
   const t = {
     GE: {
       sloganPart1: "ნუ მოწყდები ", sloganPart2: "შენს საქმეს",
@@ -79,6 +71,7 @@ export default function GeoDocsApp() {
   return (
     <div style={{ backgroundColor: '#6D757D', minHeight: '100vh', color: 'white', fontFamily: 'Arial, sans-serif', width: '100%', overflowX: 'hidden' }}>
       
+      {/* Header */}
       <header style={{ backgroundColor: '#1A1A1A', padding: '15px', position: 'fixed', top: 0, width: '100%', zIndex: 1000, display: 'flex', justifyContent: 'space-between', alignItems: 'center', boxSizing: 'border-box' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }} onClick={() => setActiveTab('home')}>
             <img src={logoUrl} alt="Logo" style={{ width: '30px', height: '30px', borderRadius: '50%' }} />
@@ -93,6 +86,7 @@ export default function GeoDocsApp() {
 
       <main style={{ padding: '80px 20px 100px 20px', boxSizing: 'border-box' }}>
         
+        {/* Main Home Page */}
         {activeTab === 'home' && (
           <div style={{ textAlign: 'center' }}>
             <div style={{ backgroundColor: 'rgba(0,0,0,0.2)', padding: '10px', borderRadius: '15px', fontSize: '11px', marginBottom: '20px' }}>
@@ -114,6 +108,7 @@ export default function GeoDocsApp() {
               {t.invoiceBtn}
             </button>
 
+            {/* ტარიფების სექცია */}
             <div id="pricing-section" style={{ marginTop: '40px' }}>
               <h2 style={{ textAlign: 'left', marginBottom: '20px', color: '#FFB800' }}>{t.pricesTitle}</h2>
               {t.prices.map((p, i) => (
@@ -126,6 +121,7 @@ export default function GeoDocsApp() {
           </div>
         )}
 
+        {/* About Us */}
         {activeTab === 'about' && (
           <div style={{ background: '#2A2A2A', padding: '20px', borderRadius: '20px', marginTop: '20px' }}>
             <h2 style={{ color: '#FFB800' }}>{t.aboutTitle}</h2>
@@ -133,6 +129,7 @@ export default function GeoDocsApp() {
           </div>
         )}
 
+        {/* Footer */}
         <footer style={{ textAlign: 'center', marginTop: '40px', opacity: 0.6 }}>
           <img src={logoUrl} alt="Logo" style={{ width: '40px', height: '40px', borderRadius: '50%', marginBottom: '10px' }} />
           <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', marginBottom: '10px' }}>
@@ -144,6 +141,7 @@ export default function GeoDocsApp() {
         </footer>
       </main>
 
+      {/* Dr. Damiso Messenger Chat Button */}
       <div 
         style={{
           position: 'fixed',
@@ -167,6 +165,7 @@ export default function GeoDocsApp() {
         <MessageCircle size={28} />
       </div>
 
+      {/* Navigation */}
       <nav style={{ 
         position: 'fixed', bottom: '15px', left: '5%', width: '90%', backgroundColor: '#1A1A1A', 
         padding: '15px', borderRadius: '40px', display: 'flex', justifyContent: 'space-around', 
