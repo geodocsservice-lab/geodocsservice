@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Home, LayoutGrid, Info, Instagram, Facebook, Send, X } from 'lucide-react';
+import { Home, LayoutGrid, Info, Instagram, Facebook, Send, X, FileText } from 'lucide-react';
 
 export default function GeoDocsApp() {
   const [lang, setLang] = useState('GE');
@@ -7,7 +7,7 @@ export default function GeoDocsApp() {
   const [showNav, setShowNav] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isChatOpen, setIsChatOpen] = useState(false);
-  const [messages, setMessages] = useState([{ role: 'bot', text: 'გამარჯობა! მე ვარ დოქტორი დამისო. როგორ შემიძლია დაგეხმაროთ?' }]);
+  const [messages, setMessages] = useState([{ role: 'bot', text: 'გამარჯობა! მე ვარ დოქტორი დამისო. რით შემიძლია დაგეხმაროთ?' }]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -25,9 +25,8 @@ export default function GeoDocsApp() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
 
-  // აქ დაემატა 'e' პარამეტრი და e.preventDefault()
   const handleChatSubmit = async (e) => {
-    if (e) e.preventDefault(); // ეს აჩერებს გვერდის გადატვირთვას!
+    if (e) e.preventDefault();
     if (!input.trim()) return;
     
     const userMsg = { role: 'user', text: input };
@@ -35,26 +34,93 @@ export default function GeoDocsApp() {
     setInput('');
     setLoading(true);
 
+    const systemPrompt = `შენ ხარ დოქტორი დამისო (Dr. Damiso), Geo Docs Service-ის ოფიციალური AI ასისტენტი (3D რობოტი).
+    შენი წესები, რომლებიც აუცილებლად უნდა დაიცვა და აუხსნა მომხმარებელს საჭიროების შემთხვევაში:
+    1. ფასები: CV ქართულად 10₾, უცხო ენაზე 15₾.
+    2. კონფიდენციალურობა: მომხმარებლის მიერ შეყვანილი ყველა პერსონალური მონაცემი იშლება ბაზიდან CV-ის დამზადებიდან 5 წუთში. უფასო ჩასწორების უზრუნველსაყოფად ინახება მხოლოდ 3 დეტალი: თარიღი, არჩეული ენა და ელ-ფოსტა.
+    3. ფაილის წაშლა: თავად გენერირებული CV ფაილი (PDF) Drive-იდან იშლება იმავე დღის ღამის 12 საათზე.
+    4. უფასო ჩასწორება: მომხმარებელს შეუძლია უფასოდ დააგენერიროს/ჩაასწოროს თავისი CV იმავე დღეს, იმავე ენაზე და იმავე ელ-ფოსტის გამოყენებით.
+    5. დაბრუნების პოლიტიკა: მომსახურება ითვლება გაწეულად PDF დოკუმენტის გაგზავნისთანავე. თანხა არ ბრუნდება, გარდა ტექნიკური ხარვეზის შემთხვევისა.
+    იყავი მეგობრული, ზრდილობიანი და ლაკონიური. პასუხი გასეცი ზუსტად იმ ენაზე, რომელ ენაზეც მომხმარებელი მოგმართავს (ქართულად, ინგლისურად ან რუსულად). ნუ ისაუბრებ ისეთ თემებზე, რაც არ ეხება CV-ს ან Geo Docs Service-ს.
+    მომხმარებლის კითხვა: ${input}`;
+
     try {
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`, {
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${process.env.REACT_APP_GEMINI_API_KEY}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          contents: [{ parts: [{ text: `შენ ხარ დოქტორი დამისო (Dr. Damiso), Geo Docs Service-ის ოფიციალური AI ასისტენტი. შენი წესები: CV ქართულად 10₾, უცხო ენაზე 15₾. მონაცემები იშლება 5 წუთში. უფასო ჩასწორება/განმეორებითი ფაილი: იმავე დღეს, იმავე ენაზე, იმავე იმეილით. მომსახურება ითვლება გაწეულად PDF-ის გაგზავნის შემდეგ. თანხა არ ბრუნდება. პასუხე ქართულად, იყავი ზრდილობიანი და ლაკონიური. კითხვა: ${input}` }] }]
+          contents: [{ parts: [{ text: systemPrompt }] }]
         })
       });
       const data = await response.json();
       setMessages(prev => [...prev, { role: 'bot', text: data.candidates[0].content.parts[0].text }]);
     } catch (error) {
-      setMessages(prev => [...prev, { role: 'bot', text: "დროებით ვერ გპასუხობ, სცადე ცოტა ხანში." }]);
+      setMessages(prev => [...prev, { role: 'bot', text: "ბოდიში, დროებით კავშირის პრობლემაა. გთხოვთ, სცადოთ ოდნავ მოგვიანებით." }]);
     }
     setLoading(false);
   };
 
   const t = {
-    GE: { sloganPart1: "ნუ მოწყდები ", sloganPart2: "შენს საქმეს", alert: "ინფორმაცია იშლება ავტომატურად 5 წუთში!", cvBtn: "AI CV 5 წუთში", invoiceBtn: "ინვოისი (მალე)", pricesTitle: "ტარიფები", prices: [{ title: "სივის ქართულად გენერირება", price: "10₾" }, { title: "სივის უცხო ენაზე გენერირება", price: "15₾" }], aboutTitle: "ჩვენს შესახებ", aboutContent: "Geo Docs Service არის პირველი ქართული სრულად ავტომატიზებული პლატფორმა. ჩვენი გუნდი მუშაობს მაღალი სიზუსტის ხელოვნურ ინტელექტზე, რათა თქვენი დოკუმენტები მომზადდეს წამებში. ჩვენ პრიორიტეტს ვანიჭებთ უსაფრთხოებას, კონფიდენციალურობას და მომხმარებლის კომფორტს.", rights: "© 2026 GEO DOCS SERVICE. ყველა უფლება დაცულია." },
-    EN: { sloganPart1: "Stay Focused on ", sloganPart2: "Your Business", alert: "Data is auto-deleted in 5 minutes!", cvBtn: "AI CV in 5 Minutes", invoiceBtn: "Invoice (Soon)", pricesTitle: "Pricing", prices: [{ title: "CV Generation in Georgian", price: "10₾" }, { title: "CV Generation in Foreign Language", price: "15₾" }], aboutTitle: "About Us", aboutContent: "Geo Docs Service is the first fully automated Georgian platform. Our team works on high-precision AI to ensure your documents are prepared in seconds. We prioritize security, confidentiality, and user comfort.", rights: "© 2026 GEO DOCS SERVICE. All rights reserved." },
-    RU: { sloganPart1: "Не отвлекайтесь ", sloganPart2: "от дел", alert: "Данные удаляются через 5 минут!", cvBtn: "AI CV за 5 минут", invoiceBtn: "Инвойс (Скоро)", pricesTitle: "Тарифы", prices: [{ title: "Генерация резюме на грузинском", price: "10₾" }, { title: "Генерация резюме на иностранном языке", price: "15₾" }], aboutTitle: "О нас", aboutContent: "Geo Docs Service — первая полностью автоматизированная грузинская платформа. Наша команда работает над высокоточным ИИ, чтобы ваши документы готовились за секунды.", rights: "© 2026 GEO DOCS SERVICE. Все права защищены." }
+    GE: { 
+      sloganPart1: "ნუ მოწყდები ", 
+      sloganPart2: "შენს საქმეს", 
+      alert: "პერსონალური მონაცემები იშლება 5 წუთში, ფაილი - შუაღამისას!", 
+      cvBtn: "AI CV 2 წუთში", 
+      invoiceBtn: "ინვოისი (მალე)", 
+      pricesTitle: "ტარიფები", 
+      prices: [{ title: "სივის ქართულად გენერირება", price: "10₾" }, { title: "სივის უცხო ენაზე გენერირება", price: "15₾" }], 
+      aboutTitle: "ჩვენს შესახებ", 
+      aboutContent: "Geo Docs Service არის პირველი ქართული სრულად ავტომატიზებული პლატფორმა. ჩვენი გუნდი მუშაობს მაღალი სიზუსტის ხელოვნურ ინტელექტზე, რათა თქვენი დოკუმენტები მომზადდეს წამებში. ჩვენ პრიორიტეტს ვანიჭებთ უსაფრთხოებას, კონფიდენციალურობას და მომხმარებლის კომფორტს.", 
+      rights: "© 2026 GEO DOCS SERVICE. ყველა უფლება დაცულია.",
+      termsTitle: "წესები და პირობები",
+      termsList: [
+        "მომხმარებლის მიერ შეყვანილი პერსონალური მონაცემები სრულად იშლება ჩვენი ბაზიდან CV-ის დამზადებიდან 5 წუთში. უფასო ჩასწორების სერვისის უზრუნველსაყოფად სისტემაში ინახება მხოლოდ 3 დეტალი: თარიღი, არჩეული ენა და ელ-ფოსტა.",
+        "უშუალოდ გენერირებული PDF დოკუმენტი (CV) ჩვენი სისტემიდან (Google Drive) იშლება იმავე დღის ღამის 12 საათზე.",
+        "მომხმარებელს უფლება აქვს ისარგებლოს უფასო ჩასწორების/განმეორებითი გენერაციის სერვისით იმავე დღეს, იმავე ენაზე და იმავე ელ-ფოსტის გამოყენების შემთხვევაში.",
+        "მომსახურება ითვლება გაწეულად PDF დოკუმენტის თქვენს ელ-ფოსტაზე გაგზავნის მომენტიდან.",
+        "გადახდილი თანხა უკან არ ბრუნდება, გარდა იმ შემთხვევისა, როდესაც დაფიქსირდა ტექნიკური ხარვეზი სისტემის მხრიდან."
+      ]
+    },
+    EN: { 
+      sloganPart1: "Stay Focused on ", 
+      sloganPart2: "Your Business", 
+      alert: "Personal data is deleted in 5 mins, file - at midnight!", 
+      cvBtn: "AI CV in 2 Minutes", 
+      invoiceBtn: "Invoice (Soon)", 
+      pricesTitle: "Pricing", 
+      prices: [{ title: "CV Generation in Georgian", price: "10₾" }, { title: "CV Generation in Foreign Language", price: "15₾" }], 
+      aboutTitle: "About Us", 
+      aboutContent: "Geo Docs Service is the first fully automated Georgian platform. Our team works on high-precision AI to ensure your documents are prepared in seconds. We prioritize security, confidentiality, and user comfort.", 
+      rights: "© 2026 GEO DOCS SERVICE. All rights reserved.",
+      termsTitle: "Terms and Conditions",
+      termsList: [
+        "Personal data entered by the user is completely deleted from our database within 5 minutes after the CV is created. To provide the free revision service, only 3 details are kept: date, selected language, and email address.",
+        "The generated PDF document (CV) is completely deleted from our system (Google Drive) at midnight of the same day.",
+        "Users have the right to a free revision/regeneration on the same day, in the same language, and using the same email address.",
+        "The service is considered fulfilled once the PDF document is sent to your email.",
+        "Paid amounts are non-refundable unless a technical error occurs on the system's side."
+      ]
+    },
+    RU: { 
+      sloganPart1: "Не отвлекайтесь ", 
+      sloganPart2: "от дел", 
+      alert: "Личные данные удаляются через 5 мин, файл - в полночь!", 
+      cvBtn: "AI CV за 2 минуты", 
+      invoiceBtn: "Инвойс (Скоро)", 
+      pricesTitle: "Тарифы", 
+      prices: [{ title: "Генерация резюме на грузинском", price: "10₾" }, { title: "Генерация резюме на иностранном языке", price: "15₾" }], 
+      aboutTitle: "О нас", 
+      aboutContent: "Geo Docs Service — первая полностью автоматизированная грузинская платформа. Наша команда работает над высокоточным ИИ, чтобы ваши документы готовились за секунды. Мы уделяем приоритетное внимание безопасности.", 
+      rights: "© 2026 GEO DOCS SERVICE. Все права защищены.",
+      termsTitle: "Правила и условия",
+      termsList: [
+        "Личные данные, введенные пользователем, полностью удаляются из нашей базы данных в течение 5 минут после создания резюме. Для обеспечения бесплатной проверки сохраняются только 3 детали: дата, выбранный язык и электронная почта.",
+        "Сгенерированный PDF-документ (резюме) удаляется из нашей системы (Google Drive) в полночь того же дня.",
+        "Пользователи имеют право на бесплатное исправление/повторную генерацию в тот же день, на том же языке и с использованием того же адреса электронной почты.",
+        "Услуга считается выполненной после отправки PDF-документа на вашу электронную почту.",
+        "Оплаченные суммы не подлежат возврату, за исключением случаев технической ошибки со стороны системы."
+      ]
+    }
   }[lang];
 
   return (
@@ -118,6 +184,18 @@ export default function GeoDocsApp() {
           </div>
         )}
 
+        {/* Terms Tab */}
+        {activeTab === 'terms' && (
+          <div style={{ background: '#2A2A2A', padding: '20px', borderRadius: '20px', marginTop: '20px' }}>
+            <h2 style={{ color: '#FFB800', marginBottom: '20px' }}>{t.termsTitle}</h2>
+            <ul style={{ paddingLeft: '20px', lineHeight: '1.8', fontSize: '14px' }}>
+              {t.termsList.map((term, index) => (
+                <li key={index} style={{ marginBottom: '15px' }}>{term}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+
         {/* Footer */}
         <footer style={{ textAlign: 'center', marginTop: '40px', opacity: 0.6 }}>
           <img src={logoUrl} alt="Logo" style={{ width: '40px', height: '40px', borderRadius: '50%', marginBottom: '10px', objectFit: 'cover' }} />
@@ -126,6 +204,13 @@ export default function GeoDocsApp() {
             <Facebook size={20} />
             <Send size={20} />
           </div>
+          
+          <div 
+            onClick={() => setActiveTab('terms')} 
+            style={{ fontSize: '12px', textDecoration: 'underline', cursor: 'pointer', marginBottom: '10px', color: '#FFB800' }}>
+            {t.termsTitle}
+          </div>
+          
           <p style={{ fontSize: '10px' }}>{t.rights}</p>
         </footer>
       </main>
@@ -151,7 +236,6 @@ export default function GeoDocsApp() {
             {loading && <div style={{ alignSelf: 'flex-start', color: '#888', fontSize: '12px', fontStyle: 'italic' }}>ბეჭდავს...</div>}
           </div>
           
-          {/* აქ <form> ტეგში ჩაჯდა input და button, რომ დაიბლოკოს საიტის გადატვირთვა */}
           <form 
             onSubmit={handleChatSubmit} 
             style={{ padding: '10px', display: 'flex', gap: '8px', borderTop: '1px solid #333', margin: 0 }}
@@ -217,6 +301,7 @@ export default function GeoDocsApp() {
           }} 
           style={{ cursor: 'pointer', color: 'white' }} 
         />
+        <FileText onClick={() => setActiveTab('terms')} style={{ color: activeTab === 'terms' ? '#007AFF' : 'white', cursor: 'pointer' }} />
         <Info onClick={() => setActiveTab('about')} style={{ color: activeTab === 'about' ? '#007AFF' : 'white', cursor: 'pointer' }} />
       </nav>
       
