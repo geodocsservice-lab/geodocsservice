@@ -39,7 +39,7 @@ export default function GeoDocsApp() {
     თუ მომხმარებელი გწერს ქართული შინაარსით, მაგრამ ლათინური ასოებით, უპასუხე გამართული ქართული შრიფტით. მომხმარებლის კითხვა: ${input}`;
 
     try {
-      const myApiKey = "AQ.Ab8RN6JBMKOjYDMtsIE2f6eEeZGFcAPFMQ-mgVPnA7gFIdF1-A"; 
+      const myApiKey = process.env.REACT_APP_GEMINI_API_KEY; 
       const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${myApiKey}`;
 
       const response = await fetch(url, {
