@@ -41,20 +41,35 @@ export default function GeoDocsApp() {
     3. ფაილის წაშლა: თავად გენერირებული CV ფაილი (PDF) Drive-იდან იშლება იმავე დღის ღამის 12 საათზე.
     4. უფასო ჩასწორება: მომხმარებელს შეუძლია უფასოდ დააგენერიროს/ჩაასწოროს თავისი CV იმავე დღეს, იმავე ენაზე და იმავე ელ-ფოსტის გამოყენებით.
     5. დაბრუნების პოლიტიკა: მომსახურება ითვლება გაწეულად PDF დოკუმენტის გაგზავნისთანავე. თანხა არ ბრუნდება, გარდა ტექნიკური ხარვეზის შემთხვევისა.
-    იყავი მეგობრული, ზრდილობიანი და ლაკონიური. პასუხი გასეცი ზუსტად იმ ენაზე, რომელ ენაზეც მომხმარებელი მოგმართავს (ქართულად, ინგლისურად ან რუსულად). ნუ ისაუბრებ ისეთ თემებზე, რაც არ ეხება CV-ს ან Geo Docs Service-ს.
+    
+    მნიშვნელოვანი ენობრივი წესი: თუ მომხმარებელი გწერს ქართული შინაარსით, მაგრამ იყენებს ლათინურ ან ინგლისურ ასოებს (მაგალითად: "rogor xar", "fasebi"), შენ სრულად გაიგე შინაარსი და ყოველთვის უპასუხე გამართული ქართული ასოებით (შრიფტით). სხვა შემთხვევაში, პასუხი გასეცი ზუსტად იმ ენაზე, რომელ ენაზეც მომხმარებელი მოგმართავს. ნუ ისაუბრებ ისეთ თემებზე, რაც არ ეხება CV-ს ან Geo Docs Service-ს.
+    
     მომხმარებლის კითხვა: ${input}`;
 
     try {
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${process.env.REACT_APP_GEMINI_API_KEY}`, {
+      // ⚠️ აქ ჩასვი შენი AQ გასაღები ბრჭყალებში
+      const myApiKey = "AQ.Ab8RN6JBMKOjYDMtsIE2f6eEeZGFcAPFMQ-mgVPnA7gFIdF1-A"; 
+      
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${myApiKey}`;
+
+      const response = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           contents: [{ parts: [{ text: systemPrompt }] }]
         })
       });
+      
       const data = await response.json();
-      setMessages(prev => [...prev, { role: 'bot', text: data.candidates[0].content.parts[0].text }]);
+      
+      if (data.candidates && data.candidates[0] && data.candidates[0].content) {
+        const botResponse = data.candidates[0].content.parts[0].text;
+        setMessages(prev => [...prev, { role: 'bot', text: botResponse }]);
+      } else {
+        setMessages(prev => [...prev, { role: 'bot', text: "ბოდიში, პასუხი ვერ მივიღე. სცადე თავიდან." }]);
+      }
     } catch (error) {
+      console.error("Error API:", error);
       setMessages(prev => [...prev, { role: 'bot', text: "ბოდიში, დროებით კავშირის პრობლემაა. გთხოვთ, სცადოთ ოდნავ მოგვიანებით." }]);
     }
     setLoading(false);
