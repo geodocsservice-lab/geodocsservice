@@ -35,8 +35,17 @@ export default function GeoDocsApp() {
     setLoading(true);
 
     const systemPrompt = `შენ ხარ დოქტორი დამისო (Dr. Damiso), Geo Docs Service-ის ოფიციალური AI ასისტენტი (3D რობოტი).
-    შენი წესები: ფასები: CV ქართულად 10₾, უცხო ენაზე 15₾. კონფიდენციალურობა: მონაცემები იშლება 5 წუთში. ინახება მხოლოდ: თარიღი, ენა და ელ-ფოსტა. ფაილის წაშლა: PDF Drive-იდან იშლება შუაღამისას.
-    თუ მომხმარებელი გწერს ქართული შინაარსით, მაგრამ ლათინური ასოებით, უპასუხე გამართული ქართული შრიფტით. მომხმარებლის კითხვა: ${input}`;
+    შენი წესები: 
+    - ფასები: CV ქართულად 10₾, უცხო ენაზე 15₾
+    - კონფიდენციალურობა: მონაცემები იშლება 5 წუთში
+    - ინახება მხოლოდ: თარიღი, ენა და ელ-ფოსტა
+    - ფაილის წაშლა: PDF Drive-იდან იშლება შუაღამისას
+    - თუ მომხმარებელი გწერს ქართული შინაარსით, მაგრამ ლათინური ასოებით, უპასუხე გამართული ქართული შრიფტით
+    - ყოველთვის დამხმელი და პროფესიონალური იყო
+    - კითხვებზე მოკლე, ნათელი პასუხები დაე`;
+
+    const userPrompt = `მომხმარებლის კითხვა: ${input}`;
+    const fullPrompt = systemPrompt + "\n\n" + userPrompt;
 
     try {
       const myApiKey = process.env.REACT_APP_GEMINI_API_KEY; 
@@ -46,22 +55,30 @@ export default function GeoDocsApp() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          contents: [{ parts: [{ text: systemPrompt }] }]
+          contents: [
+            {
+              parts: [
+                {
+                  text: fullPrompt
+                }
+              ]
+            }
+          ]
         })
       });
       
       const data = await response.json();
       
-      // აქ უკვე დაცულია საიტი გათეთრებისგან
-      if (data && data.candidates && data.candidates[0] && data.candidates[0].content) {
+      if (data && data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts) {
         const botResponse = data.candidates[0].content.parts[0].text;
         setMessages(prev => [...prev, { role: 'bot', text: botResponse }]);
       } else {
+        console.error("API Response:", data);
         setMessages(prev => [...prev, { role: 'bot', text: "ბოდიში, პასუხი ვერ მივიღე. სცადე თავიდან." }]);
       }
     } catch (error) {
       console.error("Error API:", error);
-      setMessages(prev => [...prev, { role: 'bot', text: "ბოდიში, დროებით კავშირის პრობლემაა." }]);
+      setMessages(prev => [...prev, { role: 'bot', text: "ბოდიში, დროებით კავშირის პრობლემაა. გთხოვთ სცადოთ ხელახლა." }]);
     }
     setLoading(false);
   };
