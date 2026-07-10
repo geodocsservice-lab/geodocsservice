@@ -40,7 +40,7 @@ export default function GeoDocsApp() {
 
     try {
       const myApiKey = process.env.REACT_APP_GEMINI_API_KEY; 
-      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${myApiKey}`;
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${myApiKey}`;
 
       const response = await fetch(url, {
         method: 'POST',
