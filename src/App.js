@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Home, LayoutGrid, Info, Instagram, Facebook, Send, X, FileText } from 'lucide-react';
 
 export default function GeoDocsApp() {
