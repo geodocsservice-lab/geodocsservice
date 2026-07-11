@@ -32,23 +32,30 @@ export default function GeoDocsApp() {
     const userMsg = { role: 'user', text: input };
     setMessages(prev => [...prev, userMsg]);
     setInput('');
-    setLoading(true);
+    loading && setLoading(true);
 
     const systemPrompt = `შენ ხარ დოქტორი დამისო (Dr. Damiso), Geo Docs Service-ის ოფიციალური AI ასისტენტი (3D რობოტი).
-    შენი წესები: 
-    - ფასები: CV ქართულად 10₾, უცხო ენაზე 15₾
-    - კონფიდენციალურობა: მონაცემები იშლება 5 წუთში
-    - ინახება მხოლოდ: თარიღი, ენა და ელ-ფოსტა
-    - ფაილის წაშლა: PDF Drive-იდან იშლება შუაღამისას
-    - თუ მომხმარებელი გწერს ქართული შინაარსით, მაგრამ ლათინური ასოებით, უპასუხე გამართული ქართული შრიფტით
-    - ყოველთვის დამხმელი და პროფესიონალური იყო
-    - კითხვებზე მოკლე, ნათელი პასუხები დაე`;
+    
+    მკაცრი წესები მისალმებაზე:
+    - მომხმარებელს უკვე მიესალმე და წარუდგინე შენი თავი! არავითარ შემთხვევაში აღარ დაწერო "გამარჯობა", "მოგესალმებით", "მე ვარ დოქტორი დამისო" ან "რით შემიძლია დაგეხმაროთ".
+    - პასუხი დაიწყე პირდაპირ საქმით, მისალმების გარეშე.
+
+    მრავალენოვნების წესი:
+    - უპასუხე ზუსტად იმ ენაზე, რა ენაზეც მომხმარებელი გწერს! თუ გწერს ინგლისურად - უპასუხე ინგლისურად, თუ რუსულად - რუსულად.
+    - თუ მომხმარებელი გწერს ქართული შინაარსით, მაგრამ ლათინური ასოებით (Megruli shriftit), უპასუხე გამართული ქართული შრიფტით (მხედრულით).
+
+    შენი ცოდნა (წესები და პირობები):
+    - ფასები: CV-ს დამზადება ქართულ ენაზე ღირს 10₾, ხოლო ნებისმიერ უცხო ენაზე - 15₾.
+    - მონაცემთა უსაფრთხოება: მომხმარებლის პერსონალური მონაცემები სისტემიდან ავტომატურად იშლება შევსებიდან 5 წუთში.
+    - რას ვინახავთ: უსაფრთხოების და სტატისტიკისთვის ბაზაში რჩება მხოლოდ შეკვეთის თარიღი, არჩეული ენა და მომხმარებლის ელ-ფოსტა.
+    - ფაილების შენახვა: გენერირებული PDF ფაილები PDF Drive-იდან სრულად იშლება ყოველ შუაღამეს.
+    
+    იყავი ყოველთვის მოკლე, კონკრეტული, დამხმარე და პროფესიონალური.`;
 
     const userPrompt = `მომხმარებლის კითხვა: ${input}`;
     const fullPrompt = systemPrompt + "\n\n" + userPrompt;
 
     try {
-      const myApiKey = process.env.REACT_APP_GEMINI_API_KEY; 
       const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${process.env.REACT_APP_GEMINI_API_KEY}`;
 
       const response = await fetch(url, {
@@ -95,7 +102,8 @@ export default function GeoDocsApp() {
       aboutTitle: "ჩვენს შესახებ", 
       aboutContent: "Geo Docs Service არის პირველი ქართული სრულად ავტომატიზებული პლატფორმა. ჩვენი გუნდი მუშაობს მაღალი სიზუსტის ხელოვნურ ინტელექტზე, რათა თქვენი დოკუმენტები მომზადდეს წამებში.", 
       rights: "© 2026 GEO DOCS SERVICE. ყველა უფლება დაცულია.",
-      termsTitle: "წესები და პირობები"
+      termsTitle: "წესები და პირობები",
+      termsContent: "გთხოვთ გაეცნოთ პლატფორმის მუშაობის პრინციპებსა და უსაფრთხოების წესებს:"
     },
     EN: { 
       sloganPart1: "Stay Focused on ", 
@@ -108,7 +116,8 @@ export default function GeoDocsApp() {
       aboutTitle: "About Us", 
       aboutContent: "Geo Docs Service is the first fully automated Georgian platform. Our team works on high-precision AI.", 
       rights: "© 2026 GEO DOCS SERVICE. All rights reserved.",
-      termsTitle: "Terms and Conditions"
+      termsTitle: "Terms and Conditions",
+      termsContent: "Please review our platform's operating rules and security guidelines:"
     },
     RU: { 
       sloganPart1: "Не отвлекайтесь ", 
@@ -121,7 +130,8 @@ export default function GeoDocsApp() {
       aboutTitle: "О нас", 
       aboutContent: "Geo Docs Service — первая полностью автоматизированная грузинская платформа.", 
       rights: "© 2026 GEO DOCS SERVICE. Все права защищены.",
-      termsTitle: "Правила и условия"
+      termsTitle: "Правила и условия",
+      termsContent: "Пожалуйста, ознакомьтесь с правилами работы нашей платформы и политикой безопасности:"
     }
   }[lang];
 
@@ -183,6 +193,20 @@ export default function GeoDocsApp() {
           <div style={{ background: '#2A2A2A', padding: '20px', borderRadius: '20px', marginTop: '20px' }}>
             <h2 style={{ color: '#FFB800' }}>{t.aboutTitle}</h2>
             <p style={{ lineHeight: '1.6' }}>{t.aboutContent}</p>
+          </div>
+        )}
+
+        {/* Terms and Conditions Tab */}
+        {activeTab === 'terms' && (
+          <div style={{ background: '#2A2A2A', padding: '20px', borderRadius: '20px', marginTop: '20px' }}>
+            <h2 style={{ color: '#FFB800', marginBottom: '15px' }}>{t.termsTitle}</h2>
+            <p style={{ fontWeight: 'bold', marginBottom: '15px' }}>{t.termsContent}</p>
+            <ul style={{ paddingLeft: '20px', lineHeight: '1.8' }}>
+              <li><b style={{ color: '#FFB800' }}>{lang === 'GE' ? 'ტარიფები:' : lang === 'EN' ? 'Pricing:' : 'Тарифы:'}</b> {lang === 'GE' ? 'CV ქართულად - 10₾, უცხო ენაზე - 15₾.' : lang === 'EN' ? 'CV in Georgian - 10₾, Foreign language - 15₾.' : 'Резюме на грузинском - 10₾, на иностранном - 15₾.'}</li>
+              <li><b style={{ color: '#FFB800' }}>{lang === 'GE' ? 'მონაცემთა დაცვა:' : lang === 'EN' ? 'Data Protection:' : 'Защита данных:'}</b> {lang === 'GE' ? 'ყველა პერსონალური მონაცემი ავტომატურად იშლება ბაზიდან შევსებიდან 5 წუთის შემდეგ.' : lang === 'EN' ? 'All personal data is automatically deleted from the database 5 minutes after submission.' : 'Все личные данные автоматически удаляются из базы через 5 минут после заполнения.'}</li>
+              <li><b style={{ color: '#FFB800' }}>'სტატისტიკა:'</b> {lang === 'GE' ? 'სისტემაში უსაფრთხოების მიზნით ინახება მხოლოდ შეკვეთის თარიღი, არჩეული ენა და თქვენი ელ-ფოსტა.' : lang === 'EN' ? 'For security reasons, only the order date, chosen language, and your email are stored.' : 'В целях безопасности сохраняются только дата заказа, выбранный язык и ваша электронная почта.'}</li>
+              <li><b style={{ color: '#FFB800' }}>{lang === 'GE' ? 'ფაილების შენახვა:' : lang === 'EN' ? 'File Storage:' : 'Хранение файлов:'}</b> {lang === 'GE' ? 'გენერირებული PDF დოკუმენტები PDF Drive-იდან იშლება ყოველ შუაღამეს.' : lang === 'EN' ? 'Generated PDF documents are deleted from PDF Drive every midnight.' : 'Сгенерированные PDF-документы удаляются из PDF Drive каждую полночь.'}</li>
+            </ul>
           </div>
         )}
 
