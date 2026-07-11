@@ -7,7 +7,7 @@ export default function GeoDocsApp() {
   const [showNav, setShowNav] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isChatOpen, setIsChatOpen] = useState(false);
-  const [messages, setMessages] = useState([{ role: 'bot', text: 'გამარჯობა! მე ვარ დოქტორი დამისო. რით შემიძლია დაგეხმაროთ?' }]);
+  const [messages, setMessages] = useState([]); // ჩატი იწყება ცარიელი
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -32,12 +32,12 @@ export default function GeoDocsApp() {
     const userMsg = { role: 'user', text: input };
     setMessages(prev => [...prev, userMsg]);
     setInput('');
-    loading && setLoading(true);
+    setLoading(true);
 
     const systemPrompt = `შენ ხარ დოქტორი დამისო (Dr. Damiso), geo docs servisi-ის ოფიციალური AI ასისტენტი (3D რობოტი).
 
     მკაცრი წესები კომუნიკაციაზე:
-    1. არავითარი მისალმება! არასდროს გაიმეორო "გამარჯობა" ან შენი სახელი. პირდაპირ გაეცი პასუხი.
+    1. არავითარი მისალმება და თავის წარდგენა თავიდან! პირდაპირ გაეცი პასუხი.
     2. ენა: ყოველთვის უპასუხე იმ ენაზე, რა ენაზეც გწერენ! თუ გწერენ ინგლისურად - უპასუხე ინგლისურად. თუ გწერენ რუსულად (თუნდაც ლათინური ასოებით) - უპასუხე გამართული რუსულით.
     3. ლაკონიურობა: უპასუხე ზუსტად და მოკლედ მხოლოდ დასმულ შეკითხვას. ნუ მოყვები უსაფრთხოებაზე ან მონაცემთა წაშლაზე, თუ კონკრეტულად არ გეკითხებიან!
 
@@ -45,9 +45,13 @@ export default function GeoDocsApp() {
     - თუ მომხმარებელი გეკითხება, როგორ შექმნას CV, სად დააჭიროს, ან როგორ დაიწყოს პროცესი, აუხსენი ეს შინაარსი (აუცილებლად იმ ენაზე, რა ენაზეც გკითხეს!): 
     "CV-ს შესაქმნელად, გთხოვთ მთავარ გვერდზე დააჭიროთ ყვითელ ღილაკს 'AI CV 2 წუთში' ან 'ტარიფების' განყოფილებაში აირჩიოთ სასურველი ენა."
 
+    თავაზიანობა:
+    - თუ მომხმარებელი მადლობას გიხდის, უპასუხე ძალიან თავაზიანად (იმ ენაზე, რომელზეც გწერენ). მაგალითად: "გამიხარდა, რომ დაგეხმარეთ! თუ კიდევ დაგჭირდით, მე აქ ვარ რათა დაგეხმაროთ."
+
     შენი ცოდნა (გამოიყენე მხოლოდ საჭიროებისას):
     - ფასები: CV ქართულად - 10₾. ნებისმიერ უცხო ენაზე (მათ შორის არგენტინულ ესპანურზეც) - 15₾.
-    - უსაფრთხოება: მონაცემები იშლება 5 წუთში, ვინახავთ მხოლოდ თარიღს, ენას და მეილს. PDF იშლება შუაღამეს.`;
+    - უსაფრთხოება: მონაცემები იშლება 5 წუთში, ვინახავთ მხოლოდ თარიღს, ენას და მეილს. PDF იშლება შუაღამეს.
+    - მონაცემთა გამოყენება: მოწოდებული ინფორმაცია გამოყენებული იქნება ექსკლუზიურად მხოლოდ შერჩეული დოკუმენტის მოსამზადებლად.`;
 
     const userPrompt = `მომხმარებლის კითხვა: ${input}`;
     const fullPrompt = systemPrompt + "\n\n" + userPrompt;
@@ -77,11 +81,9 @@ export default function GeoDocsApp() {
         const botResponse = data.candidates[0].content.parts[0].text;
         setMessages(prev => [...prev, { role: 'bot', text: botResponse }]);
       } else {
-        console.error("API Response:", data);
         setMessages(prev => [...prev, { role: 'bot', text: "ბოდიში, პასუხი ვერ მივიღე. სცადე თავიდან." }]);
       }
     } catch (error) {
-      console.error("Error API:", error);
       setMessages(prev => [...prev, { role: 'bot', text: "ბოდიში, დროებით კავშირის პრობლემაა. გთხოვთ სცადოთ ხელახლა." }]);
     }
     setLoading(false);
@@ -91,7 +93,7 @@ export default function GeoDocsApp() {
     GE: { 
       sloganPart1: "ნუ მოწყდები ", 
       sloganPart2: "შენს საქმეს", 
-      alert: "პერსონალური მონაცემები იშლება 5 წუთში, ფაილი - შუაღამისას!", 
+      alert: "პერსონალური მონაცემები იშლება 5 წუთში!", 
       cvBtn: "AI CV 2 წუთში", 
       invoiceBtn: "ინვოისი (მალე)", 
       pricesTitle: "ტარიფები", 
@@ -105,7 +107,7 @@ export default function GeoDocsApp() {
     EN: { 
       sloganPart1: "Stay Focused on ", 
       sloganPart2: "Your Business", 
-      alert: "Personal data is deleted in 5 mins, file - at midnight!", 
+      alert: "Personal data is deleted in 5 mins!", 
       cvBtn: "AI CV in 2 Minutes", 
       invoiceBtn: "Invoice (Soon)", 
       pricesTitle: "Pricing", 
@@ -119,7 +121,7 @@ export default function GeoDocsApp() {
     RU: { 
       sloganPart1: "Не отвлекайтесь ", 
       sloganPart2: "от дел", 
-      alert: "Личные данные удаляются через 5 мин, файл - в полночь!", 
+      alert: "Личные данные удаляются через 5 мин!", 
       cvBtn: "AI CV за 2 минуты", 
       invoiceBtn: "Инвойс (Скоро)", 
       pricesTitle: "Тарифы", 
@@ -135,9 +137,18 @@ export default function GeoDocsApp() {
   return (
     <div style={{ backgroundColor: '#6D757D', minHeight: '100vh', color: 'white', fontFamily: 'Arial, sans-serif', width: '100%', overflowX: 'hidden' }}>
       
+      {/* ანიმაციის სტილები ჩატის 3 წერტილისთვის */}
+      <style>{`
+        @keyframes blink {
+          0% { opacity: 0.2; }
+          20% { opacity: 1; }
+          100% { opacity: 0.2; }
+        }
+      `}</style>
+
       {/* Header */}
       <header style={{ backgroundColor: '#1A1A1A', padding: '15px', position: 'fixed', top: 0, width: '100%', zIndex: 1000, display: 'flex', justifyContent: 'space-between', alignItems: 'center', boxSizing: 'border-box' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }} onClick={() => setActiveTab('home')}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }} onClick={() => {setActiveTab('home'); window.scrollTo(0,0);}}>
             <img src={logoUrl} alt="Logo" style={{ width: '30px', height: '30px', borderRadius: '50%', objectFit: 'cover' }} />
             <div style={{ fontWeight: '900', fontStyle: 'italic' }}>GEO DOCS SERVICE</div>
         </div>
@@ -201,7 +212,8 @@ export default function GeoDocsApp() {
             <ul style={{ paddingLeft: '20px', lineHeight: '1.8' }}>
               <li><b style={{ color: '#FFB800' }}>{lang === 'GE' ? 'ტარიფები:' : lang === 'EN' ? 'Pricing:' : 'Тарифы:'}</b> {lang === 'GE' ? 'CV ქართულად - 10₾, უცხო ენაზე - 15₾.' : lang === 'EN' ? 'CV in Georgian - 10₾, Foreign language - 15₾.' : 'Резюме на грузинском - 10₾, на иностранном - 15₾.'}</li>
               <li><b style={{ color: '#FFB800' }}>{lang === 'GE' ? 'მონაცემთა დაცვა:' : lang === 'EN' ? 'Data Protection:' : 'Защита данных:'}</b> {lang === 'GE' ? 'ყველა პერსონალური მონაცემი ავტომატურად იშლება ბაზიდან შევსებიდან 5 წუთის შემდეგ.' : lang === 'EN' ? 'All personal data is automatically deleted from the database 5 minutes after submission.' : 'Все личные данные автоматически удаляются из базы через 5 минут после заполнения.'}</li>
-              <li><b style={{ color: '#FFB800' }}>'სტატისტიკა:'</b> {lang === 'GE' ? 'სისტემაში უსაფრთხოების მიზნით ინახება მხოლოდ შეკვეთის თარიღი, არჩეული ენა და თქვენი ელ-ფოსტა.' : lang === 'EN' ? 'For security reasons, only the order date, chosen language, and your email are stored.' : 'В целях безопасности сохраняются только дата заказа, выбранный язык и ваша электронная почта.'}</li>
+              <li><b style={{ color: '#FFB800' }}>{lang === 'GE' ? 'მონაცემთა გამოყენება:' : lang === 'EN' ? 'Data Usage:' : 'Использование данных:'}</b> {lang === 'GE' ? 'თქვენგან მოწოდებული ინფორმაცია გამოყენებული იქნება ექსკლუზიურად მხოლოდ თქვენს მიერ შერჩეული დოკუმენტის მოსამზადებლად.' : lang === 'EN' ? 'The information provided by you will be used exclusively for preparing your selected document.' : 'Предоставленная вами информация будет использоваться исключительно для подготовки выбранного вами документа.'}</li>
+              <li><b style={{ color: '#FFB800' }}>{lang === 'GE' ? 'სტატისტიკა:' : lang === 'EN' ? 'Statistics:' : 'Статистика:'}</b> {lang === 'GE' ? 'სისტემაში უსაფრთხოების მიზნით ინახება მხოლოდ შეკვეთის თარიღი, არჩეული ენა და თქვენი ელ-ფოსტა.' : lang === 'EN' ? 'For security reasons, only the order date, chosen language, and your email are stored.' : 'В целях безопасности сохраняются только дата заказа, выбранный язык и ваша электронная почта.'}</li>
               <li><b style={{ color: '#FFB800' }}>{lang === 'GE' ? 'ფაილების შენახვა:' : lang === 'EN' ? 'File Storage:' : 'Хранение файлов:'}</b> {lang === 'GE' ? 'გენერირებული PDF დოკუმენტები PDF Drive-იდან იშლება ყოველ შუაღამეს.' : lang === 'EN' ? 'Generated PDF documents are deleted from PDF Drive every midnight.' : 'Сгенерированные PDF-документы удаляются из PDF Drive каждую полночь.'}</li>
             </ul>
           </div>
@@ -217,9 +229,12 @@ export default function GeoDocsApp() {
           </div>
           
           <div 
-            onClick={() => setActiveTab('terms')} 
-            style={{ fontSize: '12px', textDecoration: 'underline', cursor: 'pointer', marginBottom: '10px', color: '#FFB800' }}>
-            {t.termsTitle}
+            onClick={() => {
+              setActiveTab('terms');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }} 
+            style={{ fontSize: '12px', textDecoration: 'underline', cursor: 'pointer', marginBottom: '10px', color: '#FFB800', fontWeight: 'bold' }}>
+            წესები და პირობები / Terms and Conditions
           </div>
           
           <p style={{ fontSize: '10px' }}>{t.rights}</p>
@@ -244,7 +259,15 @@ export default function GeoDocsApp() {
                 {m.text}
               </div>
             ))}
-            {loading && <div style={{ alignSelf: 'flex-start', color: '#888', fontSize: '12px', fontStyle: 'italic' }}>ბეჭდავს...</div>}
+            
+            {/* ლაივ ბეჭდვის (სამი წერტილის) ანიმაცია */}
+            {loading && (
+              <div style={{ alignSelf: 'flex-start', backgroundColor: '#333', padding: '12px 16px', borderRadius: '15px', display: 'flex', gap: '5px', alignItems: 'center' }}>
+                <span style={{width: '6px', height: '6px', backgroundColor: '#fff', borderRadius: '50%', animation: 'blink 1.4s infinite both'}}></span>
+                <span style={{width: '6px', height: '6px', backgroundColor: '#fff', borderRadius: '50%', animation: 'blink 1.4s infinite both 0.2s'}}></span>
+                <span style={{width: '6px', height: '6px', backgroundColor: '#fff', borderRadius: '50%', animation: 'blink 1.4s infinite both 0.4s'}}></span>
+              </div>
+            )}
           </div>
           
           <form 
@@ -302,7 +325,7 @@ export default function GeoDocsApp() {
         opacity: showNav ? 1 : 0,
         boxShadow: '0 4px 20px rgba(0,0,0,0.5)'
       }}>
-        <Home onClick={() => setActiveTab('home')} style={{ color: activeTab === 'home' ? '#007AFF' : 'white', cursor: 'pointer' }} />
+        <Home onClick={() => {setActiveTab('home'); window.scrollTo(0,0);}} style={{ color: activeTab === 'home' ? '#007AFF' : 'white', cursor: 'pointer' }} />
         <LayoutGrid 
           onClick={() => {
             setActiveTab('home');
@@ -312,8 +335,8 @@ export default function GeoDocsApp() {
           }} 
           style={{ cursor: 'pointer', color: 'white' }} 
         />
-        <FileText onClick={() => setActiveTab('terms')} style={{ color: activeTab === 'terms' ? '#007AFF' : 'white', cursor: 'pointer' }} />
-        <Info onClick={() => setActiveTab('about')} style={{ color: activeTab === 'about' ? '#007AFF' : 'white', cursor: 'pointer' }} />
+        <FileText onClick={() => {setActiveTab('terms'); window.scrollTo(0,0);}} style={{ color: activeTab === 'terms' ? '#007AFF' : 'white', cursor: 'pointer' }} />
+        <Info onClick={() => {setActiveTab('about'); window.scrollTo(0,0);}} style={{ color: activeTab === 'about' ? '#007AFF' : 'white', cursor: 'pointer' }} />
       </nav>
       
     </div>
