@@ -34,7 +34,7 @@ export default function GeoDocsApp() {
     setInput('');
     setLoading(true);
 
-    const systemPrompt = `შენ ხარ დოქტორი დამისო (Dr. Damiso), geo docs servisi-ის ოფიციალური AI ასისტენტი (3D რობოტი).
+    const systemPrompt = `შენ ხარ დოქტორი დამისო (Dr. Damiso), ჯეო დოკს სერვისის (Geo Docs Service) ოფიციალური AI ასისტენტი (3D რობოტი).
 
     მკაცრი წესები კომუნიკაციაზე:
     1. მისალმება: თუ მომხმარებელი მხოლოდ მოგესალმა (მაგ: გამარჯობა, hello, привет), უპასუხე: "გამარჯობა! მე ვარ დოქტორი დამისო. რით შემიძლია დაგეხმაროთ?" (გადათარგმნე იმ ენაზე, რა ენაზეც მოგესალმნენ). სხვა კონკრეტულ კითხვებზე პირდაპირ საქმეზე გადადი, ზედმეტი მისალმების გარეშე.
@@ -48,9 +48,13 @@ export default function GeoDocsApp() {
     თავაზიანობა:
     - თუ მომხმარებელი მადლობას გიხდის, უპასუხე ძალიან თავაზიანად (იმ ენაზე, რომელზეც გწერენ). მაგალითად: "გამიხარდა, რომ დაგეხმარეთ! თუ კიდევ დაგჭირდით, მე აქ ვარ რათა დაგეხმაროთ."
 
+    პროცესი და მიწოდება (აუცილებლად გაითვალისწინე, როცა დეტალებს ითხოვენ):
+    - კითხვარის შევსების შემდეგ, დაგენერირებული საბუთი იგზავნება მომხმარებლის იმეილზე დაახლოებით 2 წუთში. 
+    - აუცილებლად ურჩიე/გააფრთხილე მომხმარებელი: "იმეილი სწორად ჩაწერეთ, რადგან მითითებულ იმეილზე გამოგეგზავნებათ დამზადებული PDF ფაილი." (გადათარგმნე შესაბამის ენაზე).
+
     შენი ცოდნა (გამოიყენე მხოლოდ საჭიროებისას):
     - ფასები: CV ქართულად - 10₾. ნებისმიერ უცხო ენაზე (მათ შორის არგენტინულ ესპანურზეც) - 15₾.
-    - უსაფრთხოება და წაშლა: პერსონალური მონაცემები იშლება 5 წუთში. მომსახურების უზრუნველსაყოფად შენახული ინფორმაცია (თარიღი, ენა, ელ-ფოსტა) და გენერირებული PDF ფაილები სრულად იშლება ყოველ ღამის 12 საათზე (შუაღამისას).
+    - უსაფრთხოება და წაშლა: პერსონალური მონაცემები იშლება საბუთის დამზადებიდან 5 წუთში. მომსახურების უზრუნველსაყოფად შენახული ინფორმაცია (თარიღი, ენა, ელ-ფოსტა) და გენერირებული PDF ფაილები სრულად იშლება ყოველ ღამის 12 საათზე.
     - მონაცემთა გამოყენება: მოწოდებული ინფორმაცია გამოყენებული იქნება ექსკლუზიურად მხოლოდ შერჩეული დოკუმენტის მოსამზადებლად.`;
 
     const userPrompt = `მომხმარებლის კითხვა: ${input}`;
@@ -99,7 +103,7 @@ export default function GeoDocsApp() {
       pricesTitle: "ტარიფები", 
       prices: [{ title: "სივის ქართულად გენერირება", price: "10₾" }, { title: "სივის უცხო ენაზე გენერირება", price: "15₾" }], 
       aboutTitle: "ჩვენს შესახებ", 
-      aboutContent: "geo docs servisi არის პირველი ქართული სრულად ავტომატიზებული პლატფორმა. ჩვენი გუნდი მუშაობს მაღალი სიზუსტის ხელოვნურ ინტელექტზე, რათა თქვენი დოკუმენტები მომზადდეს წამებში.", 
+      aboutContent: "ჯეო დოკს სერვისი არის პირველი ქართული სრულად ავტომატიზებული პლატფორმა. ჩვენი გუნდი მუშაობს მაღალი სიზუსტის ხელოვნურ ინტელექტზე, რათა თქვენი დოკუმენტები მომზადდეს წამებში.", 
       rights: "© 2026 GEO DOCS SERVICE. ყველა უფლება დაცულია.",
       termsTitle: "წესები და პირობები",
       termsContent: "გთხოვთ გაეცნოთ პლატფორმის მუშაობის პრინციპებსა და უსაფრთხოების წესებს:"
@@ -113,7 +117,7 @@ export default function GeoDocsApp() {
       pricesTitle: "Pricing", 
       prices: [{ title: "CV Generation in Georgian", price: "10₾" }, { title: "CV Generation in Foreign Language", price: "15₾" }], 
       aboutTitle: "About Us", 
-      aboutContent: "geo docs servisi is the first fully automated Georgian platform. Our team works on high-precision AI.", 
+      aboutContent: "Geo Docs Service is the first fully automated Georgian platform. Our team works on high-precision artificial intelligence so that your documents are prepared in seconds.", 
       rights: "© 2026 GEO DOCS SERVICE. All rights reserved.",
       termsTitle: "Terms and Conditions",
       termsContent: "Please review our platform's operating rules and security guidelines:"
@@ -127,7 +131,7 @@ export default function GeoDocsApp() {
       pricesTitle: "Тарифы", 
       prices: [{ title: "Генерация резюме на грузинском", price: "10₾" }, { title: "Генерация резюме на иностранном языке", price: "15₾" }], 
       aboutTitle: "О нас", 
-      aboutContent: "geo docs servisi — первая полностью автоматизированная грузинская платформа.", 
+      aboutContent: "Geo Docs Service — первая полностью автоматизированная грузинская платформа. Наша команда работает над высокоточным искусственным интеллектом, чтобы ваши документы были готовы за считанные секунды.", 
       rights: "© 2026 GEO DOCS SERVICE. Все права защищены.",
       termsTitle: "Правила и условия",
       termsContent: "Пожалуйста, ознакомьтесь с правилами работы нашей платформы и политикой безопасности:"
@@ -211,10 +215,10 @@ export default function GeoDocsApp() {
             <p style={{ fontWeight: 'bold', marginBottom: '15px' }}>{t.termsContent}</p>
             <ul style={{ paddingLeft: '20px', lineHeight: '1.8' }}>
               <li><b style={{ color: '#FFB800' }}>{lang === 'GE' ? 'ტარიფები:' : lang === 'EN' ? 'Pricing:' : 'Тарифы:'}</b> {lang === 'GE' ? 'CV ქართულად - 10₾, უცხო ენაზე - 15₾.' : lang === 'EN' ? 'CV in Georgian - 10₾, Foreign language - 15₾.' : 'Резюме на грузинском - 10₾, на иностранном - 15₾.'}</li>
-              <li><b style={{ color: '#FFB800' }}>{lang === 'GE' ? 'მონაცემთა დაცვა:' : lang === 'EN' ? 'Data Protection:' : 'Защита данных:'}</b> {lang === 'GE' ? 'ყველა პერსონალური მონაცემი ავტომატურად იშლება ბაზიდან შევსებიდან 5 წუთის შემდეგ.' : lang === 'EN' ? 'All personal data is automatically deleted from the database 5 minutes after submission.' : 'Все личные данные автоматически удаляются из базы через 5 минут после заполнения.'}</li>
+              <li><b style={{ color: '#FFB800' }}>{lang === 'GE' ? 'მონაცემთა დაცვა:' : lang === 'EN' ? 'Data Protection:' : 'Защита данных:'}</b> {lang === 'GE' ? 'ყველა პერსონალური მონაცემი ავტომატურად იშლება ბაზიდან საბუთის დამზადებიდან 5 წუთის შემდეგ.' : lang === 'EN' ? 'All personal data is automatically deleted from the database 5 minutes after document preparation.' : 'Все личные данные автоматически удаляются из базы через 5 минут после подготовки документа.'}</li>
               <li><b style={{ color: '#FFB800' }}>{lang === 'GE' ? 'მონაცემთა გამოყენება:' : lang === 'EN' ? 'Data Usage:' : 'Использование данных:'}</b> {lang === 'GE' ? 'თქვენგან მოწოდებული ინფორმაცია გამოყენებული იქნება ექსკლუზიურად მხოლოდ თქვენს მიერ შერჩეული დოკუმენტის მოსამზადებლად.' : lang === 'EN' ? 'The information provided by you will be used exclusively for preparing your selected document.' : 'Предоставленная вами информация будет использоваться исключительно для подготовки выбранного вами документа.'}</li>
-              <li><b style={{ color: '#FFB800' }}>{lang === 'GE' ? 'მომსახურების უზრუნველყოფა:' : lang === 'EN' ? 'Service Provision:' : 'Обеспечение обслуживания:'}</b> {lang === 'GE' ? 'სისტემაში უსაფრთხოების მიზნით ინახება მხოლოდ შეკვეთის თარიღი, არჩეული ენა და თქვენი ელ-ფოსტა, რომლებიც ასევე წაიშლება ყოველ ღამის 12 საათზე.' : lang === 'EN' ? 'For security reasons, only the order date, chosen language, and your email are stored, which are also deleted every midnight.' : 'В целях безопасности сохраняются только дата заказа, выбранный язык и ваша электронная почта, которые также удаляются каждую полночь.'}</li>
-              <li><b style={{ color: '#FFB800' }}>{lang === 'GE' ? 'ფაილების შენახვა:' : lang === 'EN' ? 'File Storage:' : 'Хранение файлов:'}</b> {lang === 'GE' ? 'გენერირებული PDF დოკუმენტები PDF Drive-იდან იშლება ყოველ შუაღამეს.' : lang === 'EN' ? 'Generated PDF documents are deleted from PDF Drive every midnight.' : 'Сгенерированные PDF-документы удаляются из PDF Drive каждую полночь.'}</li>
+              <li><b style={{ color: '#FFB800' }}>{lang === 'GE' ? 'მომსახურების უზრუნველყოფა:' : lang === 'EN' ? 'Service Provision:' : 'Обеспечение обслуживания:'}</b> {lang === 'GE' ? 'სისტემაში უსაფრთხოების მიზნით ინახება მხოლოდ შეკვეთის თარიღი, არჩეული ენა და თქვენი ელ-ფოსტა, რომლებიც ასევე წაიშლება ყოველ ღამის 12 საათზე.' : lang === 'EN' ? 'For security reasons, only the order date, chosen language, and your email are stored, which are also deleted every night at 12:00 AM.' : 'В целях безопасности сохраняются только дата заказа, выбранный язык и ваша электронная почта, которые также удаляются каждую ночь в 12 часов.'}</li>
+              <li><b style={{ color: '#FFB800' }}>{lang === 'GE' ? 'ფაილების შენახვა:' : lang === 'EN' ? 'File Storage:' : 'Хранение файлов:'}</b> {lang === 'GE' ? 'გენერირებული PDF დოკუმენტები PDF Drive-იდან იშლება ყოველ ღამის 12 საათზე.' : lang === 'EN' ? 'Generated PDF documents are deleted from PDF Drive every night at 12:00 AM.' : 'Сгенерированные PDF-документы удаляются из PDF Drive каждую ночь в 12 часов.'}</li>
             </ul>
           </div>
         )}
