@@ -61,22 +61,11 @@ export default function GeoDocsApp() {
     const fullPrompt = systemPrompt + "\n\n" + userPrompt;
 
     try {
-      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${process.env.REACT_APP_GEMINI_API_KEY}`;
-
-      const response = await fetch(url, {
+      // 4. მოთხოვნას ვაგზავნით ჩვენს დაცულ სერვერზე (/api/chat)
+      const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [
-            {
-              parts: [
-                {
-                  text: fullPrompt
-                }
-              ]
-            }
-          ]
-        })
+        body: JSON.stringify({ prompt: fullPrompt })
       });
       
       const data = await response.json();
