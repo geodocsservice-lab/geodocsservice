@@ -7,7 +7,7 @@ export default function GeoDocsApp() {
   const [showNav, setShowNav] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isChatOpen, setIsChatOpen] = useState(false);
-  const [messages, setMessages] = useState([]); // ჩატი იწყება ცარიელი
+  const [messages, setMessages] = useState([]); 
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -87,7 +87,7 @@ export default function GeoDocsApp() {
       sloganPart1: "ნუ მოწყდები ", 
       sloganPart2: "შენს საქმეს", 
       alert: "პერსონალური მონაცემები იშლება 5 წუთში!", 
-      cvBtn: "AI CV 2 წუთში", 
+      cvBtn: "AI CV 2 წუთში, ნებისმიერ ენაზე", 
       invoiceBtn: "ინვოისი (მალე)", 
       pricesTitle: "ტარიფები", 
       prices: [{ title: "სივის ქართულად გენერირება", price: "10₾" }, { title: "სივის უცხო ენაზე გენერირება", price: "15₾" }], 
@@ -101,7 +101,7 @@ export default function GeoDocsApp() {
       sloganPart1: "Stay Focused on ", 
       sloganPart2: "Your Business", 
       alert: "Personal data is deleted in 5 mins!", 
-      cvBtn: "AI CV in 2 Minutes", 
+      cvBtn: "AI CV in 2 Mins, Any Language", 
       invoiceBtn: "Invoice (Soon)", 
       pricesTitle: "Pricing", 
       prices: [{ title: "CV Generation in Georgian", price: "10₾" }, { title: "CV Generation in Foreign Language", price: "15₾" }], 
@@ -115,7 +115,7 @@ export default function GeoDocsApp() {
       sloganPart1: "Не отвлекайтесь ", 
       sloganPart2: "от дел", 
       alert: "Личные данные удаляются через 5 мин!", 
-      cvBtn: "AI CV за 2 минуты", 
+      cvBtn: "AI CV за 2 минуты, на любом языке", 
       invoiceBtn: "Инвойс (Скоро)", 
       pricesTitle: "Тарифы", 
       prices: [{ title: "Генерация резюме на грузинском", price: "10₾" }, { title: "Генерация резюме на иностранном языке", price: "15₾" }], 
@@ -207,6 +207,7 @@ export default function GeoDocsApp() {
               <li><b style={{ color: '#FFB800' }}>{lang === 'GE' ? 'მონაცემთა დაცვა:' : lang === 'EN' ? 'Data Protection:' : 'Защита данных:'}</b> {lang === 'GE' ? 'ყველა პერსონალური მონაცემი ავტომატურად იშლება ბაზიდან საბუთის დამზადებიდან 5 წუთის შემდეგ.' : lang === 'EN' ? 'All personal data is automatically deleted from the database 5 minutes after document preparation.' : 'Все личные данные автоматически удаляются из базы через 5 минут после подготовки документа.'}</li>
               <li><b style={{ color: '#FFB800' }}>{lang === 'GE' ? 'მონაცემთა გამოყენება:' : lang === 'EN' ? 'Data Usage:' : 'Использование данных:'}</b> {lang === 'GE' ? 'თქვენგან მოწოდებული ინფორმაცია გამოყენებული იქნება ექსკლუზიურად მხოლოდ თქვენს მიერ შერჩეული დოკუმენტის მოსამზადებლად.' : lang === 'EN' ? 'The information provided by you will be used exclusively for preparing your selected document.' : 'Предоставленная вами информация будет использоваться исключительно для подготовки выбранного вами документа.'}</li>
               <li><b style={{ color: '#FFB800' }}>{lang === 'GE' ? 'მომსახურების უზრუნველყოფა:' : lang === 'EN' ? 'Service Provision:' : 'Обеспечение обслуживания:'}</b> {lang === 'GE' ? 'სისტემაში უსაფრთხოების მიზნით ინახება მხოლოდ შეკვეთის თარიღი, არჩეული ენა და თქვენი ელ-ფოსტა, რომლებიც ასევე წაიშლება ყოველ ღამის 12 საათზე.' : lang === 'EN' ? 'For security reasons, only the order date, chosen language, and your email are stored, which are also deleted every night at 12:00 AM.' : 'В целях безопасности сохраняются только дата заказа, выбранный язык и ваша электронная почта, которые также удаляются каждую ночь в 12 часов.'}</li>
+              <li><b style={{ color: '#FFB800' }}>{lang === 'GE' ? 'ჩასწორება / განმეორებითი დოკუმენტი:' : lang === 'EN' ? 'Correction / Repeat Document:' : 'Исправление / Повторный документ:'}</b> {lang === 'GE' ? 'თუ დოკუმენტში შეცდომაა, გთხოვთ, კითხვარი შეავსოთ თავიდან. სისტემა ამოწმებს შენახულ სამ მონაცემს (თარიღი, ენა, ელ-ფოსტა). დამთხვევის შემთხვევაში, სისტემა ავტომატურად მოგცემთ კორექტირების საშუალებას და ახალი, ჩასწორებული დოკუმენტი სრულიად უფასოდ დაგიმზადდებათ.' : lang === 'EN' ? 'If there is an error in the document, please fill out the questionnaire again. The system checks the three stored data points (date, language, email). If they match, the system will automatically allow correction and a new, corrected document will be generated completely free of charge.' : 'Если в документе есть ошибка, пожалуйста, заполните анкету заново. Система проверяет три сохраненных параметра (дата, язык, email). При совпадении система автоматически разрешит корректировку и бесплатно создаст новый, исправленный документ.'}</li>
               <li><b style={{ color: '#FFB800' }}>{lang === 'GE' ? 'ფაილების შენახვა:' : lang === 'EN' ? 'File Storage:' : 'Хранение файлов:'}</b> {lang === 'GE' ? 'გენერირებული PDF დოკუმენტები PDF Drive-იდან იშლება ყოველ ღამის 12 საათზე.' : lang === 'EN' ? 'Generated PDF documents are deleted from PDF Drive every night at 12:00 AM.' : 'Сгенерированные PDF-документы удаляются из PDF Drive каждую ночь в 12 часов.'}</li>
             </ul>
           </div>
