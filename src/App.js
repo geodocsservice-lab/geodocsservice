@@ -61,7 +61,6 @@ export default function GeoDocsApp() {
     const fullPrompt = systemPrompt + "\n\n" + userPrompt;
 
     try {
-      // 4. მოთხოვნას ვაგზავნით ჩვენს დაცულ სერვერზე (/api/chat)
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -92,7 +91,19 @@ export default function GeoDocsApp() {
       pricesTitle: "ტარიფები", 
       prices: [{ title: "სივის ქართულად გენერირება", price: "10₾" }, { title: "სივის უცხო ენაზე გენერირება", price: "15₾" }], 
       aboutTitle: "ჩვენს შესახებ", 
-      aboutContent: "ჯეო დოკს სერვისი არის პირველი ქართული სრულად ავტომატიზებული პლატფორმა. ჩვენი გუნდი მუშაობს მაღალი სიზუსტის ხელოვნურ ინტელექტზე, რათა თქვენი დოკუმენტები მომზადდეს წამებში.", 
+      aboutContent: (
+        <div style={{ lineHeight: '1.6', fontSize: '15px' }}>
+          <p style={{ marginBottom: '15px' }}>ჯეო დოკს სერვისი არის პირველი ქართული სრულად ავტომატიზებული პლატფორმა. ჩვენი გუნდი მუშაობს მაღალი სიზუსტის ხელოვნურ ინტელექტზე, რათა თქვენი დოკუმენტები მომზადდეს წამებში.</p>
+          <p style={{ color: '#FFB800', fontWeight: 'bold', marginBottom: '10px' }}>ფუნქციონალი და დანიშნულება</p>
+          <p style={{ marginBottom: '10px' }}>პლატფორმა ორიენტირებულია ბიზნესპროცესების გასამარტივებლად და დოკუმენტბრუნვის სრული ავტომატიზაციისთვის. მისი მეშვეობით შეგიძლიათ მარტივად დააგენერიროთ:</p>
+          <ul style={{ paddingLeft: '20px', marginBottom: '15px' }}>
+            <li><b style={{ color: '#FFB800' }}>ავტომატიზებული CV-ები (რეზიუმეები):</b> საერთაშორისო სტანდარტების შესაბამისად, ნებისმიერ ენაზე.</li>
+            <li><b style={{ color: '#FFB800' }}>ინვოისები და შაბლონები:</b> ფინანსური და ადმინისტრაციული დოკუმენტების სწრაფი მართვა.</li>
+          </ul>
+          <p style={{ color: '#FFB800', fontWeight: 'bold', marginBottom: '10px' }}>ტექნოლოგიური უპირატესობა</p>
+          <p>ჩვენი სისტემა ეფუძნება თანამედროვე ვებ-დეველოპმენტის უახლეს სტანდარტებსა და საიმედო ღრუბლოვან (Cloud) ინფრასტრუქტურას, რაც უზრუნველყოფს პლატფორმის შეუფერხებელ, სწრაფ მუშაობასა და მონაცემთა მაქსიმალურ დაცვას. სისტემა აგებულია ყველაენოვანი მხარდაჭერით და სრულად მორგებულია როგორც ადგილობრივი, ისე საერთაშორისო მომხმარებლის მოთხოვნებს.</p>
+        </div>
+      ),
       rights: "© 2026 GEO DOCS SERVICE. ყველა უფლება დაცულია.",
       termsTitle: "წესები და პირობები",
       termsContent: "გთხოვთ გაეცნოთ პლატფორმის მუშაობის პრინციპებსა და უსაფრთხოების წესებს:"
@@ -106,7 +117,19 @@ export default function GeoDocsApp() {
       pricesTitle: "Pricing", 
       prices: [{ title: "CV Generation in Georgian", price: "10₾" }, { title: "CV Generation in Foreign Language", price: "15₾" }], 
       aboutTitle: "About Us", 
-      aboutContent: "Geo Docs Service is the first fully automated Georgian platform. Our team works on high-precision artificial intelligence so that your documents are prepared in seconds.", 
+      aboutContent: (
+        <div style={{ lineHeight: '1.6', fontSize: '15px' }}>
+          <p style={{ marginBottom: '15px' }}>Geo Docs Service is the first fully automated Georgian platform. Our team works on high-precision artificial intelligence so that your documents are prepared in seconds.</p>
+          <p style={{ color: '#FFB800', fontWeight: 'bold', marginBottom: '10px' }}>Functionality and Purpose</p>
+          <p style={{ marginBottom: '10px' }}>The platform is focused on simplifying business processes and fully automating document flow. With our service, you can easily generate:</p>
+          <ul style={{ paddingLeft: '20px', marginBottom: '15px' }}>
+            <li><b style={{ color: '#FFB800' }}>Automated CVs (Resumes):</b> In accordance with international standards, in any language.</li>
+            <li><b style={{ color: '#FFB800' }}>Invoices and Templates:</b> Fast management of financial and administrative documents.</li>
+          </ul>
+          <p style={{ color: '#FFB800', fontWeight: 'bold', marginBottom: '10px' }}>Technological Advantage</p>
+          <p>Our system is based on the latest standards of modern web development and reliable Cloud infrastructure, ensuring uninterrupted, fast operation and maximum data protection. The system is built with multilingual support and is fully tailored to the needs of both local and international users.</p>
+        </div>
+      ),
       rights: "© 2026 GEO DOCS SERVICE. All rights reserved.",
       termsTitle: "Terms and Conditions",
       termsContent: "Please review our platform's operating rules and security guidelines:"
@@ -120,7 +143,19 @@ export default function GeoDocsApp() {
       pricesTitle: "Тарифы", 
       prices: [{ title: "Генерация резюме на грузинском", price: "10₾" }, { title: "Генерация резюме на иностранном языке", price: "15₾" }], 
       aboutTitle: "О нас", 
-      aboutContent: "Geo Docs Service — первая полностью автоматизированная грузинская платформа. Наша команда работает над высокоточным искусственным интеллектом, чтобы ваши документы были готовы за считанные секунды.", 
+      aboutContent: (
+        <div style={{ lineHeight: '1.6', fontSize: '15px' }}>
+          <p style={{ marginBottom: '15px' }}>Geo Docs Service — первая полностью автоматизированная грузинская платформа. Наша команда работает над высокоточным искусственным интеллектом, чтобы ваши документы были готовы за считанные секунды.</p>
+          <p style={{ color: '#FFB800', fontWeight: 'bold', marginBottom: '10px' }}>Функциональность и Назначение</p>
+          <p style={{ marginBottom: '10px' }}>Платформа ориентирована на упрощение бизнес-процессов и полную автоматизацию документооборота. С нашей помощью вы можете легко генерировать:</p>
+          <ul style={{ paddingLeft: '20px', marginBottom: '15px' }}>
+            <li><b style={{ color: '#FFB800' }}>Автоматизированные резюме (CV):</b> В соответствии с международными стандартами, на любом языке.</li>
+            <li><b style={{ color: '#FFB800' }}>Инвойсы и шаблоны:</b> Быстрое управление финансовыми и административными документами.</li>
+          </ul>
+          <p style={{ color: '#FFB800', fontWeight: 'bold', marginBottom: '10px' }}>Технологическое Преимущество</p>
+          <p>Наша система основана на новейших стандартах современной веб-разработки и надежной облачной (Cloud) инфраструктуре, что обеспечивает бесперебойную, быструю работу и максимальную защиту данных. Платформа создана с мультиязычной поддержкой и полностью адаптирована под потребности как местных, так и международных пользователей.</p>
+        </div>
+      ),
       rights: "© 2026 GEO DOCS SERVICE. Все права защищены.",
       termsTitle: "Правила и условия",
       termsContent: "Пожалуйста, ознакомьтесь с правилами работы нашей платформы и политикой безопасности:"
@@ -130,7 +165,6 @@ export default function GeoDocsApp() {
   return (
     <div style={{ backgroundColor: '#6D757D', minHeight: '100vh', color: 'white', fontFamily: 'Arial, sans-serif', width: '100%', overflowX: 'hidden' }}>
       
-      {/* ანიმაციის სტილები ჩატის 3 წერტილისთვის */}
       <style>{`
         @keyframes blink {
           0% { opacity: 0.2; }
@@ -192,8 +226,8 @@ export default function GeoDocsApp() {
         {/* About Tab */}
         {activeTab === 'about' && (
           <div style={{ background: '#2A2A2A', padding: '20px', borderRadius: '20px', marginTop: '20px' }}>
-            <h2 style={{ color: '#FFB800' }}>{t.aboutTitle}</h2>
-            <p style={{ lineHeight: '1.6' }}>{t.aboutContent}</p>
+            <h2 style={{ color: '#FFB800', marginBottom: '15px' }}>{t.aboutTitle}</h2>
+            {t.aboutContent}
           </div>
         )}
 
@@ -254,7 +288,7 @@ export default function GeoDocsApp() {
               </div>
             ))}
             
-            {/* ლაივ ბეჭდვის (სამი წერტილის) ანიმაცია */}
+            {/* ანიმაცია */}
             {loading && (
               <div style={{ alignSelf: 'flex-start', backgroundColor: '#333', padding: '12px 16px', borderRadius: '15px', display: 'flex', gap: '5px', alignItems: 'center' }}>
                 <span style={{width: '6px', height: '6px', backgroundColor: '#fff', borderRadius: '50%', animation: 'blink 1.4s infinite both'}}></span>
