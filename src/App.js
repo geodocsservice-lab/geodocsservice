@@ -100,6 +100,8 @@ export default function GeoDocsApp() {
             <li><b style={{ color: '#FFB800' }}>ავტომატიზებული CV-ები (რეზიუმეები):</b> საერთაშორისო სტანდარტების შესაბამისად, ნებისმიერ ენაზე.</li>
             <li><b style={{ color: '#FFB800' }}>ინვოისები და შაბლონები:</b> ფინანსური და ადმინისტრაციული დოკუმენტების სწრაფი მართვა.</li>
           </ul>
+          <p style={{ color: '#FFB800', fontWeight: 'bold', marginBottom: '10px' }}>მთავარი მისია ემიგრანტებისთვის</p>
+          <p style={{ marginBottom: '15px' }}>ჩვენი პლატფორმა სპეციალურად შეიქმნა ქართველი ემიგრანტებისთვის. ის გაძლევთ უნიკალურ შესაძლებლობას, კითხვარი შეავსოთ მარტივად, მშობლიურ (ქართულ) ენაზე, ხოლო უმაღლესი ხარისხის პროფესიონალური დოკუმენტი 2 წუთში დაგენერირდება და გამოგეგზავნებათ ზუსტად იმ ქვეყნის ენაზე, სადაც იმყოფებით.</p>
           <p style={{ color: '#FFB800', fontWeight: 'bold', marginBottom: '10px' }}>ტექნოლოგიური უპირატესობა</p>
           <p>ჩვენი სისტემა ეფუძნება თანამედროვე ვებ-დეველოპმენტის უახლეს სტანდარტებსა და საიმედო ღრუბლოვან (Cloud) ინფრასტრუქტურას, რაც უზრუნველყოფს პლატფორმის შეუფერხებელ, სწრაფ მუშაობასა და მონაცემთა მაქსიმალურ დაცვას. სისტემა აგებულია ყველაენოვანი მხარდაჭერით და სრულად მორგებულია როგორც ადგილობრივი, ისე საერთაშორისო მომხმარებლის მოთხოვნებს.</p>
         </div>
@@ -126,6 +128,8 @@ export default function GeoDocsApp() {
             <li><b style={{ color: '#FFB800' }}>Automated CVs (Resumes):</b> In accordance with international standards, in any language.</li>
             <li><b style={{ color: '#FFB800' }}>Invoices and Templates:</b> Fast management of financial and administrative documents.</li>
           </ul>
+          <p style={{ color: '#FFB800', fontWeight: 'bold', marginBottom: '10px' }}>Main Mission for Emigrants</p>
+          <p style={{ marginBottom: '15px' }}>Our platform was specifically created for Georgian emigrants. It gives you the unique opportunity to easily fill out the questionnaire in your native (Georgian) language, while a high-quality professional document is generated in 2 minutes and sent to you in the exact language of your host country.</p>
           <p style={{ color: '#FFB800', fontWeight: 'bold', marginBottom: '10px' }}>Technological Advantage</p>
           <p>Our system is based on the latest standards of modern web development and reliable Cloud infrastructure, ensuring uninterrupted, fast operation and maximum data protection. The system is built with multilingual support and is fully tailored to the needs of both local and international users.</p>
         </div>
@@ -152,6 +156,8 @@ export default function GeoDocsApp() {
             <li><b style={{ color: '#FFB800' }}>Автоматизированные резюме (CV):</b> В соответствии с международными стандартами, на любом языке.</li>
             <li><b style={{ color: '#FFB800' }}>Инвойсы и шаблоны:</b> Быстрое управление финансовыми и административными документами.</li>
           </ul>
+          <p style={{ color: '#FFB800', fontWeight: 'bold', marginBottom: '10px' }}>Главная миссия для эмигрантов</p>
+          <p style={{ marginBottom: '15px' }}>Наша платформа была специально создана для грузинских эмигрантов. Она дает вам уникальную возможность легко заполнить анкету на родном (грузинском) языке, а высококачественный профессиональный документ будет сгенерирован за 2 минуты и отправлен вам именно на языке страны вашего пребывания.</p>
           <p style={{ color: '#FFB800', fontWeight: 'bold', marginBottom: '10px' }}>Технологическое Преимущество</p>
           <p>Наша система основана на новейших стандартах современной веб-разработки и надежной облачной (Cloud) инфраструктуре, что обеспечивает бесперебойную, быструю работу и максимальную защиту данных. Платформа создана с мультиязычной поддержкой и полностью адаптирована под потребности как местных, так и международных пользователей.</p>
         </div>
