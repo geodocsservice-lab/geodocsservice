@@ -41,7 +41,7 @@ Geo Docs Service-ის წესები და პირობები:
 
   try {
     // 5. სერვერი ფარულად უკავშირდება გუგლს და უგზავნის როგორც ინსტრუქციას, ისე მომხმარებლის კითხვას (მოდელი შეცვლილია gemini-1.5-flash-ზე)
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
