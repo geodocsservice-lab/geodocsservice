@@ -36,30 +36,24 @@ Geo Docs Service-ის წესები და პირობები:
 როცა მომხმარებელი გეკითხება "რატომ ინახავთ ჩემს მეილს/თარიღს/ენას?", არ გაიმეორო მშრალი წესი. აუცილებლად და მეგობრულად აუხსენი, რომ ეს სამეული ინახება მხოლოდ იმიტომ, რომ შეცდომის დაშვების შემთხვევაში სისტემამ ისინი ამოიცნოს და მიმდინარე დღის განმავლობაში შეძლონ "უფასო კორექტირების" ფუნქციით სარგებლობა.`;
 
   try {
-    // 1. ჯერ ვიღებთ და ვბეჭდავთ დაშვებული მოდელების სიას Vercel ლოგებში დასანახად
-    const modelsRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
-    const modelsList = await modelsRes.json();
-    console.log("AVAILABLE MODELS LOG:", JSON.stringify(modelsList));
-
-    // 2. ძველ მოდელზე (gemini-pro) მორგებული გაერთიანებული ტექსტი
-    const combinedPrompt = damisoInstruction + "\n\nმომხმარებლის შეტყობინება:\n" + prompt;
-
-    // 3. ვაგზავნით მოთხოვნას gemini-pro მოდელზე (100% მუშა ვერსია)
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`, {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
+        systemInstruction: {
+          parts: [{ text: damisoInstruction }]
+        },
         contents: [
-          { parts: [{ text: combinedPrompt }] }
+          { parts: [{ text: prompt }] }
         ]
       })
     });
 
     const data = await response.json();
     
-    // ვბეჭდავთ გუგლის პასუხს
+    // ვბეჭდავთ გუგლის პასუხს Vercel-ის ლოგებში (შეგიძლია დატოვო, ხელს არ შეუშლის)
     console.log("GOOGLE RESPONSE LOG:", JSON.stringify(data));
     
     res.status(200).json(data);
