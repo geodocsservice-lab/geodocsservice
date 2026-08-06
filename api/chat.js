@@ -36,7 +36,7 @@ Geo Docs Service-ის წესები და პირობები:
 როცა მომხმარებელი გეკითხება "რატომ ინახავთ ჩემს მეილს/თარიღს/ენას?", არ გაიმეორო მშრალი წესი. აუცილებლად და მეგობრულად აუხსენი, რომ ეს სამეული ინახება მხოლოდ იმიტომ, რომ შეცდომის დაშვების შემთხვევაში სისტემამ ისინი ამოიცნოს და მიმდინარე დღის განმავლობაში შეძლონ "უფასო კორექტირების" ფუნქციით სარგებლობა.`;
 
   try {
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -53,7 +53,7 @@ Geo Docs Service-ის წესები და პირობები:
 
     const data = await response.json();
     
-    // ვბეჭდავთ გუგლის პასუხს Vercel-ის ლოგებში (შეგიძლია დატოვო, ხელს არ შეუშლის)
+    // ვბეჭდავთ გუგლის პასუხს Vercel-ის ლოგებში
     console.log("GOOGLE RESPONSE LOG:", JSON.stringify(data));
     
     res.status(200).json(data);
