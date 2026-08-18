@@ -11,6 +11,19 @@ export default function GeoDocsApp() {
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
 
+  // 🔴 1. ენის ჩატვირთვა ლოკალური მეხსიერებიდან (გვერდის გახსნისას)
+  useEffect(() => {
+    const savedLang = localStorage.getItem('geoDocsLang');
+    if (savedLang) {
+      setLang(savedLang);
+    }
+  }, []);
+
+  // 🔴 2. ენის შენახვა ლოკალურ მეხსიერებაში (როცა მომხმარებელი ენას შეცვლის)
+  useEffect(() => {
+    localStorage.setItem('geoDocsLang', lang);
+  }, [lang]);
+
   const googleFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLSeVAyKyk8Wbe1H4y_UutBsRwrDpbsUNpWI7Z3ZeTV4rrP4SQg/viewform?usp=header";
   const logoUrl = "/Screenshot_20260326_020239_Facebook.jpg";
   const robotUrl = "/robot.png";
