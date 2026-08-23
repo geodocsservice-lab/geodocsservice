@@ -310,7 +310,6 @@ export default function GeoDocsApp() {
           
           <div style={{ fontSize: '11px', lineHeight: '1.6', marginBottom: '15px' }}>
             <div style={{ fontWeight: 'bold' }}>Geo Docs Service</div>
-            <div>ს/კ: 01005042105</div>
             <div>{t.footerAddress}</div>
             <div>{t.footerEmail}</div>
           </div>
