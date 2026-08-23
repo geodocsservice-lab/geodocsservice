@@ -72,7 +72,7 @@ export default function GeoDocsApp() {
     - გადახდა, გაუქმება და თანხის დაბრუნება: ციფრული პროდუქტის სპეციფიკიდან გამომდინარე, საფასურის გადახდის და დოკუმენტის ავტომატური გენერირების შემდეგ, თანხა უკან არ ბრუნდება. შეკვეთის გაუქმება შესაძლებელია მხოლოდ საფასურის გადახდის პროცესის დასრულებამდე.`;
 
     const userPrompt = `მომხმარებლის კითხვა: ${input}`;
-    const fullPrompt = systemPrompt + "\\n\\n" + userPrompt;
+    const fullPrompt = systemPrompt + "\n\n" + userPrompt;
 
     try {
       const response = await fetch('/api/chat', {
@@ -279,7 +279,7 @@ export default function GeoDocsApp() {
             <p style={{ fontWeight: 'bold', marginBottom: '15px' }}>{t.termsContent}</p>
             <ul style={{ paddingLeft: '20px', lineHeight: '1.8' }}>
               <li><b style={{ color: '#FFB800' }}>{lang === 'GE' ? 'ტარიფები:' : lang === 'EN' ? 'Pricing:' : 'Тарифы:'}</b> {lang === 'GE' ? 'CV ქართულად - 10₾, უცხო ენაზე - 15₾.' : lang === 'EN' ? 'CV in Georgian - 10₾, Foreign language - 15₾.' : 'Резюме на грузинском - 10₾, на иностранном - 15₾.'}</li>
-              <li><b style={{ color: '#FFB800' }}>{lang === 'GE' ? 'მონაცემთა დაცვა:' : lang === 'EN' ? 'Data Protection:' : 'Защита данных:'}</b> {lang === 'GE' ? 'ყველა პერსონალური მონაცემი ავტომატურად იშლება ბაზიდან საბუთის დამზადებიდან 5 წუთის შემდეგ.' : lang === 'EN' ? 'All personal data is automatically deleted from the database 5 minutes after document preparation.' : 'Все личные данные автоматически удаляются из базы через 5 минут после подготовки документа.'}</li>
+              <li><b style={{ color: '#FFB800' }}>{lang === 'GE' ? 'მონაცემთა დაცვა:' : lang === 'EN' ? 'Data Protection:' : 'Защита данных:'}</b> {lang === 'GE' ? 'ყველა პერსონალური მონაცემი ავტომატურად იშლება ბაზიდან საბუთის დამზადებიდან 5 წუთის შემდეგ.' : lang === 'EN' ? 'All personal data is automatically deleted from the database 5 minutes after document preparation.' : 'Все личные данные automatically удаляются из базы через 5 минут после подготовки документа.'}</li>
               <li><b style={{ color: '#FFB800' }}>{lang === 'GE' ? 'მონაცემთა გამოყენება:' : lang === 'EN' ? 'Data Usage:' : 'Использование данных:'}</b> {lang === 'GE' ? 'თქვენგან მოწოდებული ინფორმაცია გამოყენებული იქნება ექსკლუზიურად მხოლოდ თქვენს მიერ შერჩეული დოკუმენტის მოსამზადებლად.' : lang === 'EN' ? 'The information provided by you will be used exclusively for preparing your selected document.' : 'Предоставленная вами информация будет использоваться исключительно для подготовки выбранного вами документа.'}</li>
               <li><b style={{ color: '#FFB800' }}>{lang === 'GE' ? 'მომსახურების უზრუნველყოფა:' : lang === 'EN' ? 'Service Provision:' : 'Обеспечение обслуживания:'}</b> {lang === 'GE' ? 'სისტემაში უსაფრთხოების მიზნით ინახება მხოლოდ შეკვეთის თარიღი, არჩეული ენა და თქვენი ელ-ფოსტა, რომლებიც ასევე წაიშლება ყოველ ღამის 12 საათზე.' : lang === 'EN' ? 'For security reasons, only the order date, chosen language, and your email are stored, which are also deleted every night at 12:00 AM.' : 'В целях безопасности сохраняются только дата заказа, выбранный язык и ваша электронная почта, которые также удаляются каждую ночь в 12 часов.'}</li>
               <li><b style={{ color: '#FFB800' }}>{lang === 'GE' ? 'ჩასწორება / განმეორებითი დოკუმენტი:' : lang === 'EN' ? 'Correction / Repeat Document:' : 'Исправление / Повторный документ:'}</b> {lang === 'GE' ? 'თუ დოკუმენტში შეცდომაა, გთხოვთ, კითხვარი შეავსოთ თავიდან. სისტემა ამოწმებს შენახულ სამ მონაცემს (თარიღი, ენა, ელ-ფოსტა). დამთხვევის შემთხვევაში, სისტემა ავტომატურად მოგცემთ კორექტირების საშუალებას და ახალი, ჩასწორებული დოკუმენტი სრულიად უფასოდ დაგიმზადდებათ.' : lang === 'EN' ? 'If there is an error in the document, please fill out the questionnaire again. The system checks the three stored data points (date, language, email). If they match, the system will automatically allow correction and a new, corrected document will be generated completely free of charge.' : 'Если в документе есть ошибка, пожалуйста, заполните анкету заново. Система проверяет три сохраненных параметра (дата, язык, email). При совпадении система автоматически разрешит корректировку и бесплатно создаст новый, исправленный документ.'}</li>
@@ -320,17 +320,18 @@ export default function GeoDocsApp() {
           </div>
           
           {/* გადახდის სისტემების CSS ლოგოები */}
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px', marginBottom: '15px' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', marginBottom: '15px' }}>
             {/* VISA */}
-            <div style={{ width: '48px', height: '28px', backgroundColor: '#fff', borderRadius: '4px', display: 'flex', justifyContent: 'center', alignItems: 'center', fontWeight: '900', color: '#1434CB', fontSize: '14px', fontStyle: 'italic', letterSpacing: '0.5px' }}>
+            <div style={{ width: '32px', height: '19px', backgroundColor: '#fff', borderRadius: '3px', display: 'flex', justifyContent: 'center', alignItems: 'center', fontWeight: '900', color: '#0040FF', fontSize: '10px', fontStyle: 'italic', letterSpacing: '0.5px' }}>
               VISA
             </div>
             {/* Mastercard */}
-            <div style={{ width: '48px', height: '28px', backgroundColor: '#fff', borderRadius: '4px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-              <span style={{ width: '15px', height: '15px', backgroundColor: '#EB001B', borderRadius: '50%', display: 'inline-block' }}></span>
-              <span style={{ width: '15px', height: '15px', backgroundColor: '#F79E1B', borderRadius: '50%', display: 'inline-block', marginLeft: '-6px', opacity: '0.9' }}></span>
+            <div style={{ width: '32px', height: '19px', backgroundColor: '#fff', borderRadius: '3px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              <span style={{ width: '10px', height: '10px', backgroundColor: '#FF0000', borderRadius: '50%', display: 'inline-block' }}></span>
+              <span style={{ width: '10px', height: '10px', backgroundColor: '#FFB800', borderRadius: '50%', display: 'inline-block', marginLeft: '-4px', opacity: '0.9' }}></span>
             </div>
           </div>
+
           <p style={{ fontSize: '10px' }}>{t.rights}</p>
         </footer>
       </main>
@@ -436,3 +437,4 @@ export default function GeoDocsApp() {
     </div>
   );
 }
+
