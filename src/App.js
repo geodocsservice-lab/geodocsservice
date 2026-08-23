@@ -68,7 +68,8 @@ export default function GeoDocsApp() {
     შენი ცოდნა (გამოიყენე მხოლოდ საჭიროებისას):
     - ფასები: CV ქართულად - 10₾. ნებისმიერ უცხო ენაზე (მათ შორის არგენტინულ ესპანურზეც) - 15₾.
     - უსაფრთხოება და წაშლა: პერსონალური მონაცემები იშლება საბუთის დამზადებიდან 5 წუთში. მომსახურების უზრუნველსაყოფად შენახული ინფორმაცია (თარიღი, ენა, ელ-ფოსტა) და გენერირებული PDF ფაილები სრულად იშლება ყოველ ღამის 12 საათზე.
-    - მონაცემთა გამოყენება: მოწოდებული ინფორმაცია გამოყენებული იქნება ექსკლუზიურად მხოლოდ შერჩეული დოკუმენტის მოსამზადებლად.`;
+    - მონაცემთა გამოყენება: მოწოდებული ინფორმაცია გამოყენებული იქნება ექსკლუზიურად მხოლოდ შერჩეული დოკუმენტის მოსამზადებლად.
+    - გადახდა, გაუქმება და თანხის დაბრუნება: ციფრული პროდუქტის სპეციფიკიდან გამომდინარე, საფასურის გადახდის და დოკუმენტის ავტომატური გენერირების შემდეგ, თანხა უკან არ ბრუნდება. შეკვეთის გაუქმება შესაძლებელია მხოლოდ საფასურის გადახდის პროცესის დასრულებამდე.`;
 
     const userPrompt = `მომხმარებლის კითხვა: ${input}`;
     const fullPrompt = systemPrompt + "\n\n" + userPrompt;
@@ -318,11 +319,16 @@ export default function GeoDocsApp() {
             <div>{t.footerPhone}</div>
           </div>
           
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '15px', marginBottom: '15px' }}>
-            <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa" style={{ height: '18px', objectFit: 'contain' }} />
-            <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard" style={{ height: '22px', objectFit: 'contain' }} />
+          {/* გადახდის სისტემების CSS ლოგოები */}
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '15px', marginBottom: '15px' }}>
+            <div style={{ backgroundColor: '#fff', padding: '4px 8px', borderRadius: '4px', fontWeight: '900', color: '#1434CB', fontSize: '14px', fontStyle: 'italic', letterSpacing: '1px' }}>VISA</div>
+            <div style={{ backgroundColor: '#fff', padding: '4px 8px', borderRadius: '4px', display: 'flex', alignItems: 'center', gap: '2px' }}>
+              <span style={{ width: '12px', height: '12px', backgroundColor: '#EB001B', borderRadius: '50%', display: 'inline-block' }}></span>
+              <span style={{ width: '12px', height: '12px', backgroundColor: '#F79E1B', borderRadius: '50%', display: 'inline-block', marginLeft: '-6px', opacity: '0.8' }}></span>
+            </div>
           </div>
-<p style={{ fontSize: '10px' }}>{t.rights}</p>
+
+          <p style={{ fontSize: '10px' }}>{t.rights}</p>
         </footer>
       </main>
 
