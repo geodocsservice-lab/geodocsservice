@@ -301,9 +301,9 @@ export default function GeoDocsApp() {
           
           <div style={{ fontSize: '11px', lineHeight: '1.6', marginBottom: '15px' }}>
             <div>Geo Docs Service (ი.მ. მანანა შალვაშვილი)</div>
-            <div>ს/კ: [შეცვალე პირადი ნომრით]</div>
-            <div>მისამართი: [რეგისტრაციის მისამართი]</div>
-            <div>ელ-ფოსტა: kaxa.chaduneli@gmail.com</div>
+            <div>ს/კ: [01005042105]</div>
+            <div>მისამართი: [საქართველო, ქ. რუსთავი, დ. კლდიაშვილის 12]</div>
+            <div>ელ-ფოსტა: geodocsservice@gmail.com</div>
           </div>
 <p style={{ fontSize: '10px' }}>{t.rights}</p>
         </footer>
