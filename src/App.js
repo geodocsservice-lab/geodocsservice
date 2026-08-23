@@ -121,6 +121,9 @@ export default function GeoDocsApp() {
       ),
       rights: "© 2026 GEO DOCS SERVICE. ყველა უფლება დაცულია.",
       termsTitle: "წესები და პირობები",
+      refundTitle: "გადახდა, გაუქმება და თანხის დაბრუნება",
+      refundContent1: "სერვისის სპეციფიკიდან გამომდინარე (ციფრული პროდუქტის მყისიერი მიწოდება), მომხმარებლის მიერ სერვისის საფასურის გადახდის და დოკუმენტის (CV) ავტომატური გენერირების შემდეგ, გადახდილი თანხა უკან არ ბრუნდება.",
+      refundContent2: "შეკვეთის გაუქმება შესაძლებელია მხოლოდ სერვისის საფასურის გადახდის პროცესის დასრულებამდე.",
       termsContent: "გთხოვთ გაეცნოთ პლატფორმის მუშაობის პრინციპებსა და უსაფრთხოების წესებს:"
     },
     EN: { 
@@ -149,6 +152,9 @@ export default function GeoDocsApp() {
       ),
       rights: "© 2026 GEO DOCS SERVICE. All rights reserved.",
       termsTitle: "Terms and Conditions",
+      refundTitle: "Payment, Cancellation, and Refund Policy",
+      refundContent1: "Due to the nature of the service (instant delivery of a digital product), the paid amount is non-refundable once the user has paid the service fee and the document (CV) has been automatically generated.",
+      refundContent2: "Order cancellation is only possible before the payment process is completed.",
       termsContent: "Please review our platform's operating rules and security guidelines:"
     },
     RU: { 
@@ -177,6 +183,9 @@ export default function GeoDocsApp() {
       ),
       rights: "© 2026 GEO DOCS SERVICE. Все права защищены.",
       termsTitle: "Правила и условия",
+      refundTitle: "Оплата, отмена и возврат средств",
+      refundContent1: "В связи со спецификой сервиса (мгновенная доставка цифрового продукта), уплаченная сумма возврату не подлежит после того, как пользователь оплатил стоимость услуги и документ (CV) был автоматически сгенерирован.",
+      refundContent2: "Отмена заказа возможна только до завершения процесса оплаты.",
       termsContent: "Пожалуйста, ознакомьтесь с правилами работы нашей платформы и политикой безопасности:"
     }
   }[lang];
@@ -262,7 +271,13 @@ export default function GeoDocsApp() {
               <li><b style={{ color: '#FFB800' }}>{lang === 'GE' ? 'მომსახურების უზრუნველყოფა:' : lang === 'EN' ? 'Service Provision:' : 'Обеспечение обслуживания:'}</b> {lang === 'GE' ? 'სისტემაში უსაფრთხოების მიზნით ინახება მხოლოდ შეკვეთის თარიღი, არჩეული ენა და თქვენი ელ-ფოსტა, რომლებიც ასევე წაიშლება ყოველ ღამის 12 საათზე.' : lang === 'EN' ? 'For security reasons, only the order date, chosen language, and your email are stored, which are also deleted every night at 12:00 AM.' : 'В целях безопасности сохраняются только дата заказа, выбранный язык и ваша электронная почта, которые также удаляются каждую ночь в 12 часов.'}</li>
               <li><b style={{ color: '#FFB800' }}>{lang === 'GE' ? 'ჩასწორება / განმეორებითი დოკუმენტი:' : lang === 'EN' ? 'Correction / Repeat Document:' : 'Исправление / Повторный документ:'}</b> {lang === 'GE' ? 'თუ დოკუმენტში შეცდომაა, გთხოვთ, კითხვარი შეავსოთ თავიდან. სისტემა ამოწმებს შენახულ სამ მონაცემს (თარიღი, ენა, ელ-ფოსტა). დამთხვევის შემთხვევაში, სისტემა ავტომატურად მოგცემთ კორექტირების საშუალებას და ახალი, ჩასწორებული დოკუმენტი სრულიად უფასოდ დაგიმზადდებათ.' : lang === 'EN' ? 'If there is an error in the document, please fill out the questionnaire again. The system checks the three stored data points (date, language, email). If they match, the system will automatically allow correction and a new, corrected document will be generated completely free of charge.' : 'Если в документе есть ошибка, пожалуйста, заполните анкету заново. Система проверяет три сохраненных параметра (дата, язык, email). При совпадении система автоматически разрешит корректировку и бесплатно создаст новый, исправленный документ.'}</li>
               <li><b style={{ color: '#FFB800' }}>{lang === 'GE' ? 'ფაილების შენახვა:' : lang === 'EN' ? 'File Storage:' : 'Хранение файлов:'}</b> {lang === 'GE' ? 'გენერირებული PDF დოკუმენტები PDF Drive-იდან იშლება ყოველ ღამის 12 საათზე.' : lang === 'EN' ? 'Generated PDF documents are deleted from PDF Drive every night at 12:00 AM.' : 'Сгенерированные PDF-документы удаляются из PDF Drive каждую ночь в 12 часов.'}</li>
+            
+            <h3 style={{ color: '#FFB800', marginTop: '20px', marginBottom: '10px', fontSize: '18px' }}>{t.refundTitle}</h3>
+            <ul style={{ paddingLeft: '20px', lineHeight: '1.8' }}>
+              <li>{t.refundContent1}</li>
+              <li>{t.refundContent2}</li>
             </ul>
+</ul>
           </div>
         )}
 
@@ -284,7 +299,13 @@ export default function GeoDocsApp() {
             წესები და პირობები / Terms and Conditions
           </div>
           
-          <p style={{ fontSize: '10px' }}>{t.rights}</p>
+          <div style={{ fontSize: '11px', lineHeight: '1.6', marginBottom: '15px' }}>
+            <div>Geo Docs Service (ი.მ. მანანა შალვაშვილი)</div>
+            <div>ს/კ: [შეცვალე პირადი ნომრით]</div>
+            <div>მისამართი: [რეგისტრაციის მისამართი]</div>
+            <div>ელ-ფოსტა: kaxa.chaduneli@gmail.com</div>
+          </div>
+<p style={{ fontSize: '10px' }}>{t.rights}</p>
         </footer>
       </main>
 
