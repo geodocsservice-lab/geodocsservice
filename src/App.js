@@ -124,7 +124,10 @@ export default function GeoDocsApp() {
       refundTitle: "გადახდა, გაუქმება და თანხის დაბრუნება",
       refundContent1: "სერვისის სპეციფიკიდან გამომდინარე (ციფრული პროდუქტის მყისიერი მიწოდება), მომხმარებლის მიერ სერვისის საფასურის გადახდის და დოკუმენტის (CV) ავტომატური გენერირების შემდეგ, გადახდილი თანხა უკან არ ბრუნდება.",
       refundContent2: "შეკვეთის გაუქმება შესაძლებელია მხოლოდ სერვისის საფასურის გადახდის პროცესის დასრულებამდე.",
-      termsContent: "გთხოვთ გაეცნოთ პლატფორმის მუშაობის პრინციპებსა და უსაფრთხოების წესებს:"
+      footerAddress: "მისამართი: ქ. რუსთავი, დ. კლდიაშვილის 12",
+      footerEmail: "ელ-ფოსტა: kaxa.chaduneli@gmail.com",
+      termsLink: "წესები და პირობები",
+      termsContent: "პლატფორმა Geo Docs Service-ს (იურიდიული პირი: ი.მ. მანანა შალვაშვილი, ს/კ: 01005042105) მუშაობის პრინციპები და უსაფრთხოების წესები:"
     },
     EN: { 
       sloganPart1: "Stay Focused on ", 
@@ -155,7 +158,10 @@ export default function GeoDocsApp() {
       refundTitle: "Payment, Cancellation, and Refund Policy",
       refundContent1: "Due to the nature of the service (instant delivery of a digital product), the paid amount is non-refundable once the user has paid the service fee and the document (CV) has been automatically generated.",
       refundContent2: "Order cancellation is only possible before the payment process is completed.",
-      termsContent: "Please review our platform's operating rules and security guidelines:"
+      footerAddress: "Address: 12 D. Kldiashvili St., Rustavi",
+      footerEmail: "Email: kaxa.chaduneli@gmail.com",
+      termsLink: "Terms and Conditions",
+      termsContent: "Operating rules and security guidelines for Geo Docs Service (Legal Entity: I.E. Manana Shalvashvili, ID: 01005042105):"
     },
     RU: { 
       sloganPart1: "Не отвлекайтесь ", 
@@ -186,7 +192,10 @@ export default function GeoDocsApp() {
       refundTitle: "Оплата, отмена и возврат средств",
       refundContent1: "В связи со спецификой сервиса (мгновенная доставка цифрового продукта), уплаченная сумма возврату не подлежит после того, как пользователь оплатил стоимость услуги и документ (CV) был автоматически сгенерирован.",
       refundContent2: "Отмена заказа возможна только до завершения процесса оплаты.",
-      termsContent: "Пожалуйста, ознакомьтесь с правилами работы нашей платформы и политикой безопасности:"
+      footerAddress: "Адрес: г. Рустави, ул. Д. Клдиашвили 12",
+      footerEmail: "Email: kaxa.chaduneli@gmail.com",
+      termsLink: "Правила и условия",
+      termsContent: "Правила работы и политика безопасности платформы Geo Docs Service (Юридическое лицо: И.П. Манана Шалвашвили, ИНН: 01005042105):"
     }
   }[lang];
 
@@ -296,14 +305,14 @@ export default function GeoDocsApp() {
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }} 
             style={{ fontSize: '12px', textDecoration: 'underline', cursor: 'pointer', marginBottom: '10px', color: '#FFB800', fontWeight: 'bold' }}>
-            წესები და პირობები / Terms and Conditions
+            {t.termsLink}
           </div>
           
           <div style={{ fontSize: '11px', lineHeight: '1.6', marginBottom: '15px' }}>
-            <div>Geo Docs Service (ი.მ. მანანა შალვაშვილი)</div>
-            <div>ს/კ: [01005042105]</div>
-            <div>მისამართი: [საქართველო, ქ. რუსთავი, დ. კლდიაშვილის 12]</div>
-            <div>ელ-ფოსტა: geodocsservice@gmail.com</div>
+            <div style={{ fontWeight: 'bold' }}>Geo Docs Service</div>
+            <div>ს/კ: 01005042105</div>
+            <div>{t.footerAddress}</div>
+            <div>{t.footerEmail}</div>
           </div>
 <p style={{ fontSize: '10px' }}>{t.rights}</p>
         </footer>
