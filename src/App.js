@@ -72,7 +72,7 @@ export default function GeoDocsApp() {
     - გადახდა, გაუქმება და თანხის დაბრუნება: ციფრული პროდუქტის სპეციფიკიდან გამომდინარე, საფასურის გადახდის და დოკუმენტის ავტომატური გენერირების შემდეგ, თანხა უკან არ ბრუნდება. შეკვეთის გაუქმება შესაძლებელია მხოლოდ საფასურის გადახდის პროცესის დასრულებამდე.`;
 
     const userPrompt = `მომხმარებლის კითხვა: ${input}`;
-    const fullPrompt = systemPrompt + "\n\n" + userPrompt;
+    const fullPrompt = systemPrompt + "\\n\\n" + userPrompt;
 
     try {
       const response = await fetch('/api/chat', {
@@ -126,7 +126,7 @@ export default function GeoDocsApp() {
       refundContent1: "სერვისის სპეციფიკიდან გამომდინარე (ციფრული პროდუქტის მყისიერი მიწოდება), მომხმარებლის მიერ სერვისის საფასურის გადახდის და დოკუმენტის (CV) ავტომატური გენერირების შემდეგ, გადახდილი თანხა უკან არ ბრუნდება.",
       refundContent2: "შეკვეთის გაუქმება შესაძლებელია მხოლოდ სერვისის საფასურის გადახდის პროცესის დასრულებამდე.",
       footerAddress: "მისამართი: ქ. რუსთავი, დ. კლდიაშვილის 12",
-      footerEmail: "ელ-ფოსტა: kaxa.chaduneli@gmail.com",
+      footerEmail: "ელ-ფოსტა: geodocsservice@gmail.com",
       footerPhone: "ტელ: +995 5XX XX XX XX",
       termsLink: "წესები და პირობები",
       termsContent: "პლატფორმა Geo Docs Service-ს (იურიდიული პირი: ი.მ. მანანა შალვაშვილი) მუშაობის პრინციპები და უსაფრთხოების წესები:"
@@ -161,7 +161,7 @@ export default function GeoDocsApp() {
       refundContent1: "Due to the nature of the service (instant delivery of a digital product), the paid amount is non-refundable once the user has paid the service fee and the document (CV) has been automatically generated.",
       refundContent2: "Order cancellation is only possible before the payment process is completed.",
       footerAddress: "Address: 12 D. Kldiashvili St., Rustavi",
-      footerEmail: "Email: kaxa.chaduneli@gmail.com",
+      footerEmail: "Email: geodocsservice@gmail.com",
       footerPhone: "Tel/Тел: +995 5XX XX XX XX",
       termsLink: "Terms and Conditions",
       termsContent: "Operating rules and security guidelines for Geo Docs Service (Legal Entity: I.E. Manana Shalvashvili):"
@@ -196,7 +196,7 @@ export default function GeoDocsApp() {
       refundContent1: "В связи со спецификой сервиса (мгновенная доставка цифрового продукта), уплаченная сумма возврату не подлежит после того, как пользователь оплатил стоимость услуги и документ (CV) был автоматически сгенерирован.",
       refundContent2: "Отмена заказа возможна только до завершения процесса оплаты.",
       footerAddress: "Адрес: г. Рустави, ул. Д. Клдиашвили 12",
-      footerEmail: "Email: kaxa.chaduneli@gmail.com",
+      footerEmail: "Email: geodocsservice@gmail.com",
       footerPhone: "Tel/Тел: +995 5XX XX XX XX",
       termsLink: "Правила и условия",
       termsContent: "Правила работы и политика безопасности платформы Geo Docs Service (Юридическое лицо: И.П. Манана Шалвашвили):"
@@ -320,14 +320,17 @@ export default function GeoDocsApp() {
           </div>
           
           {/* გადახდის სისტემების CSS ლოგოები */}
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '15px', marginBottom: '15px' }}>
-            <div style={{ backgroundColor: '#fff', padding: '4px 8px', borderRadius: '4px', fontWeight: '900', color: '#1434CB', fontSize: '14px', fontStyle: 'italic', letterSpacing: '1px' }}>VISA</div>
-            <div style={{ backgroundColor: '#fff', padding: '4px 8px', borderRadius: '4px', display: 'flex', alignItems: 'center', gap: '2px' }}>
-              <span style={{ width: '12px', height: '12px', backgroundColor: '#EB001B', borderRadius: '50%', display: 'inline-block' }}></span>
-              <span style={{ width: '12px', height: '12px', backgroundColor: '#F79E1B', borderRadius: '50%', display: 'inline-block', marginLeft: '-6px', opacity: '0.8' }}></span>
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px', marginBottom: '15px' }}>
+            {/* VISA */}
+            <div style={{ width: '48px', height: '28px', backgroundColor: '#fff', borderRadius: '4px', display: 'flex', justifyContent: 'center', alignItems: 'center', fontWeight: '900', color: '#1434CB', fontSize: '14px', fontStyle: 'italic', letterSpacing: '0.5px' }}>
+              VISA
+            </div>
+            {/* Mastercard */}
+            <div style={{ width: '48px', height: '28px', backgroundColor: '#fff', borderRadius: '4px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              <span style={{ width: '15px', height: '15px', backgroundColor: '#EB001B', borderRadius: '50%', display: 'inline-block' }}></span>
+              <span style={{ width: '15px', height: '15px', backgroundColor: '#F79E1B', borderRadius: '50%', display: 'inline-block', marginLeft: '-6px', opacity: '0.9' }}></span>
             </div>
           </div>
-
           <p style={{ fontSize: '10px' }}>{t.rights}</p>
         </footer>
       </main>
