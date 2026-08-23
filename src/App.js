@@ -125,9 +125,10 @@ export default function GeoDocsApp() {
       refundContent1: "სერვისის სპეციფიკიდან გამომდინარე (ციფრული პროდუქტის მყისიერი მიწოდება), მომხმარებლის მიერ სერვისის საფასურის გადახდის და დოკუმენტის (CV) ავტომატური გენერირების შემდეგ, გადახდილი თანხა უკან არ ბრუნდება.",
       refundContent2: "შეკვეთის გაუქმება შესაძლებელია მხოლოდ სერვისის საფასურის გადახდის პროცესის დასრულებამდე.",
       footerAddress: "მისამართი: ქ. რუსთავი, დ. კლდიაშვილის 12",
-      footerEmail: "ელ-ფოსტა: geodocsservice@gmail.com",
+      footerEmail: "ელ-ფოსტა: kaxa.chaduneli@gmail.com",
+      footerPhone: "ტელ: +995 5XX XX XX XX",
       termsLink: "წესები და პირობები",
-      termsContent: "პლატფორმა Geo Docs Service-ს (იურიდიული პირი: ი.მ. მანანა შალვაშვილი, ს/კ: 01005042105) მუშაობის პრინციპები და უსაფრთხოების წესები:"
+      termsContent: "პლატფორმა Geo Docs Service-ს (იურიდიული პირი: ი.მ. მანანა შალვაშვილი) მუშაობის პრინციპები და უსაფრთხოების წესები:"
     },
     EN: { 
       sloganPart1: "Stay Focused on ", 
@@ -160,8 +161,9 @@ export default function GeoDocsApp() {
       refundContent2: "Order cancellation is only possible before the payment process is completed.",
       footerAddress: "Address: 12 D. Kldiashvili St., Rustavi",
       footerEmail: "Email: kaxa.chaduneli@gmail.com",
+      footerPhone: "Tel/Тел: +995 5XX XX XX XX",
       termsLink: "Terms and Conditions",
-      termsContent: "Operating rules and security guidelines for Geo Docs Service (Legal Entity: I.E. Manana Shalvashvili, ID: 01005042105):"
+      termsContent: "Operating rules and security guidelines for Geo Docs Service (Legal Entity: I.E. Manana Shalvashvili):"
     },
     RU: { 
       sloganPart1: "Не отвлекайтесь ", 
@@ -194,8 +196,9 @@ export default function GeoDocsApp() {
       refundContent2: "Отмена заказа возможна только до завершения процесса оплаты.",
       footerAddress: "Адрес: г. Рустави, ул. Д. Клдиашвили 12",
       footerEmail: "Email: kaxa.chaduneli@gmail.com",
+      footerPhone: "Tel/Тел: +995 5XX XX XX XX",
       termsLink: "Правила и условия",
-      termsContent: "Правила работы и политика безопасности платформы Geo Docs Service (Юридическое лицо: И.П. Манана Шалвашвили, ИНН: 01005042105):"
+      termsContent: "Правила работы и политика безопасности платформы Geo Docs Service (Юридическое лицо: И.П. Манана Шалвашвили):"
     }
   }[lang];
 
@@ -312,6 +315,12 @@ export default function GeoDocsApp() {
             <div style={{ fontWeight: 'bold' }}>Geo Docs Service</div>
             <div>{t.footerAddress}</div>
             <div>{t.footerEmail}</div>
+            <div>{t.footerPhone}</div>
+          </div>
+          
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '15px', marginBottom: '15px' }}>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png" alt="Visa" style={{ height: '18px', objectFit: 'contain' }} />
+            <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard" style={{ height: '22px', objectFit: 'contain' }} />
           </div>
 <p style={{ fontSize: '10px' }}>{t.rights}</p>
         </footer>
