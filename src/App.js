@@ -126,7 +126,7 @@ export default function GeoDocsApp() {
       refundContent1: "სერვისის სპეციფიკიდან გამომდინარე (ციფრული პროდუქტის მყისიერი მიწოდება), მომხმარებლის მიერ სერვისის საფასურის გადახდის და დოკუმენტის (CV) ავტომატური გენერირების შემდეგ, გადახდილი თანხა უკან არ ბრუნდება.",
       refundContent2: "შეკვეთის გაუქმება შესაძლებელია მხოლოდ სერვისის საფასურის გადახდის პროცესის დასრულებამდე.",
       footerAddress: "მისამართი: ქ. რუსთავი, დ. კლდიაშვილის 12",
-      footerEmail: "ელ-ფოსტა: geodocsservice@gmail.com",
+      footerEmail: "ელ-ფოსტა: info@geodocsservice.ge",
       footerPhone: "ტელ: +995 5XX XX XX XX",
       termsLink: "წესები და პირობები",
       termsContent: "პლატფორმა Geo Docs Service-ს (იურიდიული პირი: ი.მ. მანანა შალვაშვილი) მუშაობის პრინციპები და უსაფრთხოების წესები:"
@@ -161,7 +161,7 @@ export default function GeoDocsApp() {
       refundContent1: "Due to the nature of the service (instant delivery of a digital product), the paid amount is non-refundable once the user has paid the service fee and the document (CV) has been automatically generated.",
       refundContent2: "Order cancellation is only possible before the payment process is completed.",
       footerAddress: "Address: 12 D. Kldiashvili St., Rustavi",
-      footerEmail: "Email: geodocsservice@gmail.com",
+      footerEmail: "Email: info@geodocsservice.ge",
       footerPhone: "Tel/Тел: +995 5XX XX XX XX",
       termsLink: "Terms and Conditions",
       termsContent: "Operating rules and security guidelines for Geo Docs Service (Legal Entity: I.E. Manana Shalvashvili):"
@@ -196,7 +196,7 @@ export default function GeoDocsApp() {
       refundContent1: "В связи со спецификой сервиса (мгновенная доставка цифрового продукта), уплаченная сумма возврату не подлежит после того, как пользователь оплатил стоимость услуги и документ (CV) был автоматически сгенерирован.",
       refundContent2: "Отмена заказа возможна только до завершения процесса оплаты.",
       footerAddress: "Адрес: г. Рустави, ул. Д. Клдиашвили 12",
-      footerEmail: "Email: geodocsservice@gmail.com",
+      footerEmail: "Email: info@geodocsservice.ge",
       footerPhone: "Tel/Тел: +995 5XX XX XX XX",
       termsLink: "Правила и условия",
       termsContent: "Правила работы и политика безопасности платформы Geo Docs Service (Юридическое лицо: И.П. Манана Шалвашвили):"
@@ -279,7 +279,7 @@ export default function GeoDocsApp() {
             <p style={{ fontWeight: 'bold', marginBottom: '15px' }}>{t.termsContent}</p>
             <ul style={{ paddingLeft: '20px', lineHeight: '1.8' }}>
               <li><b style={{ color: '#FFB800' }}>{lang === 'GE' ? 'ტარიფები:' : lang === 'EN' ? 'Pricing:' : 'Тарифы:'}</b> {lang === 'GE' ? 'CV ქართულად - 10₾, უცხო ენაზე - 15₾.' : lang === 'EN' ? 'CV in Georgian - 10₾, Foreign language - 15₾.' : 'Резюме на грузинском - 10₾, на иностранном - 15₾.'}</li>
-              <li><b style={{ color: '#FFB800' }}>{lang === 'GE' ? 'მონაცემთა დაცვა:' : lang === 'EN' ? 'Data Protection:' : 'Защита данных:'}</b> {lang === 'GE' ? 'ყველა პერსონალური მონაცემი ავტომატურად იშლება ბაზიდან საბუთის დამზადებიდან 5 წუთის შემდეგ.' : lang === 'EN' ? 'All personal data is automatically deleted from the database 5 minutes after document preparation.' : 'Все личные данные automatically удаляются из базы через 5 минут после подготовки документа.'}</li>
+              <li><b style={{ color: '#FFB800' }}>{lang === 'GE' ? 'მონაცემთა დაცვა:' : lang === 'EN' ? 'Data Protection:' : 'Защита данных:'}</b> {lang === 'GE' ? 'ყველა პერსონალური მონაცემი ავტომატურად იშლება ბაზიდან საბუთის დამზადებიდან 5 წუთის შემდეგ.' : lang === 'EN' ? 'All personal data is automatically deleted from the database 5 minutes after document preparation.' : 'Все личные данные автоматически удаляются из базы через 5 минут после подготовки документа.'}</li>
               <li><b style={{ color: '#FFB800' }}>{lang === 'GE' ? 'მონაცემთა გამოყენება:' : lang === 'EN' ? 'Data Usage:' : 'Использование данных:'}</b> {lang === 'GE' ? 'თქვენგან მოწოდებული ინფორმაცია გამოყენებული იქნება ექსკლუზიურად მხოლოდ თქვენს მიერ შერჩეული დოკუმენტის მოსამზადებლად.' : lang === 'EN' ? 'The information provided by you will be used exclusively for preparing your selected document.' : 'Предоставленная вами информация будет использоваться исключительно для подготовки выбранного вами документа.'}</li>
               <li><b style={{ color: '#FFB800' }}>{lang === 'GE' ? 'მომსახურების უზრუნველყოფა:' : lang === 'EN' ? 'Service Provision:' : 'Обеспечение обслуживания:'}</b> {lang === 'GE' ? 'სისტემაში უსაფრთხოების მიზნით ინახება მხოლოდ შეკვეთის თარიღი, არჩეული ენა და თქვენი ელ-ფოსტა, რომლებიც ასევე წაიშლება ყოველ ღამის 12 საათზე.' : lang === 'EN' ? 'For security reasons, only the order date, chosen language, and your email are stored, which are also deleted every night at 12:00 AM.' : 'В целях безопасности сохраняются только дата заказа, выбранный язык и ваша электронная почта, которые также удаляются каждую ночь в 12 часов.'}</li>
               <li><b style={{ color: '#FFB800' }}>{lang === 'GE' ? 'ჩასწორება / განმეორებითი დოკუმენტი:' : lang === 'EN' ? 'Correction / Repeat Document:' : 'Исправление / Повторный документ:'}</b> {lang === 'GE' ? 'თუ დოკუმენტში შეცდომაა, გთხოვთ, კითხვარი შეავსოთ თავიდან. სისტემა ამოწმებს შენახულ სამ მონაცემს (თარიღი, ენა, ელ-ფოსტა). დამთხვევის შემთხვევაში, სისტემა ავტომატურად მოგცემთ კორექტირების საშუალებას და ახალი, ჩასწორებული დოკუმენტი სრულიად უფასოდ დაგიმზადდებათ.' : lang === 'EN' ? 'If there is an error in the document, please fill out the questionnaire again. The system checks the three stored data points (date, language, email). If they match, the system will automatically allow correction and a new, corrected document will be generated completely free of charge.' : 'Если в документе есть ошибка, пожалуйста, заполните анкету заново. Система проверяет три сохраненных параметра (дата, язык, email). При совпадении система автоматически разрешит корректировку и бесплатно создаст новый, исправленный документ.'}</li>
@@ -437,4 +437,3 @@ export default function GeoDocsApp() {
     </div>
   );
 }
-
