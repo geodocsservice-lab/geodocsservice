@@ -319,7 +319,7 @@ export default function GeoDocsApp() {
           </div>
           
           <div style={{ display: 'flex', justifyContent: 'center', gap: '15px', marginBottom: '15px' }}>
-            <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png" alt="Visa" style={{ height: '18px', objectFit: 'contain' }} />
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa" style={{ height: '18px', objectFit: 'contain' }} />
             <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard" style={{ height: '22px', objectFit: 'contain' }} />
           </div>
 <p style={{ fontSize: '10px' }}>{t.rights}</p>
