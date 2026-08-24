@@ -11,7 +11,6 @@ export default function GeoDocsApp() {
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // 🔴 1. ენის ჩატვირთვა ლოკალური მეხსიერებიდან (გვერდის გახსნისას)
   useEffect(() => {
     const savedLang = localStorage.getItem('geoDocsLang');
     if (savedLang) {
@@ -19,7 +18,6 @@ export default function GeoDocsApp() {
     }
   }, []);
 
-  // 🔴 2. ენის შენახვა ლოკალურ მეხსიერებაში (როცა მომხმარებელი ენას შეცვლის)
   useEffect(() => {
     localStorage.setItem('geoDocsLang', lang);
   }, [lang]);
@@ -38,47 +36,22 @@ export default function GeoDocsApp() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
 
+  // 🔴 განახლებული, გასუფთავებული ჩატის ლოგიკა (ინსტრუქციების გარეშე)
   const handleChatSubmit = async (e) => {
     if (e) e.preventDefault();
     if (!input.trim()) return;
     
     const userMsg = { role: 'user', text: input };
     setMessages(prev => [...prev, userMsg]);
+    const currentInput = input;
     setInput('');
     setLoading(true);
-
-    const systemPrompt = `შენ ხარ დოქტორი დამისო (Dr. Damiso), ჯეო დოკს სერვისის (Geo Docs Service) ოფიციალური AI ასისტენტი და CV-ების მთავარი ოსტატი. შენი საქმეა მომხმარებლის მონაცემების უმაღლეს დონეზე დამუშავება და პროფესიონალურ რეზიუმედ ქცევა.
-
-    მკაცრი წესები კომუნიკაციაზე:
-    1. მისალმება: თუ მომხმარებელი მხოლოდ მოგესალმა (მაგ: გამარჯობა, hello, привет), უპასუხე: "გამარჯობა! მე ვარ დოქტორი დამისო, თქვენი პერსონალური AI ასისტენტი და CV-ების მთავარი ოსტატი. რით შემიძლია დაგეხმაროთ?" (გადათარგმნე იმ ენაზე, რა ენაზეც მოგესალმნენ). სხვა კონკრეტულ კითხვებზე პირდაპირ საქმეზე გადადი, ზედმეტი მისალმების გარეშე.
-    2. ენა: ყოველთვის უპასუხე იმ ენაზე, რა ენაზეც გწერენ! თუ გწერენ ინგლისურად - უპასუხე ინგლისურად. თუ გწერენ რუსულად (თუნდაც ლათინური ასოებით) - უპასუხე გამართული რუსულით.
-    3. ლაკონიურობა: უპასუხე ზუსტად და მოკლედ მხოლოდ დასმულ შეკითხვას. ნუ მოყვები უსაფრთხოებაზე ან მონაცემთა წაშლაზე, თუ კონკრეტულად არ გეკითხებიან!
-
-    დახმარება და საიტის ნავიგაცია (ძალიან მნიშვნელოვანი):
-    - თუ მომხმარებელი გეკითხება, როგორ შექმნას CV, სად დააჭიროს, ან როგორ დაიწყოს პროცესი, აუხსენი ეს შინაარსი (აუცილებლად იმ ენაზე, რა ენაზეც გკითხეს!): 
-    "CV-ს შესაქმნელად, გთხოვთ მთავარ გვერდზე დააჭიროთ ყვითელ ღილაკს 'AI CV 2 წუთში' ან 'ტარიფების' განყოფილებაში აირჩიოთ სასურველი ენა."
-
-    თავაზიანობა:
-    - თუ მომხმარებელი მადლობას გიხდის, უპასუხე ძალიან თავაზიანად (იმ ენაზე, რომელზეც გწერენ). მაგალითად: "გამიხარდა, რომ დაგეხმარეთ! თუ კიდევ დაგჭირდით, მე აქ ვარ რათა დაგეხმაროთ."
-
-    პროცესი და მიწოდება (აუცილებლად გაითვალისწინე, როცა დეტალებს ითხოვენ):
-    - კითხვარის შევსების შემდეგ, დაგენერირებული საბუთი იგზავნება მომხმარებლის იმეილზე დაახლოებით 2 წუთში. 
-    - აუცილებლად ურჩიე/გააფრთხილე მომხმარებელი: "იმეილი სწორად ჩაწერეთ, რადგან მითითებულ იმეილზე გამოგეგზავნებათ დამზადებული PDF ფაილი." (გადათარგმნე შესაბამის ენაზე).
-
-    შენი ცოდნა (გამოიყენე მხოლოდ საჭიროებისას):
-    - ფასები: CV ქართულად - 10₾. ნებისმიერ უცხო ენაზე (მათ შორის არგენტინულ ესპანურზეც) - 15₾.
-    - უსაფრთხოება და წაშლა: პერსონალური მონაცემები იშლება საბუთის დამზადებიდან 5 წუთში. მომსახურების უზრუნველსაყოფად შენახული ინფორმაცია (თარიღი, ენა, ელ-ფოსტა) და გენერირებული PDF ფაილები სრულად იშლება ყოველ ღამის 12 საათზე.
-    - მონაცემთა გამოყენება: მოწოდებული ინფორმაცია გამოყენებული იქნება ექსკლუზიურად მხოლოდ შერჩეული დოკუმენტის მოსამზადებლად.
-    - გადახდა, გაუქმება და თანხის დაბრუნება: ციფრული პროდუქტის სპეციფიკიდან გამომდინარე, საფასურის გადახდის და დოკუმენტის ავტომატური გენერირების შემდეგ, თანხა უკან არ ბრუნდება. შეკვეთის გაუქმება შესაძლებელია მხოლოდ საფასურის გადახდის პროცესის დასრულებამდე.`;
-
-    const userPrompt = `მომხმარებლის კითხვა: ${input}`;
-    const fullPrompt = systemPrompt + "\n\n" + userPrompt;
 
     try {
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt: fullPrompt })
+        body: JSON.stringify({ prompt: currentInput }) 
       });
       
       const data = await response.json();
@@ -104,6 +77,7 @@ export default function GeoDocsApp() {
       invoiceBtn: "ინვოისი (მალე)", 
       pricesTitle: "ტარიფები", 
       prices: [{ title: "სივის ქართულად გენერირება", price: "10₾" }, { title: "სივის უცხო ენაზე გენერირება", price: "15₾" }], 
+      damisoBadge: "✨ Dr. Damiso — შენი AI CV ოსტატი",
       aboutTitle: "ჩვენს შესახებ", 
       aboutContent: (
         <div style={{ lineHeight: '1.6', fontSize: '15px' }}>
@@ -117,7 +91,9 @@ export default function GeoDocsApp() {
           <p style={{ color: '#FFB800', fontWeight: 'bold', marginBottom: '10px' }}>მთავარი მისია ემიგრანტებისთვის</p>
           <p style={{ marginBottom: '15px' }}>ჩვენი პლატფორმა სპეციალურად შეიქმნა ქართველი ემიგრანტებისთვის. ის გაძლევთ უნიკალურ შესაძლებლობას, კითხვარი შეავსოთ მარტივად, მშობლიურ (ქართულ) ენაზე, ხოლო უმაღლესი ხარისხის პროფესიონალური დოკუმენტი 2 წუთში დაგენერირდება და გამოგეგზავნებათ ზუსტად იმ ქვეყნის ენაზე, სადაც იმყოფებით.</p>
           <p style={{ color: '#FFB800', fontWeight: 'bold', marginBottom: '10px' }}>ტექნოლოგიური უპირატესობა</p>
-          <p>ჩვენი სისტემა ეფუძნება თანამედროვე ვებ-დეველოპმენტის უახლეს სტანდარტებსა და საიმედო ღრუბლოვან (Cloud) ინფრასტრუქტურას, რაც უზრუნველყოფს პლატფორმის შეუფერხებელ, სწრაფ მუშაობასა და მონაცემთა მაქსიმალურ დაცვას. სისტემა აგებულია ყველაენოვანი მხარდაჭერით და სრულად მორგებულია როგორც ადგილობრივი, ისე საერთაშორისო მომხმარებლის მოთხოვნებს.</p>
+          <p style={{ marginBottom: '15px' }}>ჩვენი სისტემა ეფუძნება თანამედროვე ვებ-დეველოპმენტის უახლეს სტანდარტებსა და საიმედო ღრუბლოვან (Cloud) ინფრასტრუქტურას, რაც უზრუნველყოფს პლატფორმის შეუფერხებელ, სწრაფ მუშაობასა და მონაცემთა მაქსიმალურ დაცვას.</p>
+          <p style={{ color: '#FFB800', fontWeight: 'bold', marginBottom: '10px' }}>თქვენი პერსონალური AI ასისტენტი</p>
+          <p>გაიცანით დოქტორი დამისო — ჩვენი პლატფორმის გული და CV-ების მთავარი ოსტატი! ის არის მაღალი სიზუსტის ხელოვნური ინტელექტი, რომელიც თქვენს გამოცდილებას აანალიზებს და საერთაშორისო სტანდარტების რეზიუმედ აქცევს. დამისო 24/7-ზე თქვენს განკარგულებაშია.</p>
         </div>
       ),
       rights: "© 2026 GEO DOCS SERVICE. ყველა უფლება დაცულია.",
@@ -139,6 +115,7 @@ export default function GeoDocsApp() {
       invoiceBtn: "Invoice (Soon)", 
       pricesTitle: "Pricing", 
       prices: [{ title: "CV Generation in Georgian", price: "10₾" }, { title: "CV Generation in Foreign Language", price: "15₾" }], 
+      damisoBadge: "✨ Dr. Damiso — Your AI CV Master",
       aboutTitle: "About Us", 
       aboutContent: (
         <div style={{ lineHeight: '1.6', fontSize: '15px' }}>
@@ -152,7 +129,9 @@ export default function GeoDocsApp() {
           <p style={{ color: '#FFB800', fontWeight: 'bold', marginBottom: '10px' }}>Main Mission for Emigrants</p>
           <p style={{ marginBottom: '15px' }}>Our platform was specifically created for Georgian emigrants. It gives you the unique opportunity to easily fill out the questionnaire in your native (Georgian) language, while a high-quality professional document is generated in 2 minutes and sent to you in the exact language of your host country.</p>
           <p style={{ color: '#FFB800', fontWeight: 'bold', marginBottom: '10px' }}>Technological Advantage</p>
-          <p>Our system is based on the latest standards of modern web development and reliable Cloud infrastructure, ensuring uninterrupted, fast operation and maximum data protection. The system is built with multilingual support and is fully tailored to the needs of both local and international users.</p>
+          <p style={{ marginBottom: '15px' }}>Our system is based on the latest standards of modern web development and reliable Cloud infrastructure, ensuring uninterrupted, fast operation and maximum data protection.</p>
+          <p style={{ color: '#FFB800', fontWeight: 'bold', marginBottom: '10px' }}>Your Personal AI Assistant</p>
+          <p>Meet Dr. Damiso — the heart of our platform and the master of CVs! He is a high-precision artificial intelligence that analyzes your experience and turns it into a resume of international standards. Damiso is at your disposal 24/7.</p>
         </div>
       ),
       rights: "© 2026 GEO DOCS SERVICE. All rights reserved.",
@@ -174,6 +153,7 @@ export default function GeoDocsApp() {
       invoiceBtn: "Инвойс (Скоро)", 
       pricesTitle: "Тарифы", 
       prices: [{ title: "Генерация резюме на грузинском", price: "10₾" }, { title: "Генерация резюме на иностранном языке", price: "15₾" }], 
+      damisoBadge: "✨ Dr. Damiso — Ваш AI Мастер Резюме",
       aboutTitle: "О нас", 
       aboutContent: (
         <div style={{ lineHeight: '1.6', fontSize: '15px' }}>
@@ -187,7 +167,9 @@ export default function GeoDocsApp() {
           <p style={{ color: '#FFB800', fontWeight: 'bold', marginBottom: '10px' }}>Главная миссия для эмигрантов</p>
           <p style={{ marginBottom: '15px' }}>Наша платформа была специально создана для грузинских эмигрантов. Она дает вам уникальную возможность легко заполнить анкету на родном (грузинском) языке, а высококачественный профессиональный документ будет сгенерирован за 2 минуты и отправлен вам именно на языке страны вашего пребывания.</p>
           <p style={{ color: '#FFB800', fontWeight: 'bold', marginBottom: '10px' }}>Технологическое Преимущество</p>
-          <p>Наша система основана на новейших стандартах современной веб-разработки и надежной облачной (Cloud) инфраструктуре, что обеспечивает бесперебойную, быструю работу и максимальную защиту данных. Платформа создана с мультиязычной поддержкой и полностью адаптирована под потребности как местных, так и международных пользователей.</p>
+          <p style={{ marginBottom: '15px' }}>Наша система основана на новейших стандартах современной веб-разработки и надежной облачной (Cloud) инфраструктуре, что обеспечивает бесперебойную, быструю работу и максимальную защиту данных.</p>
+          <p style={{ color: '#FFB800', fontWeight: 'bold', marginBottom: '10px' }}>Ваш персональный AI ассистент</p>
+          <p>Познакомьтесь с доктором Дамисо — сердцем нашей платформы и мастером резюме! Это высокоточный искусственный интеллект, который анализирует ваш опыт и превращает его в резюме по международным стандартам. Дамисо в вашем распоряжении 24/7.</p>
         </div>
       ),
       rights: "© 2026 GEO DOCS SERVICE. Все права защищены.",
@@ -241,7 +223,18 @@ export default function GeoDocsApp() {
               <span style={{ color: '#FFB800' }}>{t.sloganPart2}</span>
             </h1>
             
-            <img src={robotUrl} alt="Robot" style={{ width: '220px', margin: '10px auto' }} />
+            {/* რობოტი განახლებული ბეჯით */}
+            <div style={{ position: 'relative', display: 'inline-block', margin: '10px auto', marginBottom: '30px' }}>
+              <img src={robotUrl} alt="Dr. Damiso" style={{ width: '220px' }} />
+              <div style={{ 
+                position: 'absolute', bottom: '-15px', left: '50%', transform: 'translateX(-50%)', 
+                background: 'rgba(26, 26, 26, 0.95)', color: '#FFB800', 
+                padding: '6px 16px', borderRadius: '20px', fontSize: '12px', fontWeight: 'bold', 
+                whiteSpace: 'nowrap', border: '1px solid #007AFF', boxShadow: '0 4px 10px rgba(0,0,0,0.5)'
+              }}>
+                {t.damisoBadge}
+              </div>
+            </div>
             
             <button onClick={() => window.open(googleFormUrl, '_blank')} style={{ width: '100%', padding: '18px', background: '#FFB800', border: 'none', borderRadius: '20px', fontWeight: 'bold', cursor: 'pointer', color: 'black' }}>
               {t.cvBtn}
@@ -290,7 +283,7 @@ export default function GeoDocsApp() {
               <li>{t.refundContent1}</li>
               <li>{t.refundContent2}</li>
             </ul>
-</ul>
+            </ul>
           </div>
         )}
 
