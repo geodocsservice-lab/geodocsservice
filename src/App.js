@@ -343,7 +343,7 @@ export default function GeoDocsApp() {
           
           <div style={{ flex: 1, padding: '15px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '10px' }}>
             {messages.map((m, i) => (
-              <div key={i} style={{ alignSelf: m.role === 'user' ? 'flex-end' : 'flex-start', backgroundColor: m.role === 'user' ? '#007AFF' : '#333', padding: '10px 14px', borderRadius: '15px', maxWidth: '85%', fontSize: '14px', lineHeight: '1.4' }}>
+              <div key={i} style={{ alignSelf: m.role === 'user' ? 'flex-end' : 'flex-start', backgroundColor: m.role === 'user' ? '#007AFF' : '#333', padding: '10px 14px', borderRadius: '15px', maxWidth: '85%', fontSize: '14px', lineHeight: '1.4', whiteSpace: 'pre-wrap' }}>
                 {m.text}
               </div>
             ))}
