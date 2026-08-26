@@ -103,7 +103,7 @@ export default function GeoDocsApp() {
       refundContent2: "შეკვეთის გაუქმება შესაძლებელია მხოლოდ სერვისის საფასურის გადახდის პროცესის დასრულებამდე.",
       footerAddress: "მისამართი: ქ. რუსთავი, დ. კლდიაშვილის 12",
       footerEmail: "ელ-ფოსტა: info@geodocsservice.ge",
-      footerPhone: "ტელ: +995 5XX XX XX XX",
+      footerPhone: "ტელ: +995 511 26 86 99",
       termsLink: "წესები და პირობები",
       termsContent: "პლატფორმა Geo Docs Service-ს (იურიდიული პირი: ი.მ. მანანა შალვაშვილი) მუშაობის პრინციპები და უსაფრთხოების წესები:"
     },
@@ -141,7 +141,7 @@ export default function GeoDocsApp() {
       refundContent2: "Order cancellation is only possible before the payment process is completed.",
       footerAddress: "Address: 12 D. Kldiashvili St., Rustavi",
       footerEmail: "Email: info@geodocsservice.ge",
-      footerPhone: "Tel/Тел: +995 5XX XX XX XX",
+      footerPhone: "Tel/Тел: +995 511 26 86 99",
       termsLink: "Terms and Conditions",
       termsContent: "Operating rules and security guidelines for Geo Docs Service (Legal Entity: I.E. Manana Shalvashvili):"
     },
