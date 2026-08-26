@@ -179,7 +179,7 @@ export default function GeoDocsApp() {
       refundContent2: "Отмена заказа возможна только до завершения процесса оплаты.",
       footerAddress: "Адрес: г. Рустави, ул. Д. Клдиашвили 12",
       footerEmail: "Email: info@geodocsservice.ge",
-      footerPhone: "Tel/Тел: +995 5XX XX XX XX",
+      footerPhone: "Tel/Тел: +995 511 26 86 99",
       termsLink: "Правила и условия",
       termsContent: "Правила работы и политика безопасности платформы Geo Docs Service (Юридическое лицо: И.П. Манана Шалвашвили):"
     }
