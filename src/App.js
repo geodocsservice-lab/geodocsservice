@@ -105,7 +105,7 @@ export default function GeoDocsApp() {
       footerEmail: "ელ-ფოსტა: info@geodocsservice.ge",
       footerPhone: "ტელ: +995 511 26 86 99",
       termsLink: "წესები და პირობები",
-      termsContent: "პლატფორმა Geo Docs Service-ს (იურიდიული პირი: ი.მ. მანანა შალვაშვილი) მუშაობის პრინციპები და უსაფრთხოების წესები:"
+      termsContent: "პლატფორმა Geo Docs Service-ს (იურიდიული პირი: ი.მ. მანანა შალვაშვილი,01005042105) მუშაობის პრინციპები და უსაფრთხოების წესები:"
     },
     EN: { 
       sloganPart1: "Stay Focused on ", 
@@ -143,7 +143,7 @@ export default function GeoDocsApp() {
       footerEmail: "Email: info@geodocsservice.ge",
       footerPhone: "Tel/Тел: +995 511 26 86 99",
       termsLink: "Terms and Conditions",
-      termsContent: "Operating rules and security guidelines for Geo Docs Service (Legal Entity: I.E. Manana Shalvashvili):"
+      termsContent: "Operating rules and security guidelines for Geo Docs Service (Legal Entity: I.E. Manana Shalvashvili, 01005042105):"
     },
     RU: { 
       sloganPart1: "Не отвлекайтесь ", 
@@ -181,7 +181,7 @@ export default function GeoDocsApp() {
       footerEmail: "Email: info@geodocsservice.ge",
       footerPhone: "Tel/Тел: +995 511 26 86 99",
       termsLink: "Правила и условия",
-      termsContent: "Правила работы и политика безопасности платформы Geo Docs Service (Юридическое лицо: И.П. Манана Шалвашвили):"
+      termsContent: "Правила работы и политика безопасности платформы Geo Docs Service (Юридическое лицо: И.П. Манана Шалвашвили, 01005042105):"
     }
   }[lang];
 
