@@ -1,5 +1,29 @@
-import { useState, useEffect } from 'react';
-import { Home, LayoutGrid, Info, Instagram, Facebook, Send, X, FileText } from 'lucide-react';
+import { useState, useEffect, useCallback } from 'react';
+import { Home, LayoutGrid, Info, Instagram, Facebook, Send, X, FileText, Upload, ChevronRight, ChevronLeft, Check } from 'lucide-react';
+import Cropper from 'react-easy-crop';
+
+// დამხმარე ფუნქცია მრგვალი ფოტოს ამოსაჭრელად
+const getCroppedImg = async (imageSrc, pixelCrop) => {
+  const image = new Image();
+  image.src = imageSrc;
+  await new Promise((resolve) => (image.onload = resolve));
+  const canvas = document.createElement('canvas');
+  canvas.width = pixelCrop.width;
+  canvas.height = pixelCrop.height;
+  const ctx = canvas.getContext('2d');
+  
+  ctx.beginPath();
+  ctx.arc(pixelCrop.width / 2, pixelCrop.height / 2, pixelCrop.width / 2, 0, Math.PI * 2);
+  ctx.closePath();
+  ctx.clip();
+  
+  ctx.drawImage(
+    image,
+    pixelCrop.x, pixelCrop.y, pixelCrop.width, pixelCrop.height,
+    0, 0, pixelCrop.width, pixelCrop.height
+  );
+  return canvas.toDataURL('image/png');
+};
 
 export default function GeoDocsApp() {
   const [lang, setLang] = useState('GE');
@@ -11,18 +35,54 @@ export default function GeoDocsApp() {
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
 
+  // ფორმის ლოგიკა
+  const [formStep, setFormStep] = useState(1);
+  const [formData, setFormData] = useState({
+    docLanguage: '', firstName: '', lastName: '', profession: '', personalId: '', email: '',
+    birthDate: '', birthPlace: '', phone: '', paymentMethod: '', address: '', serviceType: 'რეზიუმეს დამზადება/ CV',
+    consent: false, photoUrl: null, isEmployed: '', availability: '', education: '', experience: '',
+    projects: '', personalSkills: [], otherSkills: '', trainings: '', languages: '', software: '', summary: ''
+  });
+
+  // ფოტოს მოსაჭრელი ლოგიკა
+  const [imageSrc, setImageSrc] = useState(null);
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+  const [showCropper, setShowCropper] = useState(false);
+
+  const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
+    setCroppedAreaPixels(croppedAreaPixels);
+  }, []);
+
+  const handleFileChange = (e) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const reader = new FileReader();
+      reader.addEventListener('load', () => setImageSrc(reader.result));
+      reader.readAsDataURL(e.target.files[0]);
+      setShowCropper(true);
+    }
+  };
+
+  const handleCropSave = async () => {
+    try {
+      const croppedImageBase64 = await getCroppedImg(imageSrc, croppedAreaPixels);
+      setFormData(prev => ({ ...prev, photoUrl: croppedImageBase64 }));
+      setShowCropper(false);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   useEffect(() => {
     const savedLang = localStorage.getItem('geoDocsLang');
-    if (savedLang) {
-      setLang(savedLang);
-    }
+    if (savedLang) setLang(savedLang);
   }, []);
 
   useEffect(() => {
     localStorage.setItem('geoDocsLang', lang);
   }, [lang]);
 
-  const googleFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLSeVAyKyk8Wbe1H4y_UutBsRwrDpbsUNpWI7Z3ZeTV4rrP4SQg/viewform?usp=header";
   const logoUrl = "/Screenshot_20260326_020239_Facebook.jpg";
   const robotUrl = "/robot.png";
 
@@ -36,29 +96,23 @@ export default function GeoDocsApp() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
 
-  // 🔴 განახლებული, გასუფთავებული ჩატის ლოგიკა (ინსტრუქციების გარეშე)
   const handleChatSubmit = async (e) => {
     if (e) e.preventDefault();
     if (!input.trim()) return;
-    
     const userMsg = { role: 'user', text: input };
     setMessages(prev => [...prev, userMsg]);
     const currentInput = input;
     setInput('');
     setLoading(true);
-
     try {
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prompt: currentInput }) 
       });
-      
       const data = await response.json();
-      
-      if (data && data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts) {
-        const botResponse = data.candidates[0].content.parts[0].text;
-        setMessages(prev => [...prev, { role: 'bot', text: botResponse }]);
+      if (data?.candidates?.[0]?.content?.parts) {
+        setMessages(prev => [...prev, { role: 'bot', text: data.candidates[0].content.parts[0].text }]);
       } else {
         setMessages(prev => [...prev, { role: 'bot', text: "ბოდიში, პასუხი ვერ მივიღე. სცადე თავიდან." }]);
       }
@@ -68,17 +122,32 @@ export default function GeoDocsApp() {
     setLoading(false);
   };
 
+  const personalSkillsList = [
+    "კომუნიკაბელური", "გუნდური მუშაობა", "პუნქტუალურობა", "სტრესულ გარემოში მუშაობა",
+    "დეტალებზე ორიენტირებულობა", "კრიტიკული აზროვნება", "პასუხისმგებლობის მაღალი გრძნობა",
+    "სწრაფი ათვისების უნარი", "დროის მართვა", "პრობლემის გადაჭრის უნარი", "ანალიტიკური აზროვნება"
+  ];
+
+  const handleSkillToggle = (skill) => {
+    setFormData(prev => {
+      const skills = prev.personalSkills.includes(skill)
+        ? prev.personalSkills.filter(s => s !== skill)
+        : [...prev.personalSkills, skill];
+      return { ...prev, personalSkills: skills };
+    });
+  };
+
+  const handleFormSubmit = () => {
+    console.log("მონაცემები მზადაა გასაგზავნად:", formData);
+    alert("ფორმა წარმატებით შეივსო! მიმდინარეობს ბანკთან დაკავშირება...");
+  };
+
   const t = {
     GE: { 
-      sloganPart1: "ნუ მოწყდები ", 
-      sloganPart2: "შენს საქმეს", 
-      alert: "პერსონალური მონაცემები იშლება 5 წუთში!", 
-      cvBtn: "AI CV 2 წუთში, ნებისმიერ ენაზე", 
-      invoiceBtn: "ინვოისი (მალე)", 
-      pricesTitle: "ტარიფები", 
+      sloganPart1: "ნუ მოწყდები ", sloganPart2: "შენს საქმეს", alert: "პერსონალური მონაცემები იშლება 5 წუთში!",
+      cvBtn: "AI CV 2 წუთში, ნებისმიერ ენაზე", invoiceBtn: "ინვოისი (მალე)", pricesTitle: "ტარიფები",
       prices: [{ title: "სივის ქართულად გენერირება", price: "10₾" }, { title: "სივის უცხო ენაზე გენერირება", price: "15₾" }], 
-      damisoBadge: "✨ Dr. Damiso — შენი AI CV ოსტატი",
-      aboutTitle: "ჩვენს შესახებ", 
+      damisoBadge: "✨ Dr. Damiso — შენი AI CV ოსტატი", aboutTitle: "ჩვენს შესახებ", 
       aboutContent: (
         <div style={{ lineHeight: '1.6', fontSize: '15px' }}>
           <p style={{ marginBottom: '15px' }}>ჯეო დოკს სერვისი არის პირველი ქართული სრულად ავტომატიზებული პლატფორმა. ჩვენი გუნდი მუშაობს მაღალი სიზუსტის ხელოვნურ ინტელექტზე, რათა თქვენი დოკუმენტები მომზადდეს წამებში.</p>
@@ -96,27 +165,17 @@ export default function GeoDocsApp() {
           <p>გაიცანით დოქტორი დამისო — ჩვენი პლატფორმის გული და CV-ების მთავარი ოსტატი! ის არის მაღალი სიზუსტის ხელოვნური ინტელექტი, რომელიც თქვენს გამოცდილებას აანალიზებს და საერთაშორისო სტანდარტების რეზიუმედ აქცევს. დამისო 24/7-ზე თქვენს განკარგულებაშია.</p>
         </div>
       ),
-      rights: "© 2026 GEO DOCS SERVICE. ყველა უფლება დაცულია.",
-      termsTitle: "წესები და პირობები",
-      refundTitle: "გადახდა, გაუქმება და თანხის დაბრუნება",
+      rights: "© 2026 GEO DOCS SERVICE. ყველა უფლება დაცულია.", termsTitle: "წესები და პირობები", refundTitle: "გადახდა, გაუქმება და თანხის დაბრუნება",
       refundContent1: "სერვისის სპეციფიკიდან გამომდინარე (ციფრული პროდუქტის მყისიერი მიწოდება), მომხმარებლის მიერ სერვისის საფასურის გადახდის და დოკუმენტის (CV) ავტომატური გენერირების შემდეგ, გადახდილი თანხა უკან არ ბრუნდება.",
       refundContent2: "შეკვეთის გაუქმება შესაძლებელია მხოლოდ სერვისის საფასურის გადახდის პროცესის დასრულებამდე.",
-      footerAddress: "მისამართი: ქ. რუსთავი, დ. კლდიაშვილის 12",
-      footerEmail: "ელ-ფოსტა: info@geodocsservice.ge",
-      footerPhone: "ტელ: +995 511 26 86 99",
-      termsLink: "წესები და პირობები",
-      termsContent: "პლატფორმა Geo Docs Service-ს (იურიდიული პირი: ი.მ. მანანა შალვაშვილი, 01005042105) მუშაობის პრინციპები და უსაფრთხოების წესები:"
+      footerAddress: "მისამართი: ქ. რუსთავი, დ. კლდიაშვილის 12", footerEmail: "ელ-ფოსტა: info@geodocsservice.ge", footerPhone: "ტელ: +995 511 26 86 99",
+      termsLink: "წესები და პირობები", termsContent: "პლატფორმა Geo Docs Service-ს (იურიდიული პირი: ი.მ. მანანა შალვაშვილი, 01005042105) მუშაობის პრინციპები და უსაფრთხოების წესები:"
     },
     EN: { 
-      sloganPart1: "Stay Focused on ", 
-      sloganPart2: "Your Business", 
-      alert: "Personal data is deleted in 5 mins!", 
-      cvBtn: "AI CV in 2 Mins, Any Language", 
-      invoiceBtn: "Invoice (Soon)", 
-      pricesTitle: "Pricing", 
+      sloganPart1: "Stay Focused on ", sloganPart2: "Your Business", alert: "Personal data is deleted in 5 mins!",
+      cvBtn: "AI CV in 2 Mins, Any Language", invoiceBtn: "Invoice (Soon)", pricesTitle: "Pricing",
       prices: [{ title: "CV Generation in Georgian", price: "10₾" }, { title: "CV Generation in Foreign Language", price: "15₾" }], 
-      damisoBadge: "✨ Dr. Damiso — Your AI CV Master",
-      aboutTitle: "About Us", 
+      damisoBadge: "✨ Dr. Damiso — Your AI CV Master", aboutTitle: "About Us", 
       aboutContent: (
         <div style={{ lineHeight: '1.6', fontSize: '15px' }}>
           <p style={{ marginBottom: '15px' }}>Geo Docs Service is the first fully automated Georgian platform. Our team works on high-precision artificial intelligence so that your documents are prepared in seconds.</p>
@@ -134,27 +193,17 @@ export default function GeoDocsApp() {
           <p>Meet Dr. Damiso — the heart of our platform and the master of CVs! He is a high-precision artificial intelligence that analyzes your experience and turns it into a resume of international standards. Damiso is at your disposal 24/7.</p>
         </div>
       ),
-      rights: "© 2026 GEO DOCS SERVICE. All rights reserved.",
-      termsTitle: "Terms and Conditions",
-      refundTitle: "Payment, Cancellation, and Refund Policy",
+      rights: "© 2026 GEO DOCS SERVICE. All rights reserved.", termsTitle: "Terms and Conditions", refundTitle: "Payment, Cancellation, and Refund Policy",
       refundContent1: "Due to the nature of the service (instant delivery of a digital product), the paid amount is non-refundable once the user has paid the service fee and the document (CV) has been automatically generated.",
       refundContent2: "Order cancellation is only possible before the payment process is completed.",
-      footerAddress: "Address: 12 D. Kldiashvili St., Rustavi",
-      footerEmail: "Email: info@geodocsservice.ge",
-      footerPhone: "Tel/Тел: +995 511 26 86 99",
-      termsLink: "Terms and Conditions",
-      termsContent: "Operating rules and security guidelines for Geo Docs Service (Legal Entity: I.E. Manana Shalvashvili, 01005042105):"
+      footerAddress: "Address: 12 D. Kldiashvili St., Rustavi", footerEmail: "Email: info@geodocsservice.ge", footerPhone: "Tel/Тел: +995 511 26 86 99",
+      termsLink: "Terms and Conditions", termsContent: "Operating rules and security guidelines for Geo Docs Service (Legal Entity: I.E. Manana Shalvashvili, 01005042105):"
     },
     RU: { 
-      sloganPart1: "Не отвлекайтесь ", 
-      sloganPart2: "от дел", 
-      alert: "Личные данные удаляются через 5 мин!", 
-      cvBtn: "AI CV за 2 минуты, на любом языке", 
-      invoiceBtn: "Инвойс (Скоро)", 
-      pricesTitle: "Тарифы", 
+      sloganPart1: "Не отвлекайтесь ", sloganPart2: "от дел", alert: "Личные данные удаляются через 5 мин!",
+      cvBtn: "AI CV за 2 минуты, на любом языке", invoiceBtn: "Инвойс (Скоро)", pricesTitle: "Тарифы",
       prices: [{ title: "Генерация резюме на грузинском", price: "10₾" }, { title: "Генерация резюме на иностранном языке", price: "15₾" }], 
-      damisoBadge: "✨ Dr. Damiso — Ваш AI Мастер Резюме",
-      aboutTitle: "О нас", 
+      damisoBadge: "✨ Dr. Damiso — Ваш AI Мастер Резюме", aboutTitle: "О нас", 
       aboutContent: (
         <div style={{ lineHeight: '1.6', fontSize: '15px' }}>
           <p style={{ marginBottom: '15px' }}>Geo Docs Service — первая полностью автоматизированная грузинская платформа. Наша команда работает над высокоточным искусственным интеллектом, чтобы ваши документы были готовы за считанные секунды.</p>
@@ -172,29 +221,34 @@ export default function GeoDocsApp() {
           <p>Познакомьтесь с доктором Дамисо — сердцем нашей платформы и мастером резюме! Это высокоточный искусственный интеллект, который анализирует ваш опыт и превращает его в резюме по международным стандартам. Дамисо в вашем распоряжении 24/7.</p>
         </div>
       ),
-      rights: "© 2026 GEO DOCS SERVICE. Все права защищены.",
-      termsTitle: "Правила и условия",
-      refundTitle: "Оплата, отмена и возврат средств",
+      rights: "© 2026 GEO DOCS SERVICE. Все права защищены.", termsTitle: "Правила и условия", refundTitle: "Оплата, отмена и возврат средств",
       refundContent1: "В связи со спецификой сервиса (мгновенная доставка цифрового продукта), уплаченная сумма возврату не подлежит после того, как пользователь оплатил стоимость услуги и документ (CV) был автоматически сгенерирован.",
       refundContent2: "Отмена заказа возможна только до завершения процесса оплаты.",
-      footerAddress: "Адрес: г. Рустави, ул. Д. Клдиашвили 12",
-      footerEmail: "Email: info@geodocsservice.ge",
-      footerPhone: "Tel/Тел: +995 511 26 86 99",
-      termsLink: "Правила и условия",
-      termsContent: "Правила работы и политика безопасности платформы Geo Docs Service (Юридическое лицо: И.П. Манана Шалвашвили, 01005042105):"
+      footerAddress: "Адрес: г. Рустави, ул. Д. Клдиашвили 12", footerEmail: "Email: info@geodocsservice.ge", footerPhone: "Tel/Тел: +995 511 26 86 99",
+      termsLink: "Правила и условия", termsContent: "Правила работы и политика безопасности платформы Geo Docs Service (Юридическое лицо: И.П. Манана Шалвашвили, 01005042105):"
     }
   }[lang];
+
+  const inputStyle = { width: '100%', padding: '12px', borderRadius: '10px', border: 'none', backgroundColor: '#333', color: 'white', marginBottom: '15px', boxSizing: 'border-box' };
+  const labelStyle = { display: 'block', marginBottom: '5px', fontSize: '13px', color: '#FFB800' };
 
   return (
     <div style={{ backgroundColor: '#6D757D', minHeight: '100vh', color: 'white', fontFamily: 'Arial, sans-serif', width: '100%', overflowX: 'hidden' }}>
       
-      <style>{`
-        @keyframes blink {
-          0% { opacity: 0.2; }
-          20% { opacity: 1; }
-          100% { opacity: 0.2; }
-        }
-      `}</style>
+      <style>{`@keyframes blink { 0% { opacity: 0.2; } 20% { opacity: 1; } 100% { opacity: 0.2; } }`}</style>
+
+      {/* ფოტოს მოსაჭრელი პოპ-აპი (Modal) */}
+      {showCropper && (
+        <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.9)', zIndex: 10001, display: 'flex', flexDirection: 'column' }}>
+          <div style={{ position: 'relative', width: '100%', height: '80%' }}>
+            <Cropper image={imageSrc} crop={crop} zoom={zoom} aspect={1} cropShape="round" showGrid={false} onCropChange={setCrop} onCropComplete={onCropComplete} onZoomChange={setZoom} />
+          </div>
+          <div style={{ padding: '20px', display: 'flex', justifyContent: 'space-between', backgroundColor: '#1A1A1A', gap: '10px' }}>
+            <button onClick={() => setShowCropper(false)} style={{ flex: 1, padding: '15px', borderRadius: '10px', background: '#333', color: 'white', border: 'none' }}>გაუქმება</button>
+            <button onClick={handleCropSave} style={{ flex: 1, padding: '15px', borderRadius: '10px', background: '#007AFF', color: 'white', border: 'none', fontWeight: 'bold' }}>მოჭრა და შენახვა</button>
+          </div>
+        </div>
+      )}
 
       {/* Header */}
       <header style={{ backgroundColor: '#1A1A1A', padding: '15px', position: 'fixed', top: 0, width: '100%', zIndex: 1000, display: 'flex', justifyContent: 'space-between', alignItems: 'center', boxSizing: 'border-box' }}>
@@ -214,46 +268,167 @@ export default function GeoDocsApp() {
         {/* Home Tab */}
         {activeTab === 'home' && (
           <div style={{ textAlign: 'center' }}>
-            <div style={{ backgroundColor: 'rgba(0,0,0,0.2)', padding: '10px', borderRadius: '15px', fontSize: '11px', marginBottom: '20px' }}>
-              {t.alert}
-            </div>
+            <div style={{ backgroundColor: 'rgba(0,0,0,0.2)', padding: '10px', borderRadius: '15px', fontSize: '11px', marginBottom: '20px' }}>{t.alert}</div>
+            <h1 style={{ fontSize: '26px', margin: '20px 0' }}><span style={{ color: 'white' }}>{t.sloganPart1}</span><span style={{ color: '#FFB800' }}>{t.sloganPart2}</span></h1>
             
-            <h1 style={{ fontSize: '26px', margin: '20px 0' }}>
-              <span style={{ color: 'white' }}>{t.sloganPart1}</span>
-              <span style={{ color: '#FFB800' }}>{t.sloganPart2}</span>
-            </h1>
-            
-            {/* რობოტი განახლებული ბეჯით */}
             <div style={{ position: 'relative', display: 'inline-block', margin: '10px auto', marginBottom: '30px' }}>
               <img src={robotUrl} alt="Dr. Damiso" style={{ width: '220px' }} />
-              <div style={{ 
-                position: 'absolute', bottom: '-15px', left: '50%', transform: 'translateX(-50%)', 
-                background: 'rgba(26, 26, 26, 0.95)', color: '#FFB800', 
-                padding: '6px 16px', borderRadius: '20px', fontSize: '12px', fontWeight: 'bold', 
-                whiteSpace: 'nowrap', border: '1px solid #007AFF', boxShadow: '0 4px 10px rgba(0,0,0,0.5)'
-              }}>
+              <div style={{ position: 'absolute', bottom: '-15px', left: '50%', transform: 'translateX(-50%)', background: 'rgba(26, 26, 26, 0.95)', color: '#FFB800', padding: '6px 16px', borderRadius: '20px', fontSize: '12px', fontWeight: 'bold', whiteSpace: 'nowrap', border: '1px solid #007AFF', boxShadow: '0 4px 10px rgba(0,0,0,0.5)' }}>
                 {t.damisoBadge}
               </div>
             </div>
             
-            <button onClick={() => window.open(googleFormUrl, '_blank')} style={{ width: '100%', padding: '18px', background: '#FFB800', border: 'none', borderRadius: '20px', fontWeight: 'bold', cursor: 'pointer', color: 'black' }}>
+            <button onClick={() => { setActiveTab('form'); setFormStep(1); window.scrollTo(0,0); }} style={{ width: '100%', padding: '18px', background: '#FFB800', border: 'none', borderRadius: '20px', fontWeight: 'bold', cursor: 'pointer', color: 'black' }}>
               {t.cvBtn}
             </button>
-            
-            <button style={{ width: '100%', padding: '15px', background: '#007AFF', border: '2px dashed #FFB800', marginTop: '15px', borderRadius: '20px', color: 'white', fontWeight: 'bold' }}>
-              {t.invoiceBtn}
-            </button>
+            <button style={{ width: '100%', padding: '15px', background: '#007AFF', border: '2px dashed #FFB800', marginTop: '15px', borderRadius: '20px', color: 'white', fontWeight: 'bold' }}>{t.invoiceBtn}</button>
 
-            {/* Pricing Section */}
             <div id="pricing-section" style={{ marginTop: '40px' }}>
               <h2 style={{ textAlign: 'left', marginBottom: '20px', color: '#FFB800' }}>{t.pricesTitle}</h2>
               {t.prices.map((p, i) => (
-                <button key={i} onClick={() => window.open(googleFormUrl, '_blank')} style={{ width: '100%', background: '#2A2A2A', padding: '20px', borderRadius: '20px', border: '1px solid #444', marginBottom: '10px', color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }}>
-                  <span style={{ fontSize: '14px' }}>{p.title}</span> 
-                  <b style={{ color: '#FFB800', fontSize: '18px' }}>{p.price}</b>
+                <button key={i} onClick={() => { setActiveTab('form'); setFormStep(1); window.scrollTo(0,0); }} style={{ width: '100%', background: '#2A2A2A', padding: '20px', borderRadius: '20px', border: '1px solid #444', marginBottom: '10px', color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }}>
+                  <span style={{ fontSize: '14px' }}>{p.title}</span> <b style={{ color: '#FFB800', fontSize: '18px' }}>{p.price}</b>
                 </button>
               ))}
             </div>
+          </div>
+        )}
+
+        {/* --- FORM TAB --- */}
+        {activeTab === 'form' && (
+          <div style={{ background: '#2A2A2A', padding: '20px', borderRadius: '20px', marginTop: '10px' }}>
+            <h2 style={{ color: '#FFB800', marginBottom: '20px', textAlign: 'center' }}>Geo Docs Service - ფორმა</h2>
+            
+            <div style={{ display: 'flex', gap: '5px', marginBottom: '30px' }}>
+              {[1, 2, 3].map(step => (
+                <div key={step} style={{ flex: 1, height: '4px', backgroundColor: step <= formStep ? '#FFB800' : '#444', borderRadius: '2px' }} />
+              ))}
+            </div>
+
+            {formStep === 1 && (
+              <div>
+                <h3 style={{ marginBottom: '15px' }}>ნაბიჯი 1: ენის არჩევა</h3>
+                <label style={labelStyle}>რომელ ენაზე გსურთ დოკუმენტი?</label>
+                <select style={inputStyle} value={formData.docLanguage} onChange={e => setFormData({...formData, docLanguage: e.target.value})}>
+                  <option value="">აირჩიეთ...</option><option value="ქართული">ქართული</option><option value="ინგლისური">ინგლისური</option><option value="რუსული">რუსული</option>
+                </select>
+                <button onClick={() => setFormStep(2)} style={{ width: '100%', padding: '15px', background: '#007AFF', color: 'white', border: 'none', borderRadius: '10px', display: 'flex', justifyContent: 'center', gap: '10px' }}>შემდეგი <ChevronRight size={20}/></button>
+              </div>
+            )}
+
+            {formStep === 2 && (
+              <div>
+                <h3 style={{ marginBottom: '15px' }}>ნაბიჯი 2: პერსონალური ინფორმაცია</h3>
+                <label style={labelStyle}>სახელი</label>
+                <input style={inputStyle} type="text" value={formData.firstName} onChange={e => setFormData({...formData, firstName: e.target.value})} />
+                
+                <label style={labelStyle}>გვარი</label>
+                <input style={inputStyle} type="text" value={formData.lastName} onChange={e => setFormData({...formData, lastName: e.target.value})} />
+                
+                <label style={labelStyle}>პროფესია</label>
+                <input style={inputStyle} type="text" value={formData.profession} onChange={e => setFormData({...formData, profession: e.target.value})} />
+                
+                <label style={labelStyle}>პირადი ნომერი</label>
+                <input style={inputStyle} type="text" value={formData.personalId} onChange={e => setFormData({...formData, personalId: e.target.value})} />
+                
+                <label style={labelStyle}>იმეილი (ლათინური, პატარა ასოებით)</label>
+                <input style={inputStyle} type="email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} />
+                
+                <label style={labelStyle}>დაბადების თარიღი (დღე/თვე/წელი)</label>
+                <input style={inputStyle} type="text" placeholder="მაგ: 15/08/1990" value={formData.birthDate} onChange={e => setFormData({...formData, birthDate: e.target.value})} />
+                
+                <label style={labelStyle}>დაბადების ადგილი (ქვეყანა, ქალაქი)</label>
+                <input style={inputStyle} type="text" value={formData.birthPlace} onChange={e => setFormData({...formData, birthPlace: e.target.value})} />
+                
+                <label style={labelStyle}>ტელეფონის ნომერი</label>
+                <input style={inputStyle} type="text" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} />
+                
+                <label style={labelStyle}>ფაქტობრივი საცხოვრებელი მისამართი</label>
+                <textarea style={{...inputStyle, height: '80px'}} value={formData.address} onChange={e => setFormData({...formData, address: e.target.value})} />
+                
+                <label style={labelStyle}>გადახდის მეთოდი</label>
+                <select style={inputStyle} value={formData.paymentMethod} onChange={e => setFormData({...formData, paymentMethod: e.target.value})}>
+                  <option value="">აირჩიეთ...</option><option value="ბარათით გადახდა">ბარათით გადახდა</option>
+                </select>
+
+                <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
+                  <button onClick={() => setFormStep(1)} style={{ flex: 1, padding: '15px', background: '#444', color: 'white', border: 'none', borderRadius: '10px' }}><ChevronLeft size={20}/></button>
+                  <button onClick={() => setFormStep(3)} style={{ flex: 3, padding: '15px', background: '#007AFF', color: 'white', border: 'none', borderRadius: '10px', display: 'flex', justifyContent: 'center', gap: '10px' }}>შემდეგი <ChevronRight size={20}/></button>
+                </div>
+              </div>
+            )}
+
+            {formStep === 3 && (
+              <div>
+                <h3 style={{ marginBottom: '15px' }}>ნაბიჯი 3: CV-ს დეტალები</h3>
+                
+                <label style={labelStyle}>ატვირთეთ თქვენი ფოტო (მოიჭრება მრგვლად)</label>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '20px' }}>
+                  <label style={{ background: '#007AFF', padding: '12px 20px', borderRadius: '10px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px', fontWeight: 'bold' }}>
+                    <Upload size={18} /> არჩევა
+                    <input type="file" accept="image/*" onChange={handleFileChange} style={{ display: 'none' }} />
+                  </label>
+                  {formData.photoUrl && <img src={formData.photoUrl} alt="Cropped" style={{ width: '50px', height: '50px', borderRadius: '50%', border: '2px solid #FFB800' }} />}
+                </div>
+
+                <label style={labelStyle}>ამჟამად ხართ თუ არა დასაქმებული?</label>
+                <select style={inputStyle} value={formData.isEmployed} onChange={e => setFormData({...formData, isEmployed: e.target.value})}>
+                  <option value="">აირჩიეთ...</option><option value="კი">კი</option><option value="არა">არა</option>
+                </select>
+
+                <label style={labelStyle}>რამდენ ხანში შეძლებთ მუშაობის დაწყებას?</label>
+                <select style={inputStyle} value={formData.availability} onChange={e => setFormData({...formData, availability: e.target.value})}>
+                  <option value="">აირჩიეთ...</option><option value="დაუყოვნებლივ">დაუყოვნებლივ</option><option value="2 კვირა">2 კვირა</option><option value="1 თვე">1 თვე</option><option value="3 თვე">3 თვე</option>
+                </select>
+
+                <label style={labelStyle}>განათლება (უნივერსიტეტი, ფაკულტეტი, წლები)</label>
+                <input style={inputStyle} type="text" value={formData.education} onChange={e => setFormData({...formData, education: e.target.value})} />
+                
+                <label style={labelStyle}>სამუშაო გამოცდილება</label>
+                <textarea style={{...inputStyle, height: '80px'}} value={formData.experience} onChange={e => setFormData({...formData, experience: e.target.value})} />
+                
+                <label style={labelStyle}>პროექტები</label>
+                <textarea style={{...inputStyle, height: '60px'}} value={formData.projects} onChange={e => setFormData({...formData, projects: e.target.value})} />
+
+                <label style={{...labelStyle, marginTop: '10px'}}>პიროვნული უნარები (მონიშნეთ)</label>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '15px', background: '#333', padding: '15px', borderRadius: '10px' }}>
+                  {personalSkillsList.map(skill => (
+                    <label key={skill} style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '13px', cursor: 'pointer' }}>
+                      <div style={{ width: '18px', height: '18px', border: '2px solid #FFB800', borderRadius: '4px', display: 'flex', justifyContent: 'center', alignItems: 'center', background: formData.personalSkills.includes(skill) ? '#FFB800' : 'transparent' }}>
+                        {formData.personalSkills.includes(skill) && <Check size={14} color="black" />}
+                      </div>
+                      {skill}
+                      <input type="checkbox" style={{ display: 'none' }} checked={formData.personalSkills.includes(skill)} onChange={() => handleSkillToggle(skill)} />
+                    </label>
+                  ))}
+                </div>
+
+                <label style={labelStyle}>მიუთითეთ სხვა უნარები</label>
+                <input style={inputStyle} type="text" value={formData.otherSkills} onChange={e => setFormData({...formData, otherSkills: e.target.value})} />
+                
+                <label style={labelStyle}>ტრენინგები და სერთიფიკატები</label>
+                <input style={inputStyle} type="text" value={formData.trainings} onChange={e => setFormData({...formData, trainings: e.target.value})} />
+                
+                <label style={labelStyle}>უცხო ენები</label>
+                <input style={inputStyle} type="text" value={formData.languages} onChange={e => setFormData({...formData, languages: e.target.value})} />
+                
+                <label style={labelStyle}>კომპიუტერული პროგრამები</label>
+                <input style={inputStyle} type="text" value={formData.software} onChange={e => setFormData({...formData, software: e.target.value})} />
+                
+                <label style={labelStyle}>პროფესიული შეჯამება (არასავალდებულო)</label>
+                <textarea style={{...inputStyle, height: '80px'}} value={formData.summary} onChange={e => setFormData({...formData, summary: e.target.value})} />
+
+                <label style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', fontSize: '11px', color: '#ccc', marginBottom: '20px', cursor: 'pointer' }}>
+                  <input type="checkbox" checked={formData.consent} onChange={e => setFormData({...formData, consent: e.target.checked})} style={{ marginTop: '2px' }} />
+                  თანხმობა პერსონალური მონაცემების დამუშავებაზე. მოწოდებული ინფორმაცია გამოყენებული იქნება ექსკლუზიურად დოკუმენტის მოსამზადებლად და წაიშლება 5 წუთში.
+                </label>
+
+                <div style={{ display: 'flex', gap: '10px' }}>
+                  <button onClick={() => setFormStep(2)} style={{ flex: 1, padding: '15px', background: '#444', color: 'white', border: 'none', borderRadius: '10px' }}><ChevronLeft size={20}/></button>
+                  <button onClick={handleFormSubmit} disabled={!formData.consent} style={{ flex: 3, padding: '15px', background: formData.consent ? '#28A745' : '#555', color: 'white', border: 'none', borderRadius: '10px', fontWeight: 'bold' }}>გაგზავნა და გადახდა</button>
+                </div>
+              </div>
+            )}
           </div>
         )}
 
@@ -278,11 +453,11 @@ export default function GeoDocsApp() {
               <li><b style={{ color: '#FFB800' }}>{lang === 'GE' ? 'ჩასწორება / განმეორებითი დოკუმენტი:' : lang === 'EN' ? 'Correction / Repeat Document:' : 'Исправление / Повторный документ:'}</b> {lang === 'GE' ? 'თუ დოკუმენტში შეცდომაა, გთხოვთ, კითხვარი შეავსოთ თავიდან. სისტემა ამოწმებს შენახულ სამ მონაცემს (თარიღი, ენა, ელ-ფოსტა). დამთხვევის შემთხვევაში, სისტემა ავტომატურად მოგცემთ კორექტირების საშუალებას და ახალი, ჩასწორებული დოკუმენტი სრულიად უფასოდ დაგიმზადდებათ.' : lang === 'EN' ? 'If there is an error in the document, please fill out the questionnaire again. The system checks the three stored data points (date, language, email). If they match, the system will automatically allow correction and a new, corrected document will be generated completely free of charge.' : 'Если в документе есть ошибка, пожалуйста, заполните анкету заново. Система проверяет три сохраненных параметра (дата, язык, email). При совпадении система автоматически разрешит корректировку и бесплатно создаст новый, исправленный документ.'}</li>
               <li><b style={{ color: '#FFB800' }}>{lang === 'GE' ? 'ფაილების შენახვა:' : lang === 'EN' ? 'File Storage:' : 'Хранение файлов:'}</b> {lang === 'GE' ? 'გენერირებული PDF დოკუმენტები PDF Drive-იდან იშლება ყოველ ღამის 12 საათზე.' : lang === 'EN' ? 'Generated PDF documents are deleted from PDF Drive every night at 12:00 AM.' : 'Сгенерированные PDF-документы удаляются из PDF Drive каждую ночь в 12 часов.'}</li>
             
-            <h3 style={{ color: '#FFB800', marginTop: '20px', marginBottom: '10px', fontSize: '18px' }}>{t.refundTitle}</h3>
-            <ul style={{ paddingLeft: '20px', lineHeight: '1.8' }}>
-              <li>{t.refundContent1}</li>
-              <li>{t.refundContent2}</li>
-            </ul>
+              <h3 style={{ color: '#FFB800', marginTop: '20px', marginBottom: '10px', fontSize: '18px' }}>{t.refundTitle}</h3>
+              <ul style={{ paddingLeft: '20px', lineHeight: '1.8' }}>
+                <li>{t.refundContent1}</li>
+                <li>{t.refundContent2}</li>
+              </ul>
             </ul>
           </div>
         )}
@@ -291,17 +466,10 @@ export default function GeoDocsApp() {
         <footer style={{ textAlign: 'center', marginTop: '40px', opacity: 0.6 }}>
           <img src={logoUrl} alt="Logo" style={{ width: '40px', height: '40px', borderRadius: '50%', marginBottom: '10px', objectFit: 'cover' }} />
           <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', marginBottom: '10px' }}>
-            <Instagram size={20} />
-            <Facebook size={20} />
-            <Send size={20} />
+            <Instagram size={20} /> <Facebook size={20} /> <Send size={20} />
           </div>
           
-          <div 
-            onClick={() => {
-              setActiveTab('terms');
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }} 
-            style={{ fontSize: '12px', textDecoration: 'underline', cursor: 'pointer', marginBottom: '10px', color: '#FFB800', fontWeight: 'bold' }}>
+          <div onClick={() => { setActiveTab('terms'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} style={{ fontSize: '12px', textDecoration: 'underline', cursor: 'pointer', marginBottom: '10px', color: '#FFB800', fontWeight: 'bold' }}>
             {t.termsLink}
           </div>
           
@@ -314,41 +482,27 @@ export default function GeoDocsApp() {
           
           {/* გადახდის სისტემების CSS ლოგოები */}
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', marginBottom: '15px' }}>
-            {/* VISA */}
-            <div style={{ width: '32px', height: '19px', backgroundColor: '#fff', borderRadius: '3px', display: 'flex', justifyContent: 'center', alignItems: 'center', fontWeight: '900', color: '#0040FF', fontSize: '10px', fontStyle: 'italic', letterSpacing: '0.5px' }}>
-              VISA
-            </div>
-            {/* Mastercard */}
+            <div style={{ width: '32px', height: '19px', backgroundColor: '#fff', borderRadius: '3px', display: 'flex', justifyContent: 'center', alignItems: 'center', fontWeight: '900', color: '#0040FF', fontSize: '10px', fontStyle: 'italic', letterSpacing: '0.5px' }}>VISA</div>
             <div style={{ width: '32px', height: '19px', backgroundColor: '#fff', borderRadius: '3px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <span style={{ width: '10px', height: '10px', backgroundColor: '#FF0000', borderRadius: '50%', display: 'inline-block' }}></span>
               <span style={{ width: '10px', height: '10px', backgroundColor: '#FFB800', borderRadius: '50%', display: 'inline-block', marginLeft: '-4px', opacity: '0.9' }}></span>
             </div>
           </div>
-
           <p style={{ fontSize: '10px' }}>{t.rights}</p>
         </footer>
       </main>
 
       {/* Dr. Damiso Chat Window */}
       {isChatOpen && (
-        <div style={{
-          position: 'fixed', bottom: '150px', right: '5%', width: '90%', maxWidth: '350px', height: '400px',
-          backgroundColor: '#1A1A1A', borderRadius: '20px', border: '2px solid #007AFF',
-          zIndex: 10000, display: 'flex', flexDirection: 'column', boxShadow: '0 10px 30px rgba(0,0,0,0.6)'
-        }}>
+        <div style={{ position: 'fixed', bottom: '150px', right: '5%', width: '90%', maxWidth: '350px', height: '400px', backgroundColor: '#1A1A1A', borderRadius: '20px', border: '2px solid #007AFF', zIndex: 10000, display: 'flex', flexDirection: 'column', boxShadow: '0 10px 30px rgba(0,0,0,0.6)' }}>
           <div style={{ padding: '12px 15px', backgroundColor: '#007AFF', color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTopLeftRadius: '15px', borderTopRightRadius: '15px' }}>
             <span style={{ fontWeight: 'bold' }}>Dr. Damiso</span>
             <X size={20} onClick={() => setIsChatOpen(false)} style={{ cursor: 'pointer' }} />
           </div>
-          
           <div style={{ flex: 1, padding: '15px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '10px' }}>
             {messages.map((m, i) => (
-              <div key={i} style={{ alignSelf: m.role === 'user' ? 'flex-end' : 'flex-start', backgroundColor: m.role === 'user' ? '#007AFF' : '#333', padding: '10px 14px', borderRadius: '15px', maxWidth: '85%', fontSize: '14px', lineHeight: '1.4', whiteSpace: 'pre-wrap' }}>
-                {m.text}
-              </div>
+              <div key={i} style={{ alignSelf: m.role === 'user' ? 'flex-end' : 'flex-start', backgroundColor: m.role === 'user' ? '#007AFF' : '#333', padding: '10px 14px', borderRadius: '15px', maxWidth: '85%', fontSize: '14px', lineHeight: '1.4', whiteSpace: 'pre-wrap' }}>{m.text}</div>
             ))}
-            
-            {/* ანიმაცია */}
             {loading && (
               <div style={{ alignSelf: 'flex-start', backgroundColor: '#333', padding: '12px 16px', borderRadius: '15px', display: 'flex', gap: '5px', alignItems: 'center' }}>
                 <span style={{width: '6px', height: '6px', backgroundColor: '#fff', borderRadius: '50%', animation: 'blink 1.4s infinite both'}}></span>
@@ -357,76 +511,28 @@ export default function GeoDocsApp() {
               </div>
             )}
           </div>
-          
-          <form 
-            onSubmit={handleChatSubmit} 
-            style={{ padding: '10px', display: 'flex', gap: '8px', borderTop: '1px solid #333', margin: 0 }}
-          >
-            <input 
-              type="text" 
-              value={input} 
-              onChange={(e) => setInput(e.target.value)} 
-              placeholder="მოწერე შეტყობინება..." 
-              style={{ flex: 1, padding: '10px 12px', borderRadius: '10px', border: 'none', backgroundColor: '#fff', color: '#000', fontSize: '14px', outline: 'none' }} 
-            />
-            <button 
-              type="submit" 
-              style={{ background: '#FFB800', border: 'none', borderRadius: '10px', padding: '0 15px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-            >
-              <Send size={18} color="#000" />
-            </button>
+          <form onSubmit={handleChatSubmit} style={{ padding: '10px', display: 'flex', gap: '8px', borderTop: '1px solid #333', margin: 0 }}>
+            <input type="text" value={input} onChange={(e) => setInput(e.target.value)} placeholder="მოწერე შეტყობინება..." style={{ flex: 1, padding: '10px 12px', borderRadius: '10px', border: 'none', backgroundColor: '#fff', color: '#000', fontSize: '14px', outline: 'none' }} />
+            <button type="submit" style={{ background: '#FFB800', border: 'none', borderRadius: '10px', padding: '0 15px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Send size={18} color="#000" /></button>
           </form>
         </div>
       )}
 
       {/* Dr. Damiso Chat Button */}
-      <div style={{
-          position: 'fixed', bottom: '80px', right: '20px', 
-          display: 'flex', alignItems: 'center', gap: '10px', zIndex: 9999
-      }}>
-        <div style={{
-          backgroundColor: '#1A1A1A', color: 'white', padding: '8px 15px', 
-          borderRadius: '20px', fontWeight: 'bold', fontSize: '14px',
-          boxShadow: '0 4px 12px rgba(0,0,0,0.3)'
-        }}>
-          Dr. Damiso
-        </div>
-        <div 
-          onClick={() => setIsChatOpen(!isChatOpen)}
-          style={{
-            backgroundColor: 'white', border: '3px solid #007AFF', width: '60px', height: '60px',
-            borderRadius: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center', 
-            cursor: 'pointer', overflow: 'hidden', boxShadow: '0 4px 12px rgba(0,0,0,0.3)'
-          }}
-        >
+      <div style={{ position: 'fixed', bottom: '80px', right: '20px', display: 'flex', alignItems: 'center', gap: '10px', zIndex: 9999 }}>
+        <div style={{ backgroundColor: '#1A1A1A', color: 'white', padding: '8px 15px', borderRadius: '20px', fontWeight: 'bold', fontSize: '14px', boxShadow: '0 4px 12px rgba(0,0,0,0.3)' }}>Dr. Damiso</div>
+        <div onClick={() => setIsChatOpen(!isChatOpen)} style={{ backgroundColor: 'white', border: '3px solid #007AFF', width: '60px', height: '60px', borderRadius: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center', cursor: 'pointer', overflow: 'hidden', boxShadow: '0 4px 12px rgba(0,0,0,0.3)' }}>
           <img src={robotUrl} alt="Dr. Damiso" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
         </div>
       </div>
-
+      
       {/* Navigation */}
-      <nav style={{ 
-        position: 'fixed', bottom: '15px', left: '5%', width: '90%', backgroundColor: '#1A1A1A', 
-        padding: '15px', borderRadius: '40px', display: 'flex', justifyContent: 'space-around', 
-        zIndex: 1000, boxSizing: 'border-box',
-        transition: 'transform 0.3s ease, opacity 0.3s ease',
-        transform: showNav ? 'translateY(0)' : 'translateY(100px)',
-        opacity: showNav ? 1 : 0,
-        boxShadow: '0 4px 20px rgba(0,0,0,0.5)'
-      }}>
+      <nav style={{ position: 'fixed', bottom: '15px', left: '5%', width: '90%', backgroundColor: '#1A1A1A', padding: '15px', borderRadius: '40px', display: 'flex', justifyContent: 'space-around', zIndex: 1000, boxSizing: 'border-box', transition: 'transform 0.3s ease, opacity 0.3s ease', transform: showNav ? 'translateY(0)' : 'translateY(100px)', opacity: showNav ? 1 : 0, boxShadow: '0 4px 20px rgba(0,0,0,0.5)' }}>
         <Home onClick={() => {setActiveTab('home'); window.scrollTo(0,0);}} style={{ color: activeTab === 'home' ? '#007AFF' : 'white', cursor: 'pointer' }} />
-        <LayoutGrid 
-          onClick={() => {
-            setActiveTab('home');
-            setTimeout(() => {
-              document.getElementById('pricing-section')?.scrollIntoView({ behavior: 'smooth' });
-            }, 100);
-          }} 
-          style={{ cursor: 'pointer', color: 'white' }} 
-        />
+        <LayoutGrid onClick={() => { setActiveTab('home'); setTimeout(() => { document.getElementById('pricing-section')?.scrollIntoView({ behavior: 'smooth' }); }, 100); }} style={{ cursor: 'pointer', color: 'white' }} />
         <FileText onClick={() => {setActiveTab('terms'); window.scrollTo(0,0);}} style={{ color: activeTab === 'terms' ? '#007AFF' : 'white', cursor: 'pointer' }} />
         <Info onClick={() => {setActiveTab('about'); window.scrollTo(0,0);}} style={{ color: activeTab === 'about' ? '#007AFF' : 'white', cursor: 'pointer' }} />
       </nav>
-      
     </div>
   );
 }
