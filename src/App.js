@@ -122,6 +122,49 @@ export default function GeoDocsApp() {
     setLoading(false);
   };
 
+  // ქვეყნების სია დროშებით ანბანის მიხედვით
+  const countriesList = [
+    "🇦🇪 არაბული (UAE)",
+    "🇺🇸 ამერიკის შეერთებული შტატები (USA)",
+    "🇦🇲 სომხეთი (Armenia)",
+    "🇦🇺 ავსტრალია (Australia)",
+    "🇦🇹 ავსტრია (Austria)",
+    "🇦🇿 აზერბაიჯანი (Azerbaijan)",
+    "🇧🇾 ბელარუსი (Belarus)",
+    "🇧🇪 ბელგია (Belgium)",
+    "🇧🇷 ბრაზილია (Brazil)",
+    "🇧🇬 ბულგარეთი (Bulgaria)",
+    "🇨🇿 ჩეხეთი (Czech Republic)",
+    "🇨🇳 ჩინეთი (China)",
+    "🇩🇰 დანია (Denmark)",
+    "🇪🇪 ესტონეთი (Estonia)",
+    "🇫🇮 ფინეთი (Finland)",
+    "🇫🇷 საფრანგეთი (France)",
+    "🇩🇪 გერმანია (Germany)",
+    "🇬🇷 საბერძნეთი (Greece)",
+    "🇭🇺 უნგრეთი (Hungary)",
+    "🇮🇳 ინდური (India)",
+    "🇮🇪 ირლანდია (Ireland)",
+    "🇮🇱 ისრაელი (Israel)",
+    "🇮🇹 იტალია (Italy)",
+    "🇯🇵 იაპონური (Japan)",
+    "🇰🇷 კორეული (Korea)",
+    "🇱🇹 ლიტვა (Lithuania)",
+    "🇲🇽 მექსიკა (Mexico)",
+    "🇳🇴 ნორვეგია (Norway)",
+    "🇵🇱 პოლონეთი (Poland)",
+    "🇵🇹 პორტუგალია (Portugal)",
+    "🇷🇴 რუმინეთი (Romania)",
+    "🇷🇺 რუსეთი (Russia)",
+    "🇪🇸 ესპანეთი (Spain)",
+    "🇸🇪 შვედეთი (Sweden)",
+    "🇹🇷 თურქეთი (Turkey)",
+    "🇺🇦 უკრაინა (Ukraine)",
+    "🇬🇧 ინგლისი (Great Britain)",
+    "🇨🇾 კვიპროსი (Cyprus)",
+    "🇬🇪 საქართველო (Georgia)"
+  ].sort(); // ანბანური დალაგება
+
   const personalSkillsList = [
     "კომუნიკაბელური", "გუნდური მუშაობა", "პუნქტუალურობა", "სტრესულ გარემოში მუშაობა",
     "დეტალებზე ორიენტირებულობა", "კრიტიკული აზროვნება", "პასუხისმგებლობის მაღალი გრძნობა",
@@ -310,7 +353,10 @@ export default function GeoDocsApp() {
                 <h3 style={{ marginBottom: '15px' }}>ნაბიჯი 1: ენის არჩევა</h3>
                 <label style={labelStyle}>რომელ ენაზე გსურთ დოკუმენტი?</label>
                 <select style={inputStyle} value={formData.docLanguage} onChange={e => setFormData({...formData, docLanguage: e.target.value})}>
-                  <option value="">აირჩიეთ...</option><option value="ქართული">ქართული</option><option value="ინგლისური">ინგლისური</option><option value="რუსული">რუსული</option>
+                  <option value="">აირჩიეთ ქვეყანა...</option>
+                  {countriesList.map((country, idx) => (
+                    <option key={idx} value={country}>{country}</option>
+                  ))}
                 </select>
                 <button onClick={() => setFormStep(2)} style={{ width: '100%', padding: '15px', background: '#007AFF', color: 'white', border: 'none', borderRadius: '10px', display: 'flex', justifyContent: 'center', gap: '10px' }}>შემდეგი <ChevronRight size={20}/></button>
               </div>
@@ -480,7 +526,6 @@ export default function GeoDocsApp() {
             <div>{t.footerPhone}</div>
           </div>
           
-          {/* გადახდის სისტემების CSS ლოგოები */}
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', marginBottom: '15px' }}>
             <div style={{ width: '32px', height: '19px', backgroundColor: '#fff', borderRadius: '3px', display: 'flex', justifyContent: 'center', alignItems: 'center', fontWeight: '900', color: '#0040FF', fontSize: '10px', fontStyle: 'italic', letterSpacing: '0.5px' }}>VISA</div>
             <div style={{ width: '32px', height: '19px', backgroundColor: '#fff', borderRadius: '3px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
