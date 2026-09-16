@@ -163,7 +163,7 @@ export default function GeoDocsApp() {
     "🇬🇧 ინგლისი (Great Britain)",
     "🇨🇾 კვიპროსი (Cyprus)",
     "🇬🇪 საქართველო (Georgia)"
-  ].sort(); // ანბანური დალაგება
+  ].sort(); 
 
   const personalSkillsList = [
     "კომუნიკაბელური", "გუნდური მუშაობა", "პუნქტუალურობა", "სტრესულ გარემოში მუშაობა",
@@ -180,9 +180,36 @@ export default function GeoDocsApp() {
     });
   };
 
-  const handleFormSubmit = () => {
-    console.log("მონაცემები მზადაა გასაგზავნად:", formData);
-    alert("ფორმა წარმატებით შეივსო! მიმდინარეობს ბანკთან დაკავშირება...");
+  // --- განახლებული სკრიპტთან დაკავშირების ფუნქცია ---
+  const handleFormSubmit = async () => {
+    // მცირე შემოწმება, რომ ცარიელი არ გაიგზავნოს
+    if (!formData.docLanguage || !formData.firstName || !formData.lastName || !formData.email) {
+      alert("გთხოვთ შეავსოთ სავალდებულო ველები (ენა, სახელი, გვარი, მეილი)!");
+      return;
+    }
+
+    try {
+      // აქ აუცილებლად ჩასვი შენი APPS SCRIPT-ის ლინკი!
+      const SCRIPT_URL = "აქ_ჩასვი_შენი_Apps_Script_Web_App_URL"; 
+
+      // მონაცემების გაგზავნა Google Sheet-ში
+      await fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+
+      alert("ფორმა წარმატებით გაიგზავნა! მონაცემები გადაეგზავნა ბაზას. მიმდინარეობს CV-ს გენერირება.");
+      
+      // ფორმის გასუფთავება და მთავარ გვერდზე დაბრუნება გაგზავნის შემდეგ
+      setActiveTab('home');
+      setFormStep(1);
+
+    } catch (error) {
+      console.error("შეცდომა გაგზავნისას:", error);
+      alert("დაფიქსირდა შეცდომა მონაცემების გაგზავნისას. სცადეთ თავიდან.");
+    }
   };
 
   const t = {
@@ -280,7 +307,7 @@ export default function GeoDocsApp() {
       
       <style>{`@keyframes blink { 0% { opacity: 0.2; } 20% { opacity: 1; } 100% { opacity: 0.2; } }`}</style>
 
-      {/* ფოტოს მოსაჭრელი პოპ-აპი (Modal) */}
+      {/* ფოტოს მოსაჭრელი პოპ-აპი */}
       {showCropper && (
         <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.9)', zIndex: 10001, display: 'flex', flexDirection: 'column' }}>
           <div style={{ position: 'relative', width: '100%', height: '80%' }}>
@@ -471,7 +498,7 @@ export default function GeoDocsApp() {
 
                 <div style={{ display: 'flex', gap: '10px' }}>
                   <button onClick={() => setFormStep(2)} style={{ flex: 1, padding: '15px', background: '#444', color: 'white', border: 'none', borderRadius: '10px' }}><ChevronLeft size={20}/></button>
-                  <button onClick={handleFormSubmit} disabled={!formData.consent} style={{ flex: 3, padding: '15px', background: formData.consent ? '#28A745' : '#555', color: 'white', border: 'none', borderRadius: '10px', fontWeight: 'bold' }}>გაგზავნა და გადახდა</button>
+                  <button onClick={handleFormSubmit} disabled={!formData.consent} style={{ flex: 3, padding: '15px', background: formData.consent ? '#28A745' : '#555', color: 'white', border: 'none', borderRadius: '10px', fontWeight: 'bold' }}>გაგზავნა</button>
                 </div>
               </div>
             )}
