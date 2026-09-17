@@ -190,7 +190,7 @@ export default function GeoDocsApp() {
 
     try {
       // აქ აუცილებლად ჩასვი შენი APPS SCRIPT-ის ლინკი!
-      const SCRIPT_URL = "აქ_ჩასვი_შენი_Apps_Script_Web_App_URL"; 
+      const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyNIuGTTN4sWwMsgtcKrU6raFY5lJYcDLgKaMIDApbj8g0IIlPMZJuXIMoaIYo5i2fd/exec"; 
 
       // მონაცემების გაგზავნა Google Sheet-ში
       await fetch(SCRIPT_URL, {
