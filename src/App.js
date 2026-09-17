@@ -122,32 +122,29 @@ export default function GeoDocsApp() {
     setLoading(false);
   };
 
-  // ქვეყნების სია დროშებით ანბანის მიხედვით
+  // ქვეყნების სია ანბანის მიხედვით
   const countriesList = [
-    "🇦🇪 არაბული (UAE)",
-    "🇺🇸 ამერიკის შეერთებული შტატები (USA)",
-    "🇦🇲 სომხეთი (Armenia)",
     "🇦🇺 ავსტრალია (Australia)",
     "🇦🇹 ავსტრია (Austria)",
     "🇦🇿 აზერბაიჯანი (Azerbaijan)",
+    "🇺🇸 ამერიკის შეერთებული შტატები (USA)",
+    "🇦🇪 არაბული (UAE)",
     "🇧🇾 ბელარუსი (Belarus)",
     "🇧🇪 ბელგია (Belgium)",
     "🇧🇷 ბრაზილია (Brazil)",
     "🇧🇬 ბულგარეთი (Bulgaria)",
-    "🇨🇿 ჩეხეთი (Czech Republic)",
-    "🇨🇳 ჩინეთი (China)",
-    "🇩🇰 დანია (Denmark)",
-    "🇪🇪 ესტონეთი (Estonia)",
-    "🇫🇮 ფინეთი (Finland)",
-    "🇫🇷 საფრანგეთი (France)",
     "🇩🇪 გერმანია (Germany)",
-    "🇬🇷 საბერძნეთი (Greece)",
-    "🇭🇺 უნგრეთი (Hungary)",
+    "🇩🇰 დანია (Denmark)",
+    "🇪🇸 ესპანეთი (Spain)",
+    "🇪🇪 ესტონეთი (Estonia)",
+    "🇹🇷 თურქეთი (Turkey)",
+    "🇯🇵 იაპონური (Japan)",
+    "🇬🇧 ინგლისი (Great Britain)",
     "🇮🇳 ინდური (India)",
     "🇮🇪 ირლანდია (Ireland)",
     "🇮🇱 ისრაელი (Israel)",
     "🇮🇹 იტალია (Italy)",
-    "🇯🇵 იაპონური (Japan)",
+    "🇨🇾 კვიპროსი (Cyprus)",
     "🇰🇷 კორეული (Korea)",
     "🇱🇹 ლიტვა (Lithuania)",
     "🇲🇽 მექსიკა (Mexico)",
@@ -156,14 +153,17 @@ export default function GeoDocsApp() {
     "🇵🇹 პორტუგალია (Portugal)",
     "🇷🇴 რუმინეთი (Romania)",
     "🇷🇺 რუსეთი (Russia)",
-    "🇪🇸 ესპანეთი (Spain)",
-    "🇸🇪 შვედეთი (Sweden)",
-    "🇹🇷 თურქეთი (Turkey)",
+    "🇬🇷 საბერძნეთი (Greece)",
+    "🇬🇪 საქართველო (Georgia)",
+    "🇦🇲 სომხეთი (Armenia)",
     "🇺🇦 უკრაინა (Ukraine)",
-    "🇬🇧 ინგლისი (Great Britain)",
-    "🇨🇾 კვიპროსი (Cyprus)",
-    "🇬🇪 საქართველო (Georgia)"
-  ].sort(); 
+    "🇭🇺 უნგრეთი (Hungary)",
+    "🇫🇮 ფინეთი (Finland)",
+    "🇫🇷 საფრანგეთი (France)",
+    "🇨🇳 ჩინეთი (China)",
+    "🇨🇿 ჩეხეთი (Czech Republic)",
+    "🇸🇪 შვედეთი (Sweden)"
+  ];
 
   const personalSkillsList = [
     "კომუნიკაბელური", "გუნდური მუშაობა", "პუნქტუალურობა", "სტრესულ გარემოში მუშაობა",
@@ -189,14 +189,13 @@ export default function GeoDocsApp() {
     }
 
     try {
-      // აქ აუცილებლად ჩასვი შენი APPS SCRIPT-ის ლინკი!
       const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyNIuGTTN4sWwMsgtcKrU6raFY5lJYcDLgKaMIDApbj8g0IIlPMZJuXIMoaIYo5i2fd/exec"; 
 
       // მონაცემების გაგზავნა Google Sheet-ში
       await fetch(SCRIPT_URL, {
         method: 'POST',
         mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // შეცვლილია CORS-ის ბლოკის მოსახსნელად
         body: JSON.stringify(formData)
       });
 
@@ -385,7 +384,7 @@ export default function GeoDocsApp() {
                     <option key={idx} value={country}>{country}</option>
                   ))}
                 </select>
-                <button onClick={() => setFormStep(2)} style={{ width: '100%', padding: '15px', background: '#007AFF', color: 'white', border: 'none', borderRadius: '10px', display: 'flex', justifyContent: 'center', gap: '10px' }}>შემდეგი <ChevronRight size={20}/></button>
+                <button onClick={() => { setFormStep(2); window.scrollTo(0, 0); }} style={{ width: '100%', padding: '15px', background: '#007AFF', color: 'white', border: 'none', borderRadius: '10px', display: 'flex', justifyContent: 'center', gap: '10px' }}>შემდეგი <ChevronRight size={20}/></button>
               </div>
             )}
 
@@ -425,8 +424,8 @@ export default function GeoDocsApp() {
                 </select>
 
                 <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
-                  <button onClick={() => setFormStep(1)} style={{ flex: 1, padding: '15px', background: '#444', color: 'white', border: 'none', borderRadius: '10px' }}><ChevronLeft size={20}/></button>
-                  <button onClick={() => setFormStep(3)} style={{ flex: 3, padding: '15px', background: '#007AFF', color: 'white', border: 'none', borderRadius: '10px', display: 'flex', justifyContent: 'center', gap: '10px' }}>შემდეგი <ChevronRight size={20}/></button>
+                  <button onClick={() => { setFormStep(1); window.scrollTo(0, 0); }} style={{ flex: 1, padding: '15px', background: '#444', color: 'white', border: 'none', borderRadius: '10px' }}><ChevronLeft size={20}/></button>
+                  <button onClick={() => { setFormStep(3); window.scrollTo(0, 0); }} style={{ flex: 3, padding: '15px', background: '#007AFF', color: 'white', border: 'none', borderRadius: '10px', display: 'flex', justifyContent: 'center', gap: '10px' }}>შემდეგი <ChevronRight size={20}/></button>
                 </div>
               </div>
             )}
@@ -497,7 +496,7 @@ export default function GeoDocsApp() {
                 </label>
 
                 <div style={{ display: 'flex', gap: '10px' }}>
-                  <button onClick={() => setFormStep(2)} style={{ flex: 1, padding: '15px', background: '#444', color: 'white', border: 'none', borderRadius: '10px' }}><ChevronLeft size={20}/></button>
+                  <button onClick={() => { setFormStep(2); window.scrollTo(0, 0); }} style={{ flex: 1, padding: '15px', background: '#444', color: 'white', border: 'none', borderRadius: '10px' }}><ChevronLeft size={20}/></button>
                   <button onClick={handleFormSubmit} disabled={!formData.consent} style={{ flex: 3, padding: '15px', background: formData.consent ? '#28A745' : '#555', color: 'white', border: 'none', borderRadius: '10px', fontWeight: 'bold' }}>გაგზავნა</button>
                 </div>
               </div>
