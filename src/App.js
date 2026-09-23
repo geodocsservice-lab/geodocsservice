@@ -156,7 +156,7 @@ export default function GeoDocsApp() {
     });
   };
 
-  // --- განახლებული გადახდის და გაგზავნის ფუნქცია (დიაგნოსტიკური ვერსია) ---
+  // --- განახლებული გადახდის და გაგზავნის ფუნქცია ---
   const handlePaymentAndSubmit = async () => {
     if (!formData.docLanguage || !formData.firstName || !formData.lastName || !formData.email) {
       alert("გთხოვთ შეავსოთ სავალდებულო ველები (ენა, სახელი, გვარი, მეილი)!");
@@ -166,7 +166,8 @@ export default function GeoDocsApp() {
     setIsProcessingPayment(true);
 
     try {
-      const amount = formData.docLanguage.includes('საქართველო') ? 1000 : 1500; 
+      // 1000 და 1500-ის ნაცვლად ვაგზავნით ზუსტად 10 და 15 ლარს
+      const amount = formData.docLanguage.includes('საქართველო') ? 10 : 15; 
       
       const response = await fetch('/api/initiate-payment', {
         method: 'POST',
@@ -179,7 +180,6 @@ export default function GeoDocsApp() {
         })
       });
       
-      // ვიღებთ ზუსტ ტექსტურ პასუხს სერვერიდან დიაგნოსტიკისთვის
       const textData = await response.text();
       
       if (!response.ok) {
@@ -188,7 +188,6 @@ export default function GeoDocsApp() {
       
       const paymentData = JSON.parse(textData);
       
-      // ვამოწმებთ ლინკის ყველა შესაძლო სახელს
       const finalUrl = paymentData.paymentUrl || paymentData.checkout_url || (paymentData.response && paymentData.response.checkout_url);
       
       if (finalUrl) {
@@ -200,7 +199,6 @@ export default function GeoDocsApp() {
 
     } catch (error) {
       console.error("შეცდომა:", error);
-      // ეკრანზე გამოგვიტანს პირდაპირ ტექნიკურ შეცდომას
       alert("შეცდომის დეტალები ეკრანზე: " + error.message);
       setIsProcessingPayment(false); 
     }
