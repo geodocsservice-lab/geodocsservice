@@ -34,6 +34,7 @@ export default function GeoDocsApp() {
   const [messages, setMessages] = useState([]); 
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const [isProcessingPayment, setIsProcessingPayment] = useState(false); // ახალი state გადახდის ღილაკისთვის
 
   // ფორმის ლოგიკა
   const [formStep, setFormStep] = useState(1);
@@ -122,47 +123,17 @@ export default function GeoDocsApp() {
     setLoading(false);
   };
 
-  // ქვეყნების სია ანბანის მიხედვით
   const countriesList = [
-    "🇦🇺 ავსტრალია (Australia)",
-    "🇦🇹 ავსტრია (Austria)",
-    "🇦🇿 აზერბაიჯანი (Azerbaijan)",
-    "🇺🇸 ამერიკის შეერთებული შტატები (USA)",
-    "🇦🇪 არაბული (UAE)",
-    "🇧🇾 ბელარუსი (Belarus)",
-    "🇧🇪 ბელგია (Belgium)",
-    "🇧🇷 ბრაზილია (Brazil)",
-    "🇧🇬 ბულგარეთი (Bulgaria)",
-    "🇩🇪 გერმანია (Germany)",
-    "🇩🇰 დანია (Denmark)",
-    "🇪🇸 ესპანეთი (Spain)",
-    "🇪🇪 ესტონეთი (Estonia)",
-    "🇹🇷 თურქეთი (Turkey)",
-    "🇯🇵 იაპონური (Japan)",
-    "🇬🇧 ინგლისი (Great Britain)",
-    "🇮🇳 ინდური (India)",
-    "🇮🇪 ირლანდია (Ireland)",
-    "🇮🇱 ისრაელი (Israel)",
-    "🇮🇹 იტალია (Italy)",
-    "🇨🇾 კვიპროსი (Cyprus)",
-    "🇰🇷 კორეული (Korea)",
-    "🇱🇹 ლიტვა (Lithuania)",
-    "🇲🇽 მექსიკა (Mexico)",
-    "🇳🇴 ნორვეგია (Norway)",
-    "🇵🇱 პოლონეთი (Poland)",
-    "🇵🇹 პორტუგალია (Portugal)",
-    "🇷🇴 რუმინეთი (Romania)",
-    "🇷🇺 რუსეთი (Russia)",
-    "🇬🇷 საბერძნეთი (Greece)",
-    "🇬🇪 საქართველო (Georgia)",
-    "🇦🇲 სომხეთი (Armenia)",
-    "🇺🇦 უკრაინა (Ukraine)",
-    "🇭🇺 უნგრეთი (Hungary)",
-    "🇫🇮 ფინეთი (Finland)",
-    "🇫🇷 საფრანგეთი (France)",
-    "🇨🇳 ჩინეთი (China)",
-    "🇨🇿 ჩეხეთი (Czech Republic)",
-    "🇸🇪 შვედეთი (Sweden)"
+    "🇦🇺 ავსტრალია (Australia)", "🇦🇹 ავსტრია (Austria)", "🇦🇿 აზერბაიჯანი (Azerbaijan)", "🇺🇸 ამერიკის შეერთებული შტატები (USA)",
+    "🇦🇪 არაბული (UAE)", "🇧🇾 ბელარუსი (Belarus)", "🇧🇪 ბელგია (Belgium)", "🇧🇷 ბრაზილია (Brazil)",
+    "🇧🇬 ბულგარეთი (Bulgaria)", "🇩🇪 გერმანია (Germany)", "🇩🇰 დანია (Denmark)", "🇪🇸 ესპანეთი (Spain)",
+    "🇪🇪 ესტონეთი (Estonia)", "🇹🇷 თურქეთი (Turkey)", "🇯🇵 იაპონური (Japan)", "🇬🇧 ინგლისი (Great Britain)",
+    "🇮🇳 ინდური (India)", "🇮🇪 ირლანდია (Ireland)", "🇮🇱 ისრაელი (Israel)", "🇮🇹 იტალია (Italy)",
+    "🇨🇾 კვიპროსი (Cyprus)", "🇰🇷 კორეული (Korea)", "🇱🇹 ლიტვა (Lithuania)", "🇲🇽 მექსიკა (Mexico)",
+    "🇳🇴 ნორვეგია (Norway)", "🇵🇱 პოლონეთი (Poland)", "🇵🇹 პორტუგალია (Portugal)", "🇷🇴 რუმინეთი (Romania)",
+    "🇷🇺 რუსეთი (Russia)", "🇬🇷 საბერძნეთი (Greece)", "🇬🇪 საქართველო (Georgia)", "🇦🇲 სომხეთი (Armenia)",
+    "🇺🇦 უკრაინა (Ukraine)", "🇭🇺 უნგრეთი (Hungary)", "🇫🇮 ფინეთი (Finland)", "🇫🇷 საფრანგეთი (France)",
+    "🇨🇳 ჩინეთი (China)", "🇨🇿 ჩეხეთი (Czech Republic)", "🇸🇪 შვედეთი (Sweden)"
   ];
 
   const personalSkillsList = [
@@ -180,36 +151,95 @@ export default function GeoDocsApp() {
     });
   };
 
-  // --- განახლებული სკრიპტთან დაკავშირების ფუნქცია ---
-  const handleFormSubmit = async () => {
-    // მცირე შემოწმება, რომ ცარიელი არ გაიგზავნოს
+  // --- განახლებული გადახდის და გაგზავნის ფუნქცია ---
+  const handlePaymentAndSubmit = async () => {
     if (!formData.docLanguage || !formData.firstName || !formData.lastName || !formData.email) {
       alert("გთხოვთ შეავსოთ სავალდებულო ველები (ენა, სახელი, გვარი, მეილი)!");
       return;
     }
 
+    setIsProcessingPayment(true); // ღილაკის გათიშვა
+
     try {
-      const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyNIuGTTN4sWwMsgtcKrU6raFY5lJYcDLgKaMIDApbj8g0IIlPMZJuXIMoaIYo5i2fd/exec"; 
-
-      // მონაცემების გაგზავნა Google Sheet-ში
-      await fetch(SCRIPT_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // შეცვლილია CORS-ის ბლოკის მოსახსნელად
-        body: JSON.stringify(formData)
-      });
-
-      alert("ფორმა წარმატებით გაიგზავნა! მონაცემები გადაეგზავნა ბაზას. მიმდინარეობს CV-ს გენერირება.");
+      // 1. აქ მოხდება Flitt-თან დაკავშირება (API call)
+      const amount = formData.docLanguage.includes('საქართველო') ? 1000 : 1500; // 10.00 ან 15.00 ლარი (თეთრებში)
       
-      // ფორმის გასუფთავება და მთავარ გვერდზე დაბრუნება გაგზავნის შემდეგ
-      setActiveTab('home');
-      setFormStep(1);
+      const response = await fetch('/api/initiate-payment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          amount: amount,
+          email: formData.email,
+          currency: 'GEL',
+          description: `CV Generation - ${formData.firstName} ${formData.lastName}`
+        })
+      });
+      
+      if (!response.ok) {
+        throw new Error('გადახდის ინიცირება ვერ მოხერხდა');
+      }
+      
+      const paymentData = await response.json();
+      
+      // გადავამისამართოთ მომხმარებელი Flitt-ის ბანკის გვერდზე
+      if (paymentData.paymentUrl) {
+        // მონაცემების შენახვა LocalStorage-ში, რათა დაბრუნების შემდეგ Google Script-ში გავაგზავნოთ
+        localStorage.setItem('pendingCvData', JSON.stringify(formData));
+        window.location.href = paymentData.paymentUrl;
+      } else {
+         throw new Error('ბანკის ლინკი არ დაბრუნდა');
+      }
 
     } catch (error) {
-      console.error("შეცდომა გაგზავნისას:", error);
-      alert("დაფიქსირდა შეცდომა მონაცემების გაგზავნისას. სცადეთ თავიდან.");
+      console.error("შეცდომა:", error);
+      alert("დაფიქსირდა შეცდომა გადახდის ინიცირებისას. გთხოვთ, სცადოთ მოგვიანებით.");
+      setIsProcessingPayment(false); // ღილაკის ჩართვა შეცდომის შემთხვევაში
     }
   };
+
+  // ეს ეფექტი ამოწმებს, ხომ არ დაბრუნდა მომხმარებელი წარმატებული გადახდის შემდეგ
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const paymentStatus = urlParams.get('payment_status'); // მაგალითად: success ან failed
+    
+    if (paymentStatus === 'success') {
+      const pendingData = localStorage.getItem('pendingCvData');
+      if (pendingData) {
+        const parsedData = JSON.parse(pendingData);
+        sendToGoogleSheet(parsedData);
+      }
+    } else if (paymentStatus === 'failed') {
+        alert('გადახდა ვერ განხორციელდა. გთხოვთ სცადოთ თავიდან.');
+        localStorage.removeItem('pendingCvData');
+    }
+  }, []);
+
+  // მონაცემების გაგზავნა Google Sheet-ში
+  const sendToGoogleSheet = async (data) => {
+    try {
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyNIuGTTN4sWwMsgtcKrU6raFY5lJYcDLgKaMIDApbj8g0IIlPMZJuXIMoaIYo5i2fd/exec"; 
+
+        await fetch(SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(data)
+        });
+
+        alert("გადახდა წარმატებულია! მონაცემები გადაეგზავნა ბაზას. მიმდინარეობს CV-ს გენერირება.");
+        
+        localStorage.removeItem('pendingCvData');
+        
+        // window.history.replaceState აშორებს URL-დან payment_status პარამეტრს
+        window.history.replaceState({}, document.title, window.location.pathname);
+        setActiveTab('home');
+        setFormStep(1);
+    } catch (error) {
+        console.error("შეცდომა გაგზავნისას:", error);
+        alert("გადახდა შესრულდა, მაგრამ დაფიქსირდა შეცდომა CV-ს გენერირებისას. გთხოვთ, დაგვიკავშირდეთ.");
+    }
+  }
+
 
   const t = {
     GE: { 
@@ -497,7 +527,21 @@ export default function GeoDocsApp() {
 
                 <div style={{ display: 'flex', gap: '10px' }}>
                   <button onClick={() => { setFormStep(2); window.scrollTo(0, 0); }} style={{ flex: 1, padding: '15px', background: '#444', color: 'white', border: 'none', borderRadius: '10px' }}><ChevronLeft size={20}/></button>
-                  <button onClick={handleFormSubmit} disabled={!formData.consent} style={{ flex: 3, padding: '15px', background: formData.consent ? '#28A745' : '#555', color: 'white', border: 'none', borderRadius: '10px', fontWeight: 'bold' }}>გაგზავნა</button>
+                  <button 
+                    onClick={handlePaymentAndSubmit} 
+                    disabled={!formData.consent || isProcessingPayment} 
+                    style={{ 
+                      flex: 3, 
+                      padding: '15px', 
+                      background: formData.consent ? (isProcessingPayment ? '#6c757d' : '#28A745') : '#555', 
+                      color: 'white', 
+                      border: 'none', 
+                      borderRadius: '10px', 
+                      fontWeight: 'bold' 
+                    }}
+                  >
+                    {isProcessingPayment ? "მიმდინარეობს..." : "გადახდა და გაგზავნა"}
+                  </button>
                 </div>
               </div>
             )}
@@ -607,4 +651,3 @@ export default function GeoDocsApp() {
     </div>
   );
 }
-
