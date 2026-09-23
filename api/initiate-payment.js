@@ -11,8 +11,8 @@ export default async function handler(req, res) {
     const merchantId = process.env.FLITT_MERCHANT_ID;
     const secretKey = process.env.FLITT_SECRET_KEY;
 
-    // Flitt-ის API-სთან დაკავშირება (ტრანზაქციის ინიცირება)
-    const flittResponse = await fetch("https://api.flitt.com/v1/payments", {
+    // Flitt-ის API-სთან დაკავშირება (განახლებული სწორი მისამართით)
+    const flittResponse = await fetch("https://pay.flitt.com/api/checkout/url", {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -41,6 +41,6 @@ export default async function handler(req, res) {
     
   } catch (error) {
     console.error("Flitt API Error:", error);
-    res.status(500).json({ message: "სერვერის შეცდომა გადახდის შექმნისას" });
+    res.status(500).json({ message: "სერვერის შეცდომა გადახდის შექმნისას: " + error.message });
   }
 }
