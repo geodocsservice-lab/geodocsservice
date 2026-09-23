@@ -151,7 +151,7 @@ export default function GeoDocsApp() {
     });
   };
 
-  // --- განახლებული გადახდის და გაგზავნის ფუნქცია ---
+  // --- განახლებული გადახდის და გაგზავნის ფუნქცია (დიაგნოსტიკური ვერსია) ---
   const handlePaymentAndSubmit = async () => {
     if (!formData.docLanguage || !formData.firstName || !formData.lastName || !formData.email) {
       alert("გთხოვთ შეავსოთ სავალდებულო ველები (ენა, სახელი, გვარი, მეილი)!");
@@ -174,22 +174,29 @@ export default function GeoDocsApp() {
         })
       });
       
+      // ვიღებთ ზუსტ ტექსტურ პასუხს სერვერიდან დიაგნოსტიკისთვის
+      const textData = await response.text();
+      
       if (!response.ok) {
-        throw new Error('გადახდის ინიცირება ვერ მოხერხდა');
+        throw new Error(`სერვერის შეცდომა (სტატუსი ${response.status}): ${textData}`);
       }
       
-      const paymentData = await response.json();
+      const paymentData = JSON.parse(textData);
       
-      if (paymentData.paymentUrl) {
+      // ვამოწმებთ ლინკის ყველა შესაძლო სახელს
+      const finalUrl = paymentData.paymentUrl || paymentData.checkout_url || (paymentData.response && paymentData.response.checkout_url);
+      
+      if (finalUrl) {
         localStorage.setItem('pendingCvData', JSON.stringify(formData));
-        window.location.href = paymentData.paymentUrl;
+        window.location.href = finalUrl;
       } else {
-         throw new Error('ბანკის ლინკი არ დაბრუნდა');
+         throw new Error(`ბანკის ლინკი ვერ მოიძებნა. მოვიდა ეს მონაცემი: ${textData}`);
       }
 
     } catch (error) {
       console.error("შეცდომა:", error);
-      alert("დაფიქსირდა შეცდომა გადახდის ინიცირებისას. გთხოვთ, სცადოთ მოგვიანებით.");
+      // ეკრანზე გამოგვიტანს პირდაპირ ტექნიკურ შეცდომას
+      alert("შეცდომის დეტალები ეკრანზე: " + error.message);
       setIsProcessingPayment(false); 
     }
   };
