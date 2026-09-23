@@ -2,26 +2,31 @@ import { useState, useEffect, useCallback } from 'react';
 import { Home, LayoutGrid, Info, Instagram, Facebook, Send, X, FileText, Upload, ChevronRight, ChevronLeft, Check } from 'lucide-react';
 import Cropper from 'react-easy-crop';
 
-// დამხმარე ფუნქცია მრგვალი ფოტოს ამოსაჭრელად
+// დამხმარე ფუნქცია მრგვალი ფოტოს ამოსაჭრელად (განახლებული - ავტომატური დაპატარავებით)
 const getCroppedImg = async (imageSrc, pixelCrop) => {
   const image = new Image();
   image.src = imageSrc;
   await new Promise((resolve) => (image.onload = resolve));
   const canvas = document.createElement('canvas');
-  canvas.width = pixelCrop.width;
-  canvas.height = pixelCrop.height;
+  
+  // ვსაზღვრავთ სტანდარტულ მცირე ზომას CV-ს ფოტოსთვის (300x300 პიქსელი)
+  const targetSize = 300; 
+  canvas.width = targetSize;
+  canvas.height = targetSize;
   const ctx = canvas.getContext('2d');
   
   ctx.beginPath();
-  ctx.arc(pixelCrop.width / 2, pixelCrop.height / 2, pixelCrop.width / 2, 0, Math.PI * 2);
+  ctx.arc(targetSize / 2, targetSize / 2, targetSize / 2, 0, Math.PI * 2);
   ctx.closePath();
   ctx.clip();
   
+  // ვხატავთ და ვაპატარავებთ სურათს წინასწარ განსაზღვრულ ზომაზე
   ctx.drawImage(
     image,
     pixelCrop.x, pixelCrop.y, pixelCrop.width, pixelCrop.height,
-    0, 0, pixelCrop.width, pixelCrop.height
+    0, 0, targetSize, targetSize
   );
+  
   return canvas.toDataURL('image/png');
 };
 
