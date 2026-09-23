@@ -34,7 +34,7 @@ export default function GeoDocsApp() {
   const [messages, setMessages] = useState([]); 
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
-  const [isProcessingPayment, setIsProcessingPayment] = useState(false); // ახალი state გადახდის ღილაკისთვის
+  const [isProcessingPayment, setIsProcessingPayment] = useState(false);
 
   // ფორმის ლოგიკა
   const [formStep, setFormStep] = useState(1);
@@ -158,11 +158,10 @@ export default function GeoDocsApp() {
       return;
     }
 
-    setIsProcessingPayment(true); // ღილაკის გათიშვა
+    setIsProcessingPayment(true);
 
     try {
-      // 1. აქ მოხდება Flitt-თან დაკავშირება (API call)
-      const amount = formData.docLanguage.includes('საქართველო') ? 1000 : 1500; // 10.00 ან 15.00 ლარი (თეთრებში)
+      const amount = formData.docLanguage.includes('საქართველო') ? 1000 : 1500; 
       
       const response = await fetch('/api/initiate-payment', {
         method: 'POST',
@@ -181,9 +180,7 @@ export default function GeoDocsApp() {
       
       const paymentData = await response.json();
       
-      // გადავამისამართოთ მომხმარებელი Flitt-ის ბანკის გვერდზე
       if (paymentData.paymentUrl) {
-        // მონაცემების შენახვა LocalStorage-ში, რათა დაბრუნების შემდეგ Google Script-ში გავაგზავნოთ
         localStorage.setItem('pendingCvData', JSON.stringify(formData));
         window.location.href = paymentData.paymentUrl;
       } else {
@@ -193,14 +190,13 @@ export default function GeoDocsApp() {
     } catch (error) {
       console.error("შეცდომა:", error);
       alert("დაფიქსირდა შეცდომა გადახდის ინიცირებისას. გთხოვთ, სცადოთ მოგვიანებით.");
-      setIsProcessingPayment(false); // ღილაკის ჩართვა შეცდომის შემთხვევაში
+      setIsProcessingPayment(false); 
     }
   };
 
-  // ეს ეფექტი ამოწმებს, ხომ არ დაბრუნდა მომხმარებელი წარმატებული გადახდის შემდეგ
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
-    const paymentStatus = urlParams.get('payment_status'); // მაგალითად: success ან failed
+    const paymentStatus = urlParams.get('payment_status'); 
     
     if (paymentStatus === 'success') {
       const pendingData = localStorage.getItem('pendingCvData');
@@ -214,7 +210,6 @@ export default function GeoDocsApp() {
     }
   }, []);
 
-  // მონაცემების გაგზავნა Google Sheet-ში
   const sendToGoogleSheet = async (data) => {
     try {
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyNIuGTTN4sWwMsgtcKrU6raFY5lJYcDLgKaMIDApbj8g0IIlPMZJuXIMoaIYo5i2fd/exec"; 
@@ -229,8 +224,6 @@ export default function GeoDocsApp() {
         alert("გადახდა წარმატებულია! მონაცემები გადაეგზავნა ბაზას. მიმდინარეობს CV-ს გენერირება.");
         
         localStorage.removeItem('pendingCvData');
-        
-        // window.history.replaceState აშორებს URL-დან payment_status პარამეტრს
         window.history.replaceState({}, document.title, window.location.pathname);
         setActiveTab('home');
         setFormStep(1);
@@ -239,7 +232,6 @@ export default function GeoDocsApp() {
         alert("გადახდა შესრულდა, მაგრამ დაფიქსირდა შეცდომა CV-ს გენერირებისას. გთხოვთ, დაგვიკავშირდეთ.");
     }
   }
-
 
   const t = {
     GE: { 
