@@ -21,6 +21,7 @@ export default async function handler(req, res) {
       order_desc: description || "CV Generation",
       order_id: "DOC_" + Date.now(),
       response_url: "https://geodocsservice.ge/?payment_status=success",
+      response_url_method: "GET", // <--- დამატებულია GET მეთოდი
       server_callback_url: "https://geodocsservice.ge/?payment_status=success"
     };
 
