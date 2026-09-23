@@ -8,70 +8,54 @@ export default async function handler(req, res) {
   try {
     const { amount, email, description } = req.body;
     
-    // საიდუმლო გასაღებები Vercel-იდან
     const merchantId = process.env.FLITT_MERCHANT_ID;
     const secretKey = process.env.FLITT_SECRET_KEY;
 
-    // Flitt-ის პარამეტრები 
-    // თანხას ვამრავლებთ 100-ზე, რადგან Flitt ითხოვს თეთრებში (მაგ: 10 ლარი -> 1000)
     const payload = {
-      amount: Math.round(parseFloat(amount) * 100),
+      amount: amount * 100, // ლარიდან თეთრებში
       currency: "GEL",
-      merchant_id: parseInt(merchantId),
+      merchant_id: merchantId, // ვაბრუნებთ პირვანდელ მდგომარეობაში
       order_desc: description || "CV Generation",
       order_id: "DOC_" + Date.now(),
-      response_url: "https://geodocsservice.ge/?payment_status=success",
-      response_url_method: "GET", // <--- დამატებულია GET მეთოდი
-      server_callback_url: "https://geodocsservice.ge/?payment_status=success"
+      // მივმართავთ ახალ უკან დასაბრუნებელ ფაილზე
+      response_url: "https://geodocsservice.ge/api/flitt-return",
+      server_callback_url: "https://geodocsservice.ge/api/flitt-return"
     };
 
     if (email) {
       payload.sender_email = email;
     }
 
-    // 1. პარამეტრების სახელების ანბანური სორტირება (Flitt-ის მოთხოვნა)
     const keys = Object.keys(payload).sort();
     
-    // 2. ვქმნით ტექსტს დასაშიფრად: იწყება საიდუმლო გასაღებით
     const dataToSign = [secretKey];
     keys.forEach(key => {
-      if (payload[key] !== '' && payload[key] !== null) {
+      if (payload[key] !== '' && payload[key] !== undefined && payload[key] !== null) {
         dataToSign.push(payload[key]);
       }
     });
     
-    // 3. ვაერთებთ '|' სიმბოლოთი
     const signatureString = dataToSign.join('|');
-    
-    // 4. ვშიფრავთ SHA1 ალგორითმით
     payload.signature = crypto.createHash('sha1').update(signatureString, 'utf8').digest('hex');
 
-    console.log("Sending payload to Flitt:", payload);
-
-    // 5. ვაგზავნით მონაცემებს (აუცილებლად "request" ობიექტში)
     const flittResponse = await fetch("https://pay.flitt.com/api/checkout/url", {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ request: payload })
     });
 
     const data = await flittResponse.json();
-    console.log("Flitt Full Response:", data);
 
     if (!flittResponse.ok || data.response?.response_status === 'failure') {
       throw new Error(data.response?.error_message || 'გადახდის ინიცირება ვერ მოხერხდა');
     }
 
-    // Flitt გადახდის ლინკს აბრუნებს response.checkout_url ველში
     const paymentUrl = data.response?.checkout_url || data.checkout_url;
 
     if (!paymentUrl) {
       throw new Error('ბანკმა არ დააბრუნა გადახდის ლინკი');
     }
 
-    // ვუბრუნებთ React-ს გადახდის ლინკს
     res.status(200).json({ paymentUrl: paymentUrl });
     
   } catch (error) {
