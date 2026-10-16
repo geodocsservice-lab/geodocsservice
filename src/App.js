@@ -156,7 +156,6 @@ export default function GeoDocsApp() {
     });
   };
 
-  // --- განახლებული გადახდის და გაგზავნის ფუნქცია ---
   const handlePaymentAndSubmit = async () => {
     if (!formData.docLanguage || !formData.firstName || !formData.lastName || !formData.email) {
       alert("გთხოვთ შეავსოთ სავალდებულო ველები (ენა, სახელი, გვარი, მეილი)!");
@@ -166,7 +165,6 @@ export default function GeoDocsApp() {
     setIsProcessingPayment(true);
 
     try {
-      // 1000 და 1500-ის ნაცვლად ვაგზავნით ზუსტად 10 და 15 ლარს
       const amount = formData.docLanguage.includes('საქართველო') ? 10 : 15; 
       
       const response = await fetch('/api/initiate-payment', {
@@ -220,26 +218,28 @@ export default function GeoDocsApp() {
     }
   }, []);
 
+  // --- ჩასწორებული ფუნქცია ---
   const sendToGoogleSheet = async (data) => {
     try {
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyNIuGTTN4sWwMsgtcKrU6raFY5lJYcDLgKaMIDApbj8g0IIlPMZJuXIMoaIYo5i2fd/exec"; 
 
-        await fetch(SCRIPT_URL, {
+        alert("გადახდა წარმატებულია! მიმდინარეობს მონაცემების დამუშავება და CV-ს გენერირება. გთხოვთ დაელოდოთ (დაახლოებით 1 წუთი).");
+        
+        localStorage.removeItem('pendingCvData');
+        window.history.replaceState({}, document.title, window.location.pathname);
+        setActiveTab('home');
+        setFormStep(1);
+
+        fetch(SCRIPT_URL, {
           method: 'POST',
           mode: 'no-cors',
           headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify(data)
         });
 
-        alert("გადახდა წარმატებულია! მონაცემები გადაეგზავნა ბაზას. მიმდინარეობს CV-ს გენერირება.");
-        
-        localStorage.removeItem('pendingCvData');
-        window.history.replaceState({}, document.title, window.location.pathname);
-        setActiveTab('home');
-        setFormStep(1);
     } catch (error) {
         console.error("შეცდომა გაგზავნისას:", error);
-        alert("გადახდა შესრულდა, მაგრამ დაფიქსირდა შეცდომა CV-ს გენერირებისას. გთხოვთ, დაგვიკავშირდეთ.");
+        alert("გადახდა შესრულდა, მაგრამ დაფიქსირდა შეცდომა სისტემასთან დაკავშირებისას. გთხოვთ, დაგვიკავშირდეთ.");
     }
   }
 
@@ -653,3 +653,4 @@ export default function GeoDocsApp() {
     </div>
   );
 }
+
