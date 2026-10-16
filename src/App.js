@@ -9,8 +9,8 @@ const getCroppedImg = async (imageSrc, pixelCrop) => {
   await new Promise((resolve) => (image.onload = resolve));
   const canvas = document.createElement('canvas');
   
-  // ვსაზღვრავთ სტანდარტულ მცირე ზომას CV-ს ფოტოსთვის (300x300 პიქსელი)
-  const targetSize = 300; 
+  // ვსაზღვრავთ სტანდარტულ მცირე ზომას CV-ს ფოტოსთვის (500x500 პიქსელი)
+  const targetSize = 500; 
   canvas.width = targetSize;
   canvas.height = targetSize;
   const ctx = canvas.getContext('2d');
